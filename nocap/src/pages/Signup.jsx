@@ -61,10 +61,11 @@ const Signup = () => {
                 onChange={(e) => setEmailId(e.target.value)}
               />
             </S.EId>
+            <S.A>@</S.A>
             <S.EAddress>
               <S.DropdownBox onClick={() => setIsOpen(!isOpen)}>
                 <span style={{ color: selectedEmail ? "#000" : "#b2b2b2" }}>
-                  {selectedEmail ? `@${selectedEmail}` : "@이메일 주소 선택"}
+                  {selectedEmail ? `${selectedEmail}` : "이메일 주소 선택"}
                 </span>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/${
@@ -80,7 +81,7 @@ const Signup = () => {
                       key={email}
                       onClick={() => handleSelect(email)}
                     >
-                      @{email}
+                      {email}
                     </S.OptionItem>
                   ))}
                 </S.OptionList>

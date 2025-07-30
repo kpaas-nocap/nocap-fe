@@ -75,10 +75,12 @@ export const Ebox = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  display: flex;
+  justify-content: center;
 `;
 
 export const EId = styled.div`
-  width: 174px;
+  width: 169px;
   height: 50px;
   flex-shrink: 0;
   border-radius: 15px;
@@ -105,9 +107,23 @@ export const EId = styled.div`
   }
 `;
 
+export const A = styled.div`
+  color: #b2b2b2;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 125% */
+  letter-spacing: -0.32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const EAddress = styled.div`
   position: relative; /* 추가 */
-  width: 184px;
+  width: 180px;
   height: 50px;
   flex-shrink: 0;
   border-radius: 15px;

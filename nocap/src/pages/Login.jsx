@@ -13,6 +13,10 @@ const Login = () => {
     navigate(`/signup`);
   };
 
+  const goLocal = () => {
+    navigate(`/login/local`);
+  };
+
   return (
     <L.Container>
       <L.Header>
@@ -37,7 +41,7 @@ const Login = () => {
           <img src={`${process.env.PUBLIC_URL}/images/kakao.svg`} alt="kakao" />
           <div>카카오 로그인</div>
         </L.Kakao>
-        <L.General>
+        <L.General onClick={goLocal}>
           <div>일반 로그인</div>
         </L.General>
         <L.Signup onClick={goSignup}>
