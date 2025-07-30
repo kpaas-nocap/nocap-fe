@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Success from "./pages/Success";
 import My from "./pages/My";
 import LocalLogin from "./pages/LocalLogoin";
+import SearchURL from "./pages/SearchURL";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup/success" element={<Success />} />
         <Route path="/my" element={<My />} />
         <Route path="/login/local" element={<LocalLogin />} />
+        <Route path="/search/url" element={<SearchURL />} />
       </Routes>
     </BrowserRouter>
   );
