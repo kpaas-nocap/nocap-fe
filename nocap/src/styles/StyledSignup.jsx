@@ -74,7 +74,6 @@ export const Ebox = styled.div`
   margin-top: 5px;
   display: flex;
   flex-direction: row;
-  gap: 10px;
   display: flex;
   justify-content: center;
 `;
@@ -108,6 +107,8 @@ export const EId = styled.div`
 `;
 
 export const A = styled.div`
+  margin-left: 2px;
+  margin-right: 2px;
   color: #b2b2b2;
   font-family: Pretendard;
   font-size: 16px;
