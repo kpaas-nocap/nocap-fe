@@ -23,6 +23,18 @@ export const Header = styled.div`
   justify-content: space-between;
   padding-left: 7px;
   padding-right: 17px;
+  align-items: center;
+
+  #logo {
+    height: 50px;
+  }
+
+  #menu {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+  }
 `;
 
 export const Body = styled.div`
@@ -194,4 +206,115 @@ export const Dot = styled.div`
 export const Pagenation = styled.div`
   display: flex;
   margin-top: 15px;
+`;
+
+export const Recent = styled.div`
+  width: 368px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 64px;
+`;
+
+export const Title = styled.div`
+  width: 368px;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.28px;
+`;
+
+export const List = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+`;
+
+export const Component = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 11px;
+
+  img {
+    width: 178px;
+    height: 121px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.2) 100%
+      ),
+      url(<path-to-image>) lightgray 50% / cover no-repeat;
+  }
+
+  div {
+    color: #1e1e1e;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.26px;
+    word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
+    overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+`;
+
+export const Detail = styled.div`
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const Trust = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  img {
+    width: 16px;
+    height: 16px;
+    background: transparent;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    // margin-left: 2px;
+    color: #f34135;
+    font-family: Pretendard;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 160% */
+    letter-spacing: -0.2px;
+  }
+`;
+
+export const Date = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  img {
+    width: 14px;
+    height: 14px;
+    aspect-ratio: 1/1;
+    background: transparent;
+  }
+
+  div {
+    margin-left: 2px;
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 160% */
+    letter-spacing: -0.3px;
+  }
 `;
