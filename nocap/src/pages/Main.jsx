@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import * as M from "../styles/StyledMain";
+import Sidebar from "./Sidebar"; // 컴포넌트 경로에 따라 조정
 
 const Main = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,6 +50,11 @@ const Main = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeContent, setActiveContent] = useState("home");
+
+  const toggleSidebar = () => setIsOpen((prev) => !prev);
+
   return (
     <M.Container>
       <M.Header>
@@ -61,6 +67,7 @@ const Main = () => {
           id="menu"
           src={`${process.env.PUBLIC_URL}/images/menu.svg`}
           alt="menu"
+          onClick={toggleSidebar}
         />
       </M.Header>
       <M.Body>
@@ -102,7 +109,43 @@ const Main = () => {
             ))}
           </M.Pagenation>
         </M.Ranking>
+
+        <M.Recent>
+          <M.Title>최근 팩트체크</M.Title>
+          <M.List>
+            <M.Component>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/news.jpg`}
+                alt="news"
+              />
+              <div>진짜 장마 온다… 내일 오후부터 토요일까지 전국에 많은 비</div>
+              <M.Detail>
+                <M.Trust>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/trust_r.svg`}
+                    alt="trust"
+                  />
+                  <div>신뢰도 20%</div>
+                </M.Trust>
+                <M.Date>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/date.svg`}
+                    alt="date"
+                  />
+                  <div>2025/07/06</div>
+                </M.Date>
+              </M.Detail>
+            </M.Component>
+          </M.List>
+        </M.Recent>
       </M.Body>
+
+      <Sidebar
+        isOpen={isOpen}
+        toggleSidebar={toggleSidebar}
+        activeContent={activeContent}
+        setActiveContent={setActiveContent}
+      />
     </M.Container>
   );
 };
