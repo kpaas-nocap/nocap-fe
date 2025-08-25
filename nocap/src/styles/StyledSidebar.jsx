@@ -6,7 +6,7 @@ export const SidebarWrapper = styled.div`
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 393px;
+  width: 402px;
   height: 100vh;
   z-index: 1000;
   overflow: hidden;

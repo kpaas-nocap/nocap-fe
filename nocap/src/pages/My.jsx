@@ -6,9 +6,10 @@ import Logout from "./Logout";
 const My = () => {
   const navigate = useNavigate();
 
-  const goBack = () => {
-    navigate(-1);
-  };
+  const goRecent = () => navigate(`/my/recent`);
+  const goAnal = () => navigate(`/my/analysis`);
+  const goBookmark = () => navigate(`/my/bookmark`);
+  const goComment = () => navigate(`/my/comment`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -30,88 +31,112 @@ const My = () => {
     <M.Container>
       <M.Header>
         <img
-          onClick={goBack}
-          id="back"
-          src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
-          alt="back"
+          id="logo"
+          src={`${process.env.PUBLIC_URL}/images/NOCAP.svg`}
+          alt="logo"
         />
-        <div>마이페이지</div>
-        <img
-          id="search"
-          src={`${process.env.PUBLIC_URL}/images/search_b.svg`}
-          alt="search"
-        />
+        <M.Icon>
+          <img
+            id="bell"
+            src={`${process.env.PUBLIC_URL}/images/bell.svg`}
+            alt="bell"
+          />
+          <img
+            id="setting"
+            src={`${process.env.PUBLIC_URL}/images/setting.svg`}
+            alt="setting"
+          />
+        </M.Icon>
       </M.Header>
-      <M.Info>
-        <M.Name>
-          <div id="name">김팩트</div>
-          <div id="sama">님</div>
-        </M.Name>
-        <M.Logout onClick={handleLogoutClick}>
-          <div id="detail">로그아웃</div>
-        </M.Logout>
+      <M.Profile>
+        <M.Detail>
+          <M.Img>
+            <img src={`${process.env.PUBLIC_URL}/images/person.svg`} alt="" />
+          </M.Img>
+          <M.Identity>
+            <div id="rank">일반사용자</div>
+            <div id="name">김팩트님</div>
+          </M.Identity>
+          <M.Edit>
+            <img src={`${process.env.PUBLIC_URL}/images/pencil_w.svg`} alt="" />
+          </M.Edit>
+        </M.Detail>
+        <M.Logout onClick={handleLogoutClick}>로그아웃</M.Logout>
         {isModalOpen && (
           <Logout onConfirm={handleConfirm} onCancel={handleCancel} />
         )}
-      </M.Info>
-      <M.Main>
-        <M.Menu>
-          <M.Recom>
+      </M.Profile>
+      <M.Point>
+        <M.PTitle>보유 포인트</M.PTitle>
+        <M.PDetail>
+          <M.Analyze>
             <img
-              src={`${process.env.PUBLIC_URL}/images/recommend.svg`}
-              alt="recommend"
+              src={`${process.env.PUBLIC_URL}/images/analysis_b.svg`}
+              alt="analyze"
             />
-            <div>추천기사</div>
-          </M.Recom>
-          <M.Bookmark>
+            <div id="num">10</div>
+          </M.Analyze>
+          <M.Hr />
+          <M.Comment>
             <img
-              src={`${process.env.PUBLIC_URL}/images/bookmark.svg`}
-              alt="bookmark"
+              src={`${process.env.PUBLIC_URL}/images/comment_b.svg`}
+              alt="comment"
             />
-            <div>북마크</div>
-          </M.Bookmark>
-          <M.Record>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/record.svg`}
-              alt="record"
-            />
-            <div>검색기록</div>
-          </M.Record>
-          <M.Setting>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/setting.svg`}
-              alt="setting"
-            />
-            <div>설정</div>
-          </M.Setting>
-        </M.Menu>
-        <M.NewsT>뉴스 기능</M.NewsT>
-        <M.News>
-          <M.N1>
-            <div>최근 분석 보기</div>
-            <img src={`${process.env.PUBLIC_URL}/images/next.svg`} alt="next" />
-          </M.N1>
-          <M.N2>
-            <div>뉴스 필터 설정</div>
-            <img src={`${process.env.PUBLIC_URL}/images/next.svg`} alt="next" />
-          </M.N2>
-          <M.N3>
-            <div>프리미엄 구독</div>
-            <img src={`${process.env.PUBLIC_URL}/images/next.svg`} alt="next" />
-          </M.N3>
-        </M.News>
-        <M.FuncT>설정</M.FuncT>
-        <M.Func>
-          <M.F1>
-            <div>문의하기</div>
-            <img src={`${process.env.PUBLIC_URL}/images/next.svg`} alt="next" />
-          </M.F1>
-          <M.F2>
-            <div>탈퇴하기</div>
-            <img src={`${process.env.PUBLIC_URL}/images/next.svg`} alt="next" />
-          </M.F2>
-        </M.Func>
-      </M.Main>
+            <div id="num">10</div>
+          </M.Comment>
+        </M.PDetail>
+      </M.Point>
+      <M.Mention>오늘의 팩트체크를 확인해 보세요</M.Mention>
+      <M.Archive>
+        <M.ATitle>
+          <div id="name">김팩트</div>
+          <div id="detail">님의 아카이브</div>
+        </M.ATitle>
+        <M.List>
+          <M.Component onClick={goRecent}>
+            <div id="title">최근 본 뉴스</div>
+            <div id="group">
+              <div id="num">10</div>
+              <div id="detail">개</div>
+            </div>
+          </M.Component>
+          <M.Component onClick={goAnal}>
+            <div id="title">분석 기록</div>
+            <div id="group">
+              <div id="num">10</div>
+              <div id="detail">개</div>
+            </div>
+          </M.Component>
+          <M.Component onClick={goBookmark}>
+            <div id="title">북마크</div>
+            <div id="group">
+              <div id="num">10</div>
+              <div id="detail">개</div>
+            </div>
+          </M.Component>
+          <M.Component onClick={goComment}>
+            <div id="title">내 댓글</div>
+            <div id="group">
+              <div id="num">10</div>
+              <div id="detail">개</div>
+            </div>
+          </M.Component>
+          <M.Component>
+            <div id="title">비교 요약 기록</div>
+            <div id="group">
+              <div id="num">10</div>
+              <div id="detail">개</div>
+            </div>
+          </M.Component>
+          <M.Component>
+            <div id="title">맞춤 기사</div>
+            <div id="group">
+              <div id="num">10</div>
+              <div id="detail">개</div>
+            </div>
+          </M.Component>
+        </M.List>
+      </M.Archive>
     </M.Container>
   );
 };

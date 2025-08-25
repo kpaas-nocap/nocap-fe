@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import * as M from "../styles/StyledSidebar";
 
@@ -24,9 +25,23 @@ const Sidebar = ({
   activeContent,
   setActiveContent,
 }) => {
+  const navigate = useNavigate();
+
+  // 로그인 클릭 시
+  const goLogin = () => {
+    navigate("/login");
+    toggleSidebar(); // 사이드바도 닫기
+  };
+
+  // 카테고리 클릭 시
   const handleMenuClick = (content) => {
     setActiveContent(content);
+    navigate(`/category/${content}`);
+    toggleSidebar(); // 사이드바도 닫기
   };
+  // const handleMenuClick = (content) => {
+  //   setActiveContent(content);
+  // };
 
   return (
     <AnimatePresence>
@@ -60,7 +75,7 @@ const Sidebar = ({
                 alt="x"
                 onClick={toggleSidebar}
               />
-              <M.Hi>
+              <M.Hi onClick={goLogin}>
                 <div>로그인 해주세요</div>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/more.svg`}

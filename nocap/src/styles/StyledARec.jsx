@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import { styled } from "styled-components";
 
 export const Container = styled.div`
   position: relative;
@@ -13,167 +13,173 @@ export const Container = styled.div`
   width: 402px;
   flex-shrink: 0;
   padding-bottom: 200px;
+  align-items: center;
 `;
 
 export const Header = styled.div`
-  height: 80px;
-  background: #213ce9;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-left: 7px;
-  padding-right: 17px;
+  display: inline-flex;
+  padding: 15px 167px 15px 17px;
   align-items: center;
+  gap: 124px;
 
-  #logo {
-    height: 50px;
+  img {
+    width: 24px;
+    height: 24px;
   }
 
-  #menu {
-    width: 32px;
-    height: 32px;
-    flex-shrink: 0;
-    aspect-ratio: 1/1;
-  }
-`;
-
-export const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const blueWhiteMove = keyframes`
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: 200% 0%;
+  div {
+    color: #000;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 100% */
   }
 `;
 
 export const SearchBar = styled.div`
-  margin-top: 42px;
-  width: 368px;
-  height: 50px;
-  flex-shrink: 0;
-  border-radius: 30px;
-  // border: 1.5px solid #213ce9;
-  // box-shadow: 0 0 8px 2px rgba(33, 60, 233, 0.3);
+  margin-top: 8px;
   display: flex;
+  width: 368px;
+  height: 45px;
+  padding: 12px 19px 12px 25px;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px;
-
-  background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(270deg, #213ce9, #ffffff, #213ce9) border-box;
-  border: 1.5px solid transparent;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  background-size: 200% auto;
-  animation: ${blueWhiteMove} 3s linear infinite;
-
-  box-shadow: 0 0 8px 2px rgba(33, 60, 233, 0.2); /* 은은한 파란 그림자 */
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  border: 1.5px solid #213ce9;
+  box-shadow: 0 0 10px 2px rgba(33, 60, 233, 0.3);
 
   input {
-    flex: 1;
-    color: black;
+    height: 20px;
+    color: #000;
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 133.333% */
+    width: 300px;
     border: none;
     outline: none;
-    background: transparent;
-
-    &::placeholder {
-      color: #acacac; /* placeholder 색상 */
-    }
   }
 
   img {
     width: 20px;
     height: 20px;
-    flex-shrink: 0;
   }
 `;
 
-export const Ranking = styled.div`
-  width: 368px;
+export const Body = styled.div`
+  padding: 0 17px;
   display: flex;
   flex-direction: column;
-  margin-top: 65px;
-  align-items: center;
 `;
 
-export const RTitle = styled.div`
-  width: 368px;
-  margin-left: 6px;
-  color: #000;
+export const Num = styled.div`
+  margin-top: 27px;
+  color: #686868;
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: -0.28px;
+  font-weight: 500;
+  line-height: 16px; /* 114.286% */
+  color: #686868;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; /* 114.286% */
+  text-align: left;
+  width: 368px;
 `;
 
-export const RBox = styled.div`
-  margin-top: 11px;
+export const Category = styled.div`
   display: flex;
-  flex-direction: column;
-  padding: 22px;
-  width: 368px;
-  height: 169px;
-  flex-shrink: 0;
-  border-radius: 15px;
-  border: 2px solid #f1f1ff;
-  background: #fefeff;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
 
-  #title {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.32px;
-  }
+export const Button = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
 
-  #from {
-    margin-top: 3px;
-    color: #adadad;
+  #all {
+    display: flex;
+    width: 60px;
+    height: 36px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    color: #fff;
     font-family: Pretendard;
-    font-size: 14px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.28px;
+    line-height: 16px; /* 106.667% */
+    border-radius: 10px;
+    background: #686868;
   }
 
-  img {
-    width: 55px;
-    height: 25px;
-    flex-shrink: 0;
-    margin-top: 3px;
+  #btn {
+    display: inline-flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 106.667% */
   }
 `;
 
-export const RBar = styled.div`
+export const Sort = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+
+  img {
+    width: 13px;
+    height: 14px;
+  }
+
+  div {
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 106.667% */
+  }
+`;
+
+export const Bar = styled.div`
   display: flex;
   margin-top: 27px;
   position: relative;
 
   img {
-    width: 323px;
+    width: 368px;
   }
 `;
 
 export const Circle = styled.div`
   position: absolute;
-  top: 4px;
-  left: 0;
+  top: -5px;
+  left: 70px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -181,52 +187,8 @@ export const Circle = styled.div`
   transition: left 1s ease-in-out, background-color 0.3s ease-in-out;
 `;
 
-export const SliderWrapper = styled.div`
-  width: 368px;
-  overflow: hidden;
-  margin: 0 auto;
-  position: relative;
-`;
-
-export const SliderContainer = styled.div`
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 368}px)`};
-  width: fit-content;
-`;
-
-export const Dot = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: ${({ active }) => (active ? "#0049ff" : "#d9d9d9")};
-  margin: 0 4px;
-`;
-
-export const Pagenation = styled.div`
-  display: flex;
-  margin-top: 15px;
-`;
-
-export const Recent = styled.div`
-  width: 368px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 64px;
-`;
-
-export const Title = styled.div`
-  width: 368px;
-  color: #000;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: -0.28px;
-`;
-
 export const List = styled.div`
+  margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 13px;
@@ -267,7 +229,10 @@ export const Component = styled.div`
 `;
 
 export const Detail = styled.div`
-  margin-top: 8px;
+  //   margin-top: 8px;
+  width: 179px;
+  height: 26px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

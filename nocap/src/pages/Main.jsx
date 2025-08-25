@@ -125,7 +125,7 @@ const Main = () => {
                     src={`${process.env.PUBLIC_URL}/images/trust_r.svg`}
                     alt="trust"
                   />
-                  <div>신뢰도 20%</div>
+                  <div>유사도 20%</div>
                 </M.Trust>
                 <M.Date>
                   <img
