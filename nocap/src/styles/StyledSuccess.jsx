@@ -4,7 +4,7 @@ export const Container = styled.div`
   position: relative;
   margin: 0 auto;
   margin-top: 0px;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 0; /* 불필요한 패딩 제거 */
   box-sizing: border-box; /* 패딩이 width에 포함되도록 설정 */
   display: flex;
@@ -12,19 +12,21 @@ export const Container = styled.div`
   background: #fff;
   width: 402px;
   flex-shrink: 0;
-  padding-bottom: 200px;
+  padding-bottom: 100px;
   align-items: center;
 `;
 
 export const Detail = styled.div`
-  margin-top: 137.35px;
+  margin-top: 122.5px;
   display: flex;
   flex-direction: column;
   //   gap: 24px;
 
   img {
-    width: 192.6471px;
-    height: 76.6471px;
+    width: 300px;
+    height: 200px;
+    flex-shrink: 0;
+    aspect-ratio: 3/2;
   }
 
   div {
@@ -41,7 +43,7 @@ export const Detail = styled.div`
 export const Button = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 482px;
+  margin-top: 300px;
 `;
 
 export const Login = styled.div`

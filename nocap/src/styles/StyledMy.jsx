@@ -22,38 +22,37 @@ export const Header = styled.div`
   position: relative;
   width: 100%; /* 또는 width: 393px; */
   height: 61px;
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
+  padding: 14.5px 16px 13.5px 17px;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 17px; /* 양 옆 여백이 필요하면 추가 */
+  gap: 116px;
 
-  #logo {
-    height: 42px;
+  #back {
+    width: 24px;
+    height: 24px;
   }
-`;
 
-export const Icon = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-
-  #bell {
-    width: 20px;
-    height: 20px;
-    aspect-ratio: 1/1;
+  div {
+    color: #000;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 100% */
   }
 
   #setting {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     aspect-ratio: 1/1;
   }
 `;
 
 export const Profile = styled.div`
   width: 402px;
-  margin-top: 10px;
+  margin-top: 15.5px;
   padding: 0 17px;
   display: flex;
   flex-direction: row;
@@ -67,18 +66,9 @@ export const Detail = styled.div`
 `;
 
 export const Img = styled.div`
-  width: 70px;
-  height: 70px;
-  flex-shrink: 0;
-  background-color: rgba(33, 60, 233, 0.8);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   img {
-    width: 56px;
-    height: 58.374px;
+    width: 78px;
+    height: 78px;
     flex-shrink: 0;
   }
 `;
@@ -109,26 +99,6 @@ export const Identity = styled.div`
   }
 `;
 
-export const Edit = styled.div`
-  margin-left: 30px;
-  margin-top: 32px;
-  width: 31px;
-  height: 32px;
-  flex-shrink: 0;
-  background-color: #fafafa;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    aspect-ratio: 1/1;
-  }
-`;
-
 export const Logout = styled.div`
   margin-top: 36px;
   display: inline-flex;
@@ -150,86 +120,26 @@ export const Logout = styled.div`
 
 export const Point = styled.div`
   margin-top: 30px;
-  width: 368px;
-  height: 126px;
+  width: 345px;
+  height: 62px;
   flex-shrink: 0;
-  border-radius: 10px;
-  background: #f5f4f5;
+  border-radius: 15px;
+  background: #eaedff;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  padding: 0 18px 0 18px;
   align-items: center;
 `;
 
-export const PTitle = styled.div`
-  margin-top: 18px;
-  color: #686868;
-  font-family: Pretendard;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  width: 368px;
-  text-align: left;
-  padding: 0 17px;
-`;
-
-export const PDetail = styled.div`
-  width: 344px;
-  height: 51px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: #fff;
-  display: flex;
-  flex-direction: row;
-  margin-top: 17px;
-  padding: 10px 18px;
+export const Left = styled.div`
+  display: inline-flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-export const Analyze = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   width: 137px;
-  align-items: center;
 
   img {
-    width: 33.502px;
-    height: 23.452px;
-    flex-shrink: 0;
-  }
-
-  div {
-    color: #000;
-    text-align: right;
-    font-family: Pretendard;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-`;
-
-export const Hr = styled.div`
-  width: 2px;
-  height: 20px;
-  flex-shrink: 0;
-  border-radius: 5px;
-  background: #eaeaf9;
-`;
-
-export const Comment = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 137px;
-  align-items: center;
-
-  img {
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
+    width: 35px;
+    height: 35px;
     aspect-ratio: 1/1;
   }
 
@@ -244,51 +154,131 @@ export const Comment = styled.div`
   }
 `;
 
-export const Mention = styled.div`
-  margin-top: 20px;
-  display: flex;
-  width: 368px;
-  height: 54px;
-  padding: 15px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 10px;
+export const Hr = styled.div`
+  width: 2.005px;
+  height: 20px;
   flex-shrink: 0;
-  border-radius: 10px;
-  background: #213ce9;
-  color: #fff;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  border-radius: 15px;
+  background: #fff;
+  margin-left: 15px;
+  margin-right: 15px;
+`;
+
+export const Rank = styled.div`
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 137px;
+
+  img {
+    width: 35px;
+    height: 35px;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    color: #000;
+    text-align: right;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
+export const Chance = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  width: 345px;
+  text-align: left;
+  margin-top: 31px;
+
+  #base {
+    color: #131314;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  #num {
+    color: #213ce9;
+    font-family: Pretendard;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
+export const Bar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  #bar {
+    width: 300px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 9.479px;
+    background: #e5e9ef;
+  }
+
+  img {
+    display: flex;
+    width: 50px;
+    height: 50px;/
+    padding: 5.952px 9.369px 7.605px 8.929px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+`;
+
+export const Number = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 45px 0 0;
+  width: 354px;
+  position: absolute;
+  top: 346px;
+
+  div {
+    color: #b2b2b2;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 `;
 
 export const Archive = styled.div`
-  margin-top: 20px;
+  margin-top: 47.5px;
   width: 368px;
-  height: 438px;
+  height: 418px;
   flex-shrink: 0;
   background-color: #ebedff;
   display: flex;
   flex-direction: column;
   padding: 20px 7px;
   border-radius: 15px 15px 0 0;
+  align-items: center;
 `;
 
 export const ATitle = styled.div`
   display: flex;
   flex-direction: row;
-  width: 368px;
-  padding: 0 15px;
-  text-align: left;
+  text-align: center;
 
   #name {
     color: #213ce9;
     font-family: Pretendard;
-    font-size: 18px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -297,7 +287,7 @@ export const ATitle = styled.div`
   #detail {
     color: #000;
     font-family: Pretendard;
-    font-size: 18px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;

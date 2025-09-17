@@ -32,16 +32,10 @@ const Sidebar = ({
     navigate("/login");
     toggleSidebar(); // 사이드바도 닫기
   };
-
-  // 카테고리 클릭 시
-  const handleMenuClick = (content) => {
-    setActiveContent(content);
-    navigate(`/category/${content}`);
-    toggleSidebar(); // 사이드바도 닫기
+  const goMy = () => {
+    navigate(`/my`);
+    toggleSidebar();
   };
-  // const handleMenuClick = (content) => {
-  //   setActiveContent(content);
-  // };
 
   return (
     <AnimatePresence>
@@ -59,7 +53,7 @@ const Sidebar = ({
               position: "absolute",
               top: 0,
               right: 0,
-              width: "80%",
+              width: "100%",
               height: "100vh",
               backgroundColor: "white",
               zIndex: 2,
@@ -68,84 +62,54 @@ const Sidebar = ({
               flexDirection: "column",
             }}
           >
-            <M.Header>
-              <img
-                id="x"
-                src={`${process.env.PUBLIC_URL}/images/x_w.svg`}
-                alt="x"
-                onClick={toggleSidebar}
-              />
-              <M.Hi onClick={goLogin}>
-                <div>로그인 해주세요</div>
+            <M.Body>
+              <M.Header>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/more.svg`}
+                  id="logo"
+                  src={`${process.env.PUBLIC_URL}/images/logo.png`}
+                  alt="logo"
+                />
+                <img
+                  id="x"
+                  src={`${process.env.PUBLIC_URL}/images/x_b.svg`}
+                  alt="x"
+                  onClick={toggleSidebar}
+                />
+              </M.Header>
+              <M.Hr />
+            </M.Body>
+
+            <M.Hi onClick={goLogin}>
+              <div>로그인 해주세요</div>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
+                alt="more"
+              />
+            </M.Hi>
+
+            <M.Content>
+              <M.Comp>
+                <div>뉴스</div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
                   alt="more"
                 />
-              </M.Hi>
-            </M.Header>
-
-            {/* ✅ 스크롤 가능한 콘텐츠 영역 */}
-            <M.ScrollableContent>
-              <M.Analyze>
-                <M.ATitle>기사분석</M.ATitle>
-                <M.AList>
-                  <div>주요뉴스</div>
-                  <div>속보</div>
-                  <div>정치</div>
-                  <div>경제</div>
-                  <div>사회</div>
-                  <div>세계</div>
-                  <div>연예</div>
-                  <div>스포츠</div>
-                  <div>IT</div>
-                </M.AList>
-              </M.Analyze>
-              <M.Hr />
-              <M.News>
-                <M.NTitle>뉴스</M.NTitle>
-                <M.NList>
-                  <div>주요뉴스</div>
-                  <div>속보</div>
-                  <div>정치</div>
-                  <div>경제</div>
-                  <div>사회</div>
-                  <div>세계</div>
-                  <div>연예</div>
-                  <div>스포츠</div>
-                  <div>IT</div>
-                </M.NList>
-              </M.News>
-            </M.ScrollableContent>
-
-            {/* <M.Analyze>
-              <M.ATitle>기사분석</M.ATitle>
-              <M.AList>
-                <div>주요뉴스</div>
-                <div>속보</div>
-                <div>정치</div>
-                <div>경제</div>
-                <div>사회</div>
-                <div>세계</div>
-                <div>연예</div>
-                <div>스포츠</div>
-                <div>IT</div>
-              </M.AList>
-            </M.Analyze>
-            <M.Hr />
-            <M.News>
-              <M.NTitle>뉴스</M.NTitle>
-              <M.NList>
-                <div>주요뉴스</div>
-                <div>속보</div>
-                <div>정치</div>
-                <div>경제</div>
-                <div>사회</div>
-                <div>세계</div>
-                <div>연예</div>
-                <div>스포츠</div>
-                <div>IT</div>
-              </M.NList>
-            </M.News> */}
+              </M.Comp>
+              <M.Comp>
+                <div>기사분석</div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
+                  alt="more"
+                />
+              </M.Comp>
+              <M.Comp onClick={goMy}>
+                <div>마이페이지</div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
+                  alt="more"
+                />
+              </M.Comp>
+            </M.Content>
           </motion.div>
         </M.SidebarWrapper>
       )}

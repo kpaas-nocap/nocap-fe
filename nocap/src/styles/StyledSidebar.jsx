@@ -22,13 +22,29 @@ export const Overlay = styled.div`
   z-index: 1;
 `;
 
-export const Header = styled.div`
-  width: 351px;
-  height: 174px;
-  flex-shrink: 0;
-  background: #213ce9;
+export const Body = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+`;
+
+export const Header = styled.div`
+  width: 402px;
+  height: 102px;
+  flex-shrink: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+
+  #logo {
+    width: 128px;
+    // height: 32px;
+    flex-shrink: 0;
+    margin-top: 30px;
+  }
 
   #x {
     width: 20px;
@@ -39,127 +55,64 @@ export const Header = styled.div`
   }
 `;
 
+export const Hr = styled.div`
+  width: 369px;
+  height: 2px;
+  flex-shrink: 0;
+  background: #ebebeb;
+`;
+
 export const Hi = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 40px;
+  gap: 8px;
   align-items: center;
+  margin-top: 40px;
+  margin-left: 21px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
 
   div {
-    margin-left: 24px;
-    color: #fff;
+    color: #000;
     font-family: Pretendard;
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
   }
+`;
+
+export const Content = styled.div`
+  margin-top: 90px;
+  gap: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 402px;
+  align-items: center;
+`;
+
+export const Comp = styled.div`
+  display: flex;
+  width: 365px;
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 
   img {
-    margin-left: 8px;
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
-  }
-`;
-
-export const Analyze = styled.div`
-  margin-top: 34px;
-  margin-left: 21px;
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
-  align-self: stretch;
-  width: 172px;
-  height: 300px;
-  flex-direction: row;
-`;
-
-export const ATitle = styled.div`
-  color: #000;
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-`;
-
-export const AList = styled.div`
-  display: flex;
-  width: 62px;
-  height: 300px;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  div {
-    color: #b2b2b2;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px; /* 142.857% */
-  }
-`;
-
-export const Hr = styled.div`
-  margin-top: 42px;
-  margin-left: 21px;
-  width: 300px;
-  height: 1px;
-  flex-shrink: 0;
-  background: #d9d9d9;
-`;
-
-export const News = styled.div`
-  margin-top: 26px;
-  margin-left: 21px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  align-self: stretch;
-  width: 172px;
-  height: 300px;
-  flex-direction: row;
-  margin-bottom: 110px;
-`;
-
-export const NTitle = styled.div`
-  color: #000;
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-`;
-
-export const NList = styled.div`
-  display: flex;
-  width: 62px;
-  height: 300px;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  div {
-    color: #b2b2b2;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px; /* 142.857% */
-  }
-`;
-
-export const ScrollableContent = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overflow-x: hidden; /* ✅ 좌우 스크롤 막기 */
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
+    aspect-ratio: 1/1;
   }
 `;
