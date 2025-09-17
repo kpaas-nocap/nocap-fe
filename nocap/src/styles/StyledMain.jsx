@@ -4,7 +4,7 @@ export const Container = styled.div`
   position: relative;
   margin: 0 auto;
   margin-top: 0px;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 0; /* 불필요한 패딩 제거 */
   box-sizing: border-box; /* 패딩이 width에 포함되도록 설정 */
   display: flex;
@@ -16,8 +16,8 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  height: 80px;
-  background: #213ce9;
+  height: 60px;
+  background: #fff;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -26,10 +26,13 @@ export const Header = styled.div`
   align-items: center;
 
   #logo {
-    height: 50px;
+    margin-top: 18px;
+    width: 128px;
+    flex-shrink: 0;
   }
 
   #menu {
+    margin-top: 18px;
     width: 32px;
     height: 32px;
     flex-shrink: 0;
@@ -53,7 +56,7 @@ const blueWhiteMove = keyframes`
 `;
 
 export const SearchBar = styled.div`
-  margin-top: 42px;
+  margin-top: 22px;
   width: 368px;
   height: 50px;
   flex-shrink: 0;
@@ -63,6 +66,7 @@ export const SearchBar = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 15px;
 
   background: linear-gradient(#fff, #fff) padding-box,
@@ -74,6 +78,10 @@ export const SearchBar = styled.div`
   animation: ${blueWhiteMove} 3s linear infinite;
 
   box-shadow: 0 0 8px 2px rgba(33, 60, 233, 0.2); /* 은은한 파란 그림자 */
+
+  #plus {
+    margin-right: 10px;
+  }
 
   input {
     flex: 1;
@@ -89,6 +97,7 @@ export const SearchBar = styled.div`
 
     &::placeholder {
       color: #acacac; /* placeholder 색상 */
+      font-family: Pretendard;
     }
   }
 
@@ -99,11 +108,99 @@ export const SearchBar = styled.div`
   }
 `;
 
+export const AddBox = styled.div`
+  position: absolute;
+  top: 133px;
+  left: 30px;
+  margin-top: 4px;
+  width: 150px;
+  height: 108px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #e8ebff;
+  padding: 7px 7px 18px 9px;
+  z-index: 1000;
+`;
+
+export const ANews = styled.div`
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+
+  img {
+    margin-left: 4px;
+    height: 14px;
+  }
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
+export const Hr = styled.div`
+  margin-top: 8px;
+  width: 130px;
+  height: 1px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.5);
+`;
+
+export const AVid = styled.div`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+
+  img {
+    height: 16px;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
+export const AMore = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+  gap: 5px;
+  align-items: center;
+
+  img {
+    height: 16px;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
 export const Ranking = styled.div`
   width: 368px;
   display: flex;
   flex-direction: column;
-  margin-top: 65px;
+  margin-top: 53px;
   align-items: center;
 `;
 
@@ -124,12 +221,30 @@ export const RBox = styled.div`
   display: flex;
   flex-direction: column;
   padding: 22px;
-  width: 368px;
-  height: 169px;
+  width: 369px;
+  height: 121px;
   flex-shrink: 0;
   border-radius: 15px;
   border: 2px solid #f1f1ff;
   background: #fefeff;
+
+  #from {
+    margin-top: 5px;
+    color: #adadad;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.28px;
+  }
+`;
+
+export const Han = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 
   #title {
     color: #000;
@@ -141,44 +256,11 @@ export const RBox = styled.div`
     letter-spacing: -0.32px;
   }
 
-  #from {
-    margin-top: 3px;
-    color: #adadad;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.28px;
-  }
-
-  img {
-    width: 55px;
+  #cc {
+    // width: 45px;
     height: 25px;
     flex-shrink: 0;
-    margin-top: 3px;
   }
-`;
-
-export const RBar = styled.div`
-  display: flex;
-  margin-top: 27px;
-  position: relative;
-
-  img {
-    width: 323px;
-  }
-`;
-
-export const Circle = styled.div`
-  position: absolute;
-  top: 4px;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color || "#0049ff"};
-  transition: left 1s ease-in-out, background-color 0.3s ease-in-out;
 `;
 
 export const SliderWrapper = styled.div`
@@ -212,7 +294,7 @@ export const Recent = styled.div`
   width: 368px;
   display: flex;
   flex-direction: column;
-  margin-top: 64px;
+  margin-top: 34px;
 `;
 
 export const Title = styled.div`
@@ -233,88 +315,40 @@ export const List = styled.div`
 `;
 
 export const Component = styled.div`
+  width: 178px;
+  height: 136px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 0 10px 10px 10px;
+
+  /* 배경 이미지 + 그 위에 반투명 블랙 그라데이션 오버레이 */
+  background-image: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    url("/images/news.jpg");
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 11px;
-
-  img {
-    width: 178px;
-    height: 121px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.2) 0%,
-        rgba(0, 0, 0, 0.2) 100%
-      ),
-      url(<path-to-image>) lightgray 50% / cover no-repeat;
-  }
 
   div {
-    color: #1e1e1e;
+    color: #fff;
     font-family: Pretendard;
-    font-size: 13px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    letter-spacing: -0.26px;
+    letter-spacing: -0.28px;
     word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
     overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
-    padding-right: 4px;
-    padding-left: 4px;
-  }
-`;
-
-export const Detail = styled.div`
-  margin-top: 8px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-export const Trust = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  img {
-    width: 16px;
-    height: 16px;
-    background: transparent;
-    aspect-ratio: 1/1;
-  }
-
-  div {
-    // margin-left: 2px;
-    color: #f34135;
-    font-family: Pretendard;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 160% */
-    letter-spacing: -0.2px;
-  }
-`;
-
-export const Date = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  img {
-    width: 14px;
-    height: 14px;
-    aspect-ratio: 1/1;
-    background: transparent;
-  }
-
-  div {
-    margin-left: 2px;
-    color: #686868;
-    font-family: Pretendard;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 160% */
-    letter-spacing: -0.3px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; // 최대 2줄
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: auto; // 아래로 밀어내기
   }
 `;

@@ -12,7 +12,7 @@ export default function Logout({ onConfirm, onCancel }) {
   return (
     <ModalBackground>
       <ModalBox>
-        <p>정말 로그아웃 하시겠습니까?</p>
+        <p>정말 로그아웃 하시겠어요?</p>
         <Content>
           <div>
             로그아웃 상태에서는 검색 기록을 확인할 수 없으며, <br />

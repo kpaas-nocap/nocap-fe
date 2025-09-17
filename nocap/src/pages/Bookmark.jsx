@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import * as B from "../styles/StyledBM";
 
 const Bookmark = () => {
+  const [sortOrder, setSortOrder] = useState("오래된 순"); // 초기값
+
+  const toggleSort = () => {
+    setSortOrder((prev) => (prev === "오래된 순" ? "최신순" : "오래된 순"));
+  };
   const navigate = useNavigate();
 
   const goBack = () => navigate(-1);
@@ -17,32 +22,16 @@ const Bookmark = () => {
         />
         <div>북마크</div>
       </B.Header>
-      <B.SearchBar>
-        <input type="text" placeholder="찾고 싶은 기사 제목을 입력하세요" />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
-          alt="search"
-        />
-      </B.SearchBar>
+      <B.Cate>
+        <B.Num>
+          <div>전체 4</div>
+        </B.Num>
+        <B.Sort onClick={toggleSort}>
+          <img src={`${process.env.PUBLIC_URL}/images/sort.svg`} alt="sort" />
+          <div>{sortOrder}</div>
+        </B.Sort>
+      </B.Cate>
       <B.Body>
-        <B.Num>전체 4</B.Num>
-        <B.Category>
-          <B.Button>
-            <div id="all">전체</div>
-            <div id="btn">버튼2</div>
-          </B.Button>
-          <B.Sort>
-            <img src={`${process.env.PUBLIC_URL}/images/sort.svg`} alt="sort" />
-            <div>최신순</div>
-          </B.Sort>
-        </B.Category>
-        <B.Bar>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/fact_bar.svg`}
-            alt="bar"
-          />
-          <B.Circle />
-        </B.Bar>
         <B.List>
           <B.Component>
             <B.Img>
@@ -69,12 +58,6 @@ const Bookmark = () => {
                   alt="date"
                 />
                 <div id="dt">2025/07/06</div>
-                <img
-                  id="trust"
-                  src={`${process.env.PUBLIC_URL}/images/trust_r.svg`}
-                  alt="trust"
-                />
-                <div id="tt">유사도 20%</div>
               </B.Icons>
             </B.Detail>
           </B.Component>

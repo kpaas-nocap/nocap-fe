@@ -23,8 +23,9 @@ export const ModalBox = styled.div`
   background: #fff;
 
   p {
+    margin-left: -8px;
     display: flex;
-    width: 230px;
+    width: 219.188px;
     height: 20.952px;
     flex-direction: column;
     justify-content: center;

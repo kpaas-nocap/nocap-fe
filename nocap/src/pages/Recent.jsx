@@ -57,13 +57,6 @@ const Recent = () => {
                 alt="news"
               />
             </R.Image>
-            <R.Trust>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/trust_r.svg`}
-                alt="trust"
-              />
-              <div>신뢰도 20% </div>
-            </R.Trust>
           </R.Component>
         </R.List>
       </R.Body>

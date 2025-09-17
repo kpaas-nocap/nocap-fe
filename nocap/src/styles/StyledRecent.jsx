@@ -4,7 +4,7 @@ export const Container = styled.div`
   position: relative;
   margin: 0 auto;
   margin-top: 0px;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 0; /* 불필요한 패딩 제거 */
   box-sizing: border-box; /* 패딩이 width에 포함되도록 설정 */
   display: flex;
@@ -173,28 +173,5 @@ export const Image = styled.div`
     height: 143px;
     flex-shrink: 0;
     border-radius: 10px;
-  }
-`;
-
-export const Trust = styled.div`
-  margin-top: 5px;
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-
-  img {
-    width: 16px;
-    height: 16px;
-    aspect-ratio: 1/1;
-  }
-
-  div {
-    color: #f34135;
-    font-family: Pretendard;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 133.333% */
-    letter-spacing: -0.24px;
   }
 `;

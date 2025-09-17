@@ -10,13 +10,13 @@ const Success = () => {
   };
 
   const goLogin = () => {
-    navigate(`/login`);
+    navigate(`/login/local`);
   };
 
   return (
     <S.Container>
       <S.Detail>
-        <img src={`${process.env.PUBLIC_URL}/images/logo_b.svg`} alt="logo" />
+        <img src={`${process.env.PUBLIC_URL}/images/signup.png`} alt="logo" />
         <div>가입이 완료되었습니다.</div>
       </S.Detail>
       <S.Button>

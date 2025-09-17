@@ -12,6 +12,7 @@ import Recent from "./pages/Recent";
 import AnalRec from "./pages/AnalRec";
 import Bookmark from "./pages/Bookmark";
 import Comment from "./pages/Comment";
+import Setting from "./pages/Setting";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/my/analysis" element={<AnalRec />} />
         <Route path="/my/bookmark" element={<Bookmark />} />
         <Route path="/my/comment" element={<Comment />} />
+        <Route path="/my/setting" element={<Setting />} />
       </Routes>
     </BrowserRouter>
   );

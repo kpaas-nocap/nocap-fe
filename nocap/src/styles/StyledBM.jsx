@@ -4,7 +4,7 @@ export const Container = styled.div`
   position: relative;
   margin: 0 auto;
   margin-top: 0px;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 0; /* 불필요한 패딩 제거 */
   box-sizing: border-box; /* 패딩이 width에 포함되도록 설정 */
   display: flex;
@@ -79,70 +79,20 @@ export const Body = styled.div`
 `;
 
 export const Num = styled.div`
-  margin-top: 27px;
   color: #686868;
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 16px; /* 114.286% */
-  color: #686868;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px; /* 114.286% */
-  text-align: left;
+`;
+
+export const Cate = styled.div`
+  margin-top: 24px;
+  display: flex;
   width: 368px;
-`;
-
-export const Category = styled.div`
-  display: flex;
   justify-content: space-between;
-  flex-direction: row;
   align-items: center;
-  margin-top: 8px;
-`;
-
-export const Button = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-
-  #all {
-    display: flex;
-    width: 60px;
-    height: 36px;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    color: #fff;
-    font-family: Pretendard;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 106.667% */
-    border-radius: 10px;
-    background: #686868;
-  }
-
-  #btn {
-    display: inline-flex;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 10px;
-    background: #f5f5f5;
-    color: #686868;
-    font-family: Pretendard;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 106.667% */
-  }
 `;
 
 export const Sort = styled.div`
@@ -166,39 +116,18 @@ export const Sort = styled.div`
   }
 `;
 
-export const Bar = styled.div`
-  display: flex;
-  margin-top: 27px;
-  position: relative;
-
-  img {
-    width: 368px;
-  }
-`;
-
-export const Circle = styled.div`
-  position: absolute;
-  top: -5px;
-  left: 70px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color || "#0049ff"};
-  transition: left 1s ease-in-out, background-color 0.3s ease-in-out;
-`;
-
 export const List = styled.div`
   display: flex;
   felx-directin: column;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 export const Component = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 11px;
+  gap: 12px;
   padding: 0 10px 0 0;
 `;
 
@@ -252,7 +181,6 @@ export const Icon = styled.div`
 `;
 
 export const Title = styled.div`
-  margin-top: 15px;
   color: #1e1e1e;
   font-family: Pretendard;
   font-size: 18px;
@@ -260,6 +188,7 @@ export const Title = styled.div`
   font-weight: 700;
   line-height: normal;
   letter-spacing: -0.36px;
+  margin-top: 20px;
 
   display: -webkit-box;
   -webkit-line-clamp: 2; /* 최대 2줄 */
