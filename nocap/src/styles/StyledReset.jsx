@@ -53,52 +53,6 @@ export const Input = styled.div`
   flex-direction: column;
   width: 368px;
 `;
-
-export const Email = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-
-  div {
-    color: #686868;
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px; /* 133.333% */
-    letter-spacing: -0.3px;
-  }
-`;
-
-export const InputE = styled.div`
-  margin-top: 9px;
-  width: 368px;
-  height: 50px;
-  flex-shrink: 0;
-  border-radius: 15px;
-  border: 1px solid #cfcfcf;
-  display: flex;
-  justify-content: start;
-
-  input {
-    margin-left: 12px;
-    color: #b2b2b2;
-    font-family: Pretendard;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px; /* 133.333% */
-    letter-spacing: -0.3px;
-    border: none;
-    outline: none; /* 클릭 시 border(실제로는 outline) 제거 */
-
-    &::placeholder {
-      color: #b2b2b2; /* placeholder 색상 */
-    }
-  }
-`;
-
 export const PW = styled.div`
   display: flex;
   flex-direction: column;
@@ -149,91 +103,10 @@ export const InputP = styled.div`
   }
 `;
 
-export const Check = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 16px;
-  align-items: start;
-`;
-
-export const SCheckBox = styled.div`
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  border: 1px solid #4e4e4e;
-  background-color: ${({ checked }) => (checked ? "#213CE9" : "#fff")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-export const Save = styled.div`
-  margin-left: 5px;
-  color: #b2b2b2;
-  font-family: Pretendard;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 153.846% */
-  letter-spacing: -0.26px;
-`;
-
-export const KCheckBox = styled.div`
-  margin-left: 15px;
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  border: 1px solid #4e4e4e;
-  background-color: ${({ checked }) => (checked ? "#213CE9" : "#fff")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-export const Keep = styled.div`
-  margin-left: 5px;
-  color: #b2b2b2;
-  font-family: Pretendard;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 153.846% */
-  letter-spacing: -0.26px;
-`;
-
-export const CheckIcon = styled.span`
-  color: #fff;
-  font-size: 16px;
-  line-height: 1;
-`;
-
-export const Find = styled.div`
-  margin-top: 34px;
-  color: #4e4e4e;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 133.333% */
-  letter-spacing: -0.3px;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-`;
-
 export const Go = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: auto;
-  // margin-bottom: 80px;
 `;
 
 export const Signup = styled.div`

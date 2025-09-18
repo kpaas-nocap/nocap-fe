@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import * as M from "../styles/StyledSidebar";
+import * as M from "../styles/StyledNSide";
 
 const sidebarVariants = {
-  hidden: { x: "100%" },
+  hidden: { x: "-100%" }, // 왼쪽에서 시작
   visible: {
     x: "0%",
     transition: {
@@ -14,7 +14,7 @@ const sidebarVariants = {
     },
   },
   exit: {
-    x: "100%",
+    x: "-100%",
     transition: { duration: 0.2 },
   },
 };
@@ -56,23 +56,18 @@ const Sidebar = ({
             style={{
               position: "absolute",
               top: 0,
-              right: 0,
+              left: 0, // ✅ 왼쪽 고정
               width: "100%",
               height: "100vh",
               backgroundColor: "white",
               zIndex: 2,
-              boxShadow: "-2px 0 8px rgba(0, 0, 0, 0.15)",
+              boxShadow: "2px 0 8px rgba(0, 0, 0, 0.15)", // ✅ 그림자 반대 방향
               display: "flex",
               flexDirection: "column",
             }}
           >
             <M.Body>
               <M.Header>
-                <img
-                  id="logo"
-                  src={`${process.env.PUBLIC_URL}/images/logo.png`}
-                  alt="logo"
-                />
                 <img
                   id="x"
                   src={`${process.env.PUBLIC_URL}/images/x_b.svg`}
