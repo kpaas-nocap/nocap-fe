@@ -13,6 +13,12 @@ import AnalRec from "./pages/AnalRec";
 import Bookmark from "./pages/Bookmark";
 import Comment from "./pages/Comment";
 import Setting from "./pages/Setting";
+import News from "./pages/News";
+import NDetail from "./pages/NDetail";
+import Loading from "./pages/Lodaing";
+import PFind from "./pages/PFind";
+import Reset from "./pages/Reset";
+import PSuccess from "./pages/PSuccess";
 
 function App() {
   return (
@@ -23,6 +29,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/success" element={<Success />} />
+        <Route path="/find" element={<PFind />} />
+        <Route path="/find/success" element={<PSuccess />} />
+        <Route path="/find/reset" element={<Reset />} />
         <Route path="/my" element={<My />} />
         <Route path="/login/local" element={<LocalLogin />} />
         <Route path="/search/url" element={<SearchURL />} />
@@ -31,6 +40,9 @@ function App() {
         <Route path="/my/bookmark" element={<Bookmark />} />
         <Route path="/my/comment" element={<Comment />} />
         <Route path="/my/setting" element={<Setting />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/news/detail" element={<NDetail />} />
+        <Route path="/loading" element={<Loading />} />
       </Routes>
     </BrowserRouter>
   );

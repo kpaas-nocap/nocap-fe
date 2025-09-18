@@ -16,6 +16,7 @@ const LocalLogin = () => {
   const goSignup = () => {
     navigate(`/signup`);
   };
+  const goFind = () => navigate(`/find`);
 
   return (
     <L.Container>
@@ -71,7 +72,7 @@ const LocalLogin = () => {
           <L.Keep>로그인 유지하기</L.Keep>
         </L.Check>
       </L.Input>
-      <L.Find>아이디/비밀번호 찾기</L.Find>
+      <L.Find onClick={goFind}>비밀번호 찾기</L.Find>
       <L.Go>
         <L.Signup onClick={goSignup}>회원가입</L.Signup>
         <L.Login>로그인</L.Login>

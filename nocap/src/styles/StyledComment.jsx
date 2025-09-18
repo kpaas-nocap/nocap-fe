@@ -94,7 +94,7 @@ export const News = styled.div`
   display: flex;
   padding: 0 4px;
   flex-direction: row;
-  gap: 5px;
+  gap: 10px;
 
   img {
     width: 55px;
