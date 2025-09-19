@@ -13,6 +13,9 @@ const Analysis = () => {
 
   const toggleSidebar = () => setIsOpen((prev) => !prev);
 
+  const navigate = useNavigate();
+  const goDet = () => navigate(`/analysis/article`);
+
   return (
     <A.Container>
       <A.Header>
@@ -73,7 +76,7 @@ const Analysis = () => {
           <A.Title>최근 팩트체크</A.Title>
           <A.List>
             <A.Comp>
-              <A.Component>
+              <A.Component onClick={goDet}>
                 <div>
                   진짜 장마 온다… 내일 오후부터 토요일까지 전국에 많은 비
                 </div>
