@@ -19,12 +19,7 @@ const sidebarVariants = {
   },
 };
 
-const Sidebar = ({
-  isOpen,
-  toggleSidebar,
-  activeContent,
-  setActiveContent,
-}) => {
+const ASide = ({ isOpen, toggleSidebar, activeContent, setActiveContent }) => {
   const navigate = useNavigate();
 
   // 로그인 클릭 시
@@ -40,7 +35,7 @@ const Sidebar = ({
     navigate(`/news`);
     toggleSidebar();
   };
-  const goAnal = () => navigate(`/analysis`);
+  const goHome = () => navigate(`/`);
 
   return (
     <AnimatePresence>
@@ -93,15 +88,15 @@ const Sidebar = ({
             </M.Hi>
 
             <M.Content>
-              <M.Comp onClick={goNews}>
-                <div>뉴스</div>
+              <M.Comp onClick={goHome}>
+                <div>홈</div>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
                   alt="more"
                 />
               </M.Comp>
-              <M.Comp onClick={goAnal}>
-                <div>기사분석</div>
+              <M.Comp onClick={goNews}>
+                <div>뉴스</div>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
                   alt="more"
@@ -122,4 +117,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default ASide;

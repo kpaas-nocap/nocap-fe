@@ -33,7 +33,15 @@ const LocalLogin = () => {
     console.log("📤 로그인 시도:", loginData);
 
     try {
-      const response = await axios.post("/auth/form/login", loginData);
+      const response = await axios.post(
+        "http://13.209.98.128/auth/form/login",
+        loginData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // ✅ 응답 출력
       console.log("✅ 로그인 성공!");

@@ -48,23 +48,13 @@ const Signup = () => {
     try {
       const response = await axios.post(
         "http://13.209.98.128/auth/form/signup",
-        signupData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        signupData
       );
 
       // ✅ 응답 결과 출력
       console.log("✅ 회원가입 성공!");
       console.log("📥 서버 응답 데이터:", response.data);
       console.log("🔐 Access Token:", response.headers["authorization"]);
-
-      const token = response.headers["authorization"];
-      if (token) {
-        localStorage.setItem("accessToken", token);
-      }
 
       navigate("/signup/success");
     } catch (error) {

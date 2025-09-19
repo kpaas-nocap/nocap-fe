@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import * as N from "../styles/StyledNews";
-import Sidebar from "./NSide"; // 컴포넌트 경로에 따라 조정
+import NSide from "./NSide"; // 컴포넌트 경로에 따라 조정
 
 const contentText = `
 12·3 비상계엄 관련 내란·외환 혐의 2차 조사
@@ -30,21 +30,23 @@ const News = () => {
   const navigate = useNavigate();
 
   const goDet = () => navigate(`/news/detail`);
+  const goBack = () => navigate(-1);
 
   return (
     <N.Container>
       <N.Header>
         <img
           id="menu"
-          src={`${process.env.PUBLIC_URL}/images/menu_b.svg`}
-          alt="menu"
-          onClick={toggleSidebar}
+          src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
+          alt="back"
+          onClick={goBack}
         />
         <div>뉴스</div>
         <img
           id="search"
           src={`${process.env.PUBLIC_URL}/images/search_b.svg`}
           alt="search"
+          onClick={toggleSidebar}
         />
       </N.Header>
 
@@ -87,7 +89,7 @@ const News = () => {
         </N.List>
       </N.Body>
 
-      <Sidebar
+      <NSide
         isOpen={isOpen}
         toggleSidebar={toggleSidebar}
         activeContent={activeContent}

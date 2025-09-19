@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import * as M from "../styles/StyledNSide";
 
 const sidebarVariants = {
-  hidden: { x: "-100%" }, // 왼쪽에서 시작
+  hidden: { x: "100%" }, // 👉 오른쪽 바깥에서 시작
   visible: {
     x: "0%",
     transition: {
@@ -14,31 +14,31 @@ const sidebarVariants = {
     },
   },
   exit: {
-    x: "-100%",
+    x: "100%", // 👉 다시 오른쪽으로 빠져나감
     transition: { duration: 0.2 },
   },
 };
 
-const Sidebar = ({
-  isOpen,
-  toggleSidebar,
-  activeContent,
-  setActiveContent,
-}) => {
+const NSide = ({ isOpen, toggleSidebar, activeContent, setActiveContent }) => {
   const navigate = useNavigate();
+  const goPre = () => navigate(`/premium`);
+  // ✅ 선택된 카테고리 상태 (초기값: "정치")
+  const [selectedCategory, setSelectedCategory] = useState("정치");
 
-  // 로그인 클릭 시
-  const goLogin = () => {
-    navigate("/login");
-    toggleSidebar(); // 사이드바도 닫기
-  };
-  const goMy = () => {
-    navigate(`/my`);
-    toggleSidebar();
-  };
-  const goNews = () => {
-    navigate(`/news`);
-    toggleSidebar();
+  // ✅ 카테고리 배열
+  const categories = [
+    "정치",
+    "경제",
+    "사회",
+    "생활/문화",
+    "IT/과학",
+    "세계",
+    "기타",
+  ];
+
+  // ✅ 카테고리 선택 함수
+  const handleSelectCategory = (category) => {
+    setSelectedCategory(category);
   };
 
   return (
@@ -56,12 +56,12 @@ const Sidebar = ({
             style={{
               position: "absolute",
               top: 0,
-              left: 0, // ✅ 왼쪽 고정
+              right: 0, // ✅ 오른쪽 고정
               width: "100%",
               height: "100vh",
               backgroundColor: "white",
               zIndex: 2,
-              boxShadow: "2px 0 8px rgba(0, 0, 0, 0.15)", // ✅ 그림자 반대 방향
+              boxShadow: "-2px 0 8px rgba(0, 0, 0, 0.15)", // ✅ 그림자 방향도 반대로
               display: "flex",
               flexDirection: "column",
             }}
@@ -75,40 +75,56 @@ const Sidebar = ({
                   onClick={toggleSidebar}
                 />
               </M.Header>
-              <M.Hr />
+
+              <M.Search>
+                <M.Input>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/search_b.svg`}
+                    alt="search"
+                  />
+                  <input type="text" placeholder="결과 내 재검색" />
+                </M.Input>
+                <M.Hr />
+              </M.Search>
+
+              <M.Category>
+                <M.Title>
+                  <div>카테고리</div>
+                  <hr />
+                </M.Title>
+                <M.List>
+                  {categories.map((category) => (
+                    <M.Comp
+                      key={category}
+                      onClick={() => handleSelectCategory(category)}
+                    >
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/${
+                          selectedCategory === category
+                            ? "check_b.svg"
+                            : "check.svg"
+                        }`}
+                        alt="check"
+                      />
+                      <div>{category}</div>
+                    </M.Comp>
+                  ))}
+                </M.List>
+              </M.Category>
+
+              <M.Premium onClick={goPre}>
+                <div>프리미엄 구독 하러가기</div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
+                  alt="more"
+                />
+              </M.Premium>
+
+              <M.Button>
+                <M.Reset>초기화</M.Reset>
+                <M.Apply>적용</M.Apply>
+              </M.Button>
             </M.Body>
-
-            <M.Hi onClick={goLogin}>
-              <div>로그인 해주세요</div>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                alt="more"
-              />
-            </M.Hi>
-
-            <M.Content>
-              <M.Comp onClick={goNews}>
-                <div>뉴스</div>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                  alt="more"
-                />
-              </M.Comp>
-              <M.Comp>
-                <div>기사분석</div>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                  alt="more"
-                />
-              </M.Comp>
-              <M.Comp onClick={goMy}>
-                <div>마이페이지</div>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                  alt="more"
-                />
-              </M.Comp>
-            </M.Content>
           </motion.div>
         </M.SidebarWrapper>
       )}
@@ -116,4 +132,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default NSide;
