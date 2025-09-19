@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as M from "../styles/StyledMy";
 import Logout from "./Logout";
+import axios from "axios";
 
 const My = () => {
   const navigate = useNavigate();
@@ -15,14 +16,63 @@ const My = () => {
   const goPre = () => navigate(`/premium`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
+
+  // ✅ 유저 정보 불러오기
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.warn("로그인 토큰 없음");
+          return;
+        }
+
+        const res = await axios.get("http://13.209.98.128/api/nocap/user/me", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+
+        setUsername(res.data.username); // ✅ username 저장
+      } catch (err) {
+        console.error("유저 정보 불러오기 실패:", err);
+      }
+    };
+
+    fetchUser();
+  }, [navigate]);
 
   const handleLogoutClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleConfirm = () => {
-    console.log("로그아웃 됨!");
-    setIsModalOpen(false);
+  const handleConfirm = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("로그아웃 시도: 토큰 없음");
+        navigate("/login");
+        return;
+      }
+
+      // ✅ 백엔드 로그아웃 API 호출
+      await axios.post("http://13.209.98.128/auth/logout", null, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      console.log("백엔드 로그아웃 완료");
+    } catch (err) {
+      console.error("로그아웃 API 호출 실패:", err);
+      // 실패해도 토큰은 지워주고 로그인 페이지로 이동
+    } finally {
+      // ✅ 토큰 삭제 + 로그인 페이지 이동
+      localStorage.removeItem("accessToken");
+      navigate("/");
+      setIsModalOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -54,7 +104,7 @@ const My = () => {
           </M.Img>
           <M.Identity>
             <div id="rank">일반사용자</div>
-            <div id="name">김팩트님</div>
+            <div id="name">{username || "사용자"}</div>
           </M.Identity>
         </M.Detail>
         <M.Logout onClick={handleLogoutClick}>로그아웃</M.Logout>
@@ -96,7 +146,7 @@ const My = () => {
 
       <M.Archive>
         <M.ATitle>
-          <div id="name">김팩트</div>
+          <div id="name">{username || "사용자"}</div>
           <div id="detail">님의 아카이브</div>
         </M.ATitle>
         <M.List>
