@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "../styles/StyledSignup";
+import axios from "axios";
 
 const Signup = () => {
   const [isPChecked, setIsPChecked] = useState(false);
@@ -8,6 +9,9 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState("");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const emailOptions = ["naver.com", "gmail.com", "daum.net", "kakao.com"];
 
@@ -15,10 +19,6 @@ const Signup = () => {
     setSelectedEmail(email);
     setIsOpen(false);
   };
-
-  const [emailId, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
 
   const isFormFilled =
     emailId.trim() !== "" &&
@@ -34,6 +34,36 @@ const Signup = () => {
 
   const goSuccess = () => {
     navigate(`/signup/success`);
+  };
+  const handleSignup = async () => {
+    const signupData = {
+      userId: `${emailId}@${selectedEmail}`,
+      password: password,
+      username: name,
+    };
+
+    // ✅ 콘솔에 전송할 데이터 출력
+    console.log("📤 전송할 회원가입 데이터:", signupData);
+
+    try {
+      const response = await axios.post(
+        "http://13.209.98.128/auth/form/signup",
+        signupData
+      );
+
+      // ✅ 응답 결과 출력
+      console.log("✅ 회원가입 성공!");
+      console.log("📥 서버 응답 데이터:", response.data);
+      console.log("🔐 Access Token:", response.headers["authorization"]);
+
+      navigate("/signup/success");
+    } catch (error) {
+      console.error("❌ 회원가입 실패:", error);
+      if (error.response) {
+        console.error("📛 서버 응답 오류:", error.response.data);
+      }
+      alert("회원가입에 실패했습니다.");
+    }
   };
 
   return (
@@ -143,9 +173,9 @@ const Signup = () => {
       <S.Enter
         style={{
           backgroundColor: isFormFilled ? "#213CE9" : "#D9D9D9",
-          cursor: isFormFilled ? "pointer" : "default", // 마우스 커서도 변경
+          cursor: isFormFilled ? "pointer" : "default",
         }}
-        onClick={isFormFilled ? goSuccess : undefined}
+        onClick={isFormFilled ? handleSignup : undefined}
       >
         <div>완료</div>
       </S.Enter>

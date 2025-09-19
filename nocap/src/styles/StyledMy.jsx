@@ -18,7 +18,6 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  margin-top: 21px;
   position: relative;
   width: 100%; /* 또는 width: 393px; */
   height: 61px;

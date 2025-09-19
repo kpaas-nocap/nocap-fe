@@ -12,6 +12,7 @@ const My = () => {
   const goComment = () => navigate(`/my/comment`);
   const goBack = () => navigate(-1);
   const goSetting = () => navigate(`/my/setting`);
+  const goPre = () => navigate(`/premium`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -68,7 +69,7 @@ const My = () => {
           <div>10</div>
         </M.Left>
         <M.Hr />
-        <M.Rank>
+        <M.Rank onClick={goPre}>
           <img
             src={`${process.env.PUBLIC_URL}/images/diamond.png`}
             alt="diamond"

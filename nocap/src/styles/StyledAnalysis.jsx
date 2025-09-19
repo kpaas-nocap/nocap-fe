@@ -83,14 +83,22 @@ export const SearchBar = styled.div`
     margin-right: 10px;
   }
 
-  #url {
-    color: #adadad;
+  input {
+    flex: 1;
+    color: black;
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 133.333% */
-    margin-right: auto;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    &::placeholder {
+      color: #acacac; /* placeholder 색상 */
+      font-family: Pretendard;
+    }
   }
 
   img {
@@ -187,106 +195,11 @@ export const AMore = styled.div`
     line-height: normal;
   }
 `;
-
-export const Ranking = styled.div`
-  width: 368px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 53px;
-  align-items: center;
-`;
-
-export const RTitle = styled.div`
-  width: 368px;
-  margin-left: 6px;
-  color: #000;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: -0.28px;
-`;
-
-export const RBox = styled.div`
-  margin-top: 11px;
-  display: flex;
-  flex-direction: column;
-  padding: 22px;
-  width: 369px;
-  height: 121px;
-  flex-shrink: 0;
-  border-radius: 15px;
-  border: 2px solid #f1f1ff;
-  background: #fefeff;
-
-  #from {
-    margin-top: 5px;
-    color: #adadad;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.28px;
-  }
-`;
-
-export const Han = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-
-  #title {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.32px;
-  }
-
-  #cc {
-    // width: 45px;
-    height: 25px;
-    flex-shrink: 0;
-  }
-`;
-
-export const SliderWrapper = styled.div`
-  width: 368px;
-  overflow: hidden;
-  margin: 0 auto;
-  position: relative;
-`;
-
-export const SliderContainer = styled.div`
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 368}px)`};
-  width: fit-content;
-`;
-
-export const Dot = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: ${({ active }) => (active ? "#0049ff" : "#d9d9d9")};
-  margin: 0 4px;
-`;
-
-export const Pagenation = styled.div`
-  display: flex;
-  margin-top: 15px;
-`;
-
 export const Recent = styled.div`
   width: 368px;
   display: flex;
   flex-direction: column;
-  margin-top: 34px;
+  margin-top: 46px;
 `;
 
 export const Title = styled.div`
@@ -304,6 +217,12 @@ export const List = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 13px;
+`;
+
+export const Comp = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 `;
 
 export const Component = styled.div`
@@ -343,4 +262,65 @@ export const Component = styled.div`
     text-overflow: ellipsis;
     margin-top: auto; // 아래로 밀어내기
   }
+`;
+
+export const Icon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 178px;
+  padding: 0 11px 0 8px;
+`;
+
+export const Date = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+
+  img {
+    width: 14px;
+    height: 14px;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 160% */
+    letter-spacing: -0.3px;
+  }
+`;
+
+export const Comment = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+
+  img {
+    width: 14px;
+    height: 14px;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 160% */
+    letter-spacing: -0.3px;
+  }
+`;
+
+export const My = styled.div`
+  width: 368px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
 `;

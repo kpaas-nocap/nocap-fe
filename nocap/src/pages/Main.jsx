@@ -7,6 +7,8 @@ import Sidebar from "./Sidebar"; // 컴포넌트 경로에 따라 조정
 const Main = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAddBox, setShowAddBox] = useState(false);
+  const navigate = useNavigate();
+  const goSearch = () => navigate(`/search`);
 
   const rankData = [
     {
@@ -72,7 +74,9 @@ const Main = () => {
             alt=""
             onClick={() => setShowAddBox((prev) => !prev)}
           />
-          <input type="text" placeholder="URL을 입력하세요." />
+          <div id="url" onClick={goSearch}>
+            기사를 검색하세요
+          </div>
           <img
             src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
             alt="search"

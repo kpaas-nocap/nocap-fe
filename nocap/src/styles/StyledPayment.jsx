@@ -16,41 +16,31 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const SearchBar = styled.div`
-  margin-top: 39px;
-  width: 368px;
-  height: 50px;
-  flex-shrink: 0;
-  border-radius: 30px;
-  background: #f5f5f5;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
+export const Header = styled.div`
+  width: 402px;
+  display: inline-flex;
+  padding: 15px 156px 15px 17px;
   align-items: center;
+  gap: 113px;
 
   img {
-    margin-left: 20px;
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
-    aspect-ratio: 1/1;
   }
 
-  input {
-    margin-left: 12px;
-    color: black;
-    text-align: left;
+  div {
+    color: #000;
+    text-align: center;
     font-family: Pretendard;
-    font-size: 18px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 111.111% */
-    border: none;
-    outline: none;
-    background: transparent;
-
-    &::placeholder {
-      color: #acacac; /* placeholder 색상 */
-    }
+    line-height: 20px; /* 100% */
   }
+`;
+
+export const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

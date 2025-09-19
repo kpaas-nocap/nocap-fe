@@ -26,82 +26,181 @@ export const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 402px;
+  padding-bottom: 65px;
 `;
 
 export const Header = styled.div`
   width: 402px;
   flex-shrink: 0;
-  background: #fff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 62px 0 324px;
-
-  #x {
-    width: 12.799px;
-    height: 12.799px;
-  }
-`;
-
-export const Hr = styled.div`
-  width: 369px;
-  height: 2px;
-  flex-shrink: 0;
-  background: #ebebeb;
-`;
-
-export const Hi = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-  margin-top: 40px;
-  margin-left: 21px;
-
-  img {
-    width: 14px;
-    height: 14px;
-  }
-
-  div {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-`;
-
-export const Content = styled.div`
-  margin-top: 90px;
-  gap: 50px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  width: 402px;
   align-items: center;
+
+  #x {
+    margin-left: 361px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
 `;
 
-export const Comp = styled.div`
+export const Search = styled.div`
   display: flex;
-  width: 365px;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 352px;
+  margin-top: 20px;
+`;
 
-  div {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
+export const Input = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
 
   img {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
-    aspect-ratio: 1/1;
   }
+
+  input {
+    width: 312px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+  }
+`;
+
+export const Hr = styled.div`
+  width: 352px;
+  height: 2px;
+  flex-shrink: 0;
+  background: #000;
+`;
+
+export const Category = styled.div`
+  margin-top: 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const Title = styled.div`
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 352px;
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 133.333% */
+  }
+
+  hr {
+    width: 352px;
+    height: 1px;
+    flex-shrink: 0;
+    background: #d9d9d9;
+  }
+`;
+
+export const List = styled.div`
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+`;
+
+export const Comp = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  width: 352px;
+`;
+
+export const Premium = styled.div`
+  display: flex;
+  width: 352px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 55px;
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 157.143% */
+  }
+
+  img {
+    width: 16px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+`;
+
+export const Button = styled.div`
+  margin-top: 100px;
+  flex-direction: row;
+  display: flex;
+  width: 353px;
+  height: 53px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-shrink: 0;
+`;
+
+export const Reset = styled.div`
+  display: flex;
+  width: 159px;
+  height: 53px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 30px 0 0 30px;
+  border: 1px solid #213ce9;
+  background: #fff;
+  color: #213ce9;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 133.333% */
+`;
+
+export const Apply = styled.div`
+  display: flex;
+  width: 194px;
+  height: 53px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 0 30px 30px 0;
+  background: #213ce9;
+  color: #fff;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 133.333% */
 `;
