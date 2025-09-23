@@ -88,7 +88,7 @@ export const Hr = styled.div`
 `;
 
 export const Category = styled.div`
-  margin-top: 68px;
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,7 +137,7 @@ export const Premium = styled.div`
   width: 352px;
   justify-content: space-between;
   align-items: center;
-  margin-top: 55px;
+  margin-top: 35px;
 
   div {
     color: #000;
@@ -156,7 +156,7 @@ export const Premium = styled.div`
 `;
 
 export const Button = styled.div`
-  margin-top: 100px;
+  margin-top: 70px;
   flex-direction: row;
   display: flex;
   width: 353px;

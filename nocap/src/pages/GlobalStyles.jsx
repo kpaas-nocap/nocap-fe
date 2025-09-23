@@ -49,9 +49,16 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
   }
 
-  html, body, #root {
+  html, body {
     height: 100%;
   }
+    
+  #root {
+  width: 100%;
+  max-width: 402px;
+  margin: 0 auto; /* ✅ 중앙 정렬 */
+  height: 100%;
+}
 `;
 
 export default GlobalStyle;

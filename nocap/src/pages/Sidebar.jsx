@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import * as M from "../styles/StyledSidebar";
+import axios from "axios";
 
 const sidebarVariants = {
   hidden: { x: "100%" },
@@ -27,12 +28,51 @@ const Sidebar = ({
 }) => {
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null); // ✅ 유저 정보 저장
+  const [loading, setLoading] = useState(true);
+
+  // ✅ 유저 정보 불러오기 함수
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.get("http://13.209.98.128/api/nocap/user/me", {
+        headers: {
+          Authorization: ` ${token}`, // ✅ 토큰 추가
+        },
+      });
+
+      setUser(res.data); // res.data = { id, userId, username, role }
+    } catch (err) {
+      console.error("유저 정보 불러오기 실패:", err);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) fetchUser(); // 사이드바 열릴 때마다 유저 정보 새로 가져오기
+  }, [isOpen]);
+
   // 로그인 클릭 시
   const goLogin = () => {
     navigate("/login");
     toggleSidebar(); // 사이드바도 닫기
   };
   const goMy = () => {
+    if (!user) {
+      // ✅ 로그인 안 돼 있을 때 경고 or 로그인 페이지로 이동
+      alert("로그인 후 이용 가능합니다!");
+      navigate("/login");
+      toggleSidebar();
+      return;
+    }
     navigate(`/my`);
     toggleSidebar();
   };
@@ -84,13 +124,20 @@ const Sidebar = ({
               <M.Hr />
             </M.Body>
 
-            <M.Hi onClick={goLogin}>
-              <div>로그인 해주세요</div>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                alt="more"
-              />
-            </M.Hi>
+            {/* ✅ 로그인/마이페이지 분기 */}
+            {loading ? null : user ? (
+              <M.Hi>
+                <div>{user.username} 님</div>
+              </M.Hi>
+            ) : (
+              <M.Hi onClick={goLogin}>
+                <div>로그인 해주세요</div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
+                  alt="more"
+                />
+              </M.Hi>
+            )}
 
             <M.Content>
               <M.Comp onClick={goNews}>

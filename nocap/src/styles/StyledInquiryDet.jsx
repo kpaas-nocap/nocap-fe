@@ -164,5 +164,5 @@ export const Button = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 20px; /* 133.333% */
-  margin-top: auto;
+  margin-top: 44px;
 `;

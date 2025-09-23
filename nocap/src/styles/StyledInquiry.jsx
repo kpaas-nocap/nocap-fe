@@ -19,9 +19,9 @@ export const Container = styled.div`
 export const Header = styled.div`
   width: 402px;
   display: inline-flex;
-  padding: 15px 156px 15px 17px;
+  padding: 15px 170px 15px 17px;
   align-items: center;
-  gap: 113px;
+  gap: 128px;
 
   img {
     width: 24px;
@@ -58,6 +58,16 @@ export const Element = styled.div`
   justify-content: space-between;
   align-items: start;
   width: 368px;
+
+  #success {
+    color: #abbaf9;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 `;
 
 export const Detail = styled.div`

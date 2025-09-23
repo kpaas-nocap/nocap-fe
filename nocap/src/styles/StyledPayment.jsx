@@ -19,9 +19,9 @@ export const Container = styled.div`
 export const Header = styled.div`
   width: 402px;
   display: inline-flex;
-  padding: 15px 156px 15px 17px;
+  padding: 15px 167px 15px 17px;
   align-items: center;
-  gap: 113px;
+  gap: 124px;
 
   img {
     width: 24px;

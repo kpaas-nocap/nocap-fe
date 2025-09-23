@@ -12,7 +12,7 @@ export const Container = styled.div`
   background: #fff;
   width: 402px;
   flex-shrink: 0;
-  padding-bottom: 200px;
+  padding-bottom: 115px;
   align-items: center;
 `;
 
@@ -38,10 +38,17 @@ export const Box = styled.div`
 
 export const Logo = styled.div`
   margin-top: 38px;
+  margin-left: -10px;
+
+  img {
+    width: 128px;
+    // height: 32px;
+    flex-shrink: 0;
+  }
 `;
 
 export const Detail = styled.div`
-  margin-top: 40px;
+  margin-top: 5px;
   div {
     color: #000;
     font-family: Pretendard;

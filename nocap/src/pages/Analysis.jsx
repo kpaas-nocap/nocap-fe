@@ -39,7 +39,7 @@ const Analysis = () => {
             alt=""
             onClick={() => setShowAddBox((prev) => !prev)}
           />
-          <input type="text" placeholder="URL을 입력하세요." />
+          <input type="text" placeholder="분석할 기사를 입력하세요." />
           <img
             src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
             alt="search"

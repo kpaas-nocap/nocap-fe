@@ -125,6 +125,7 @@ export const InputP = styled.div`
   border: 1px solid #cfcfcf;
   display: flex;
   justify-content: start;
+  align-items: center;
 
   input {
     flex: 1; /* 나머지 공간 모두 차지 */
@@ -146,6 +147,10 @@ export const InputP = styled.div`
 
   img {
     margin-right: 15px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
   }
 `;
 
