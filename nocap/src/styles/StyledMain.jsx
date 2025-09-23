@@ -91,6 +91,7 @@ export const SearchBar = styled.div`
     font-weight: 500;
     line-height: 20px; /* 133.333% */
     margin-right: auto;
+    width: 290px;
   }
 
   img {

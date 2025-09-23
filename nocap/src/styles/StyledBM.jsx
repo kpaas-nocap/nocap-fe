@@ -127,7 +127,7 @@ export const Component = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   padding: 0 10px 0 0;
 `;
 
@@ -182,8 +182,9 @@ export const Icon = styled.div`
 
 export const Title = styled.div`
   color: #1e1e1e;
+  margin-left: 3px;
   font-family: Pretendard;
-  font-size: 18px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

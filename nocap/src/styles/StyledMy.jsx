@@ -244,7 +244,7 @@ export const Number = styled.div`
   padding: 0 45px 0 0;
   width: 354px;
   position: absolute;
-  top: 346px;
+  top: 326px;
 
   div {
     color: #b2b2b2;

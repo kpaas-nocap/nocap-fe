@@ -88,7 +88,7 @@ const Login = () => {
       </L.Header>
       <L.Box>
         <L.Logo>
-          <img src={`${process.env.PUBLIC_URL}/images/logo_b.svg`} alt="logo" />
+          <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" />
         </L.Logo>
         <L.Detail>
           <div>
