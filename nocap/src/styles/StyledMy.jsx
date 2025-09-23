@@ -117,8 +117,36 @@ export const Logout = styled.div`
   line-height: normal;
 `;
 
+export const Info = styled.div`
+  width: 345px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  text-align: right;
+  align-items: center;
+  justify-content: end;
+  gap: 3px;
+
+  img {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+`;
+
+export const InfoMessage = styled.div`
+  color: #b2b2b2;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.24px;
+`;
+
 export const Point = styled.div`
-  margin-top: 30px;
+  margin-top: 4.5px;
   width: 345px;
   height: 62px;
   flex-shrink: 0;

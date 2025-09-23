@@ -18,6 +18,12 @@ const My = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
 
+  const [infoMessageVisible, setInfoMessageVisible] = useState(false); // ✅ 상태 추가
+
+  const handleInfoClick = () => {
+    setInfoMessageVisible((prev) => !prev); // ✅ 토글
+  };
+
   // ✅ 유저 정보 불러오기
   useEffect(() => {
     const fetchUser = async () => {
@@ -112,6 +118,13 @@ const My = () => {
           <Logout onConfirm={handleConfirm} onCancel={handleCancel} />
         )}
       </M.Profile>
+
+      <M.Info onClick={handleInfoClick}>
+        {infoMessageVisible && (
+          <M.InfoMessage>👇 눌러서 프리미엄 업그레이드</M.InfoMessage>
+        )}
+        <img src={`${process.env.PUBLIC_URL}/images/info.svg`} alt="info" />
+      </M.Info>
 
       <M.Point>
         <M.Left>

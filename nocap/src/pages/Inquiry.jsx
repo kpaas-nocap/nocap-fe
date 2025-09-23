@@ -26,10 +26,7 @@ const Inquiry = () => {
               <div id="title">문의 내용</div>
               <div id="date">작성일 2025. 07. 09 15: 04: 20</div>
             </I.Detail>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/delete.svg`}
-              alt="delete"
-            />
+            <div id="success">답변완료</div>
           </I.Element>
           <I.Hr />
         </I.Comp>
