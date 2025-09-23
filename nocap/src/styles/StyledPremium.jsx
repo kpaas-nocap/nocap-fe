@@ -12,7 +12,7 @@ export const Container = styled.div`
   background: #fff;
   width: 402px;
   flex-shrink: 0;
-  padding-bottom: 27x;
+  padding-bottom: 50x;
   align-items: center;
 `;
 
