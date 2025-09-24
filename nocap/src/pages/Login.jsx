@@ -59,7 +59,7 @@ const Login = () => {
 
       if (userData.signed) {
         // 기존 사용자 → 토큰 저장 후 메인으로
-        localStorage.setItem("accessToken", `Bearer ${token}`);
+        localStorage.setItem("accessToken", authHeader.replace("Bearer ", ""));
         navigate("/");
       } else {
         // 🆕 신규 사용자 → 닉네임 입력받기
