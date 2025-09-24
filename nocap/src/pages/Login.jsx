@@ -19,13 +19,13 @@ const Login = () => {
     navigate(`/login/local`);
   };
 
-  // 1️⃣ 카카오 로그인 URL 가져오기 → 이동
   const handleKakaoLogin = async () => {
     try {
       const res = await axios.get(`${API_BASE}/auth/kakao/login`);
-      window.location.href = res.data; // 카카오 로그인 페이지로 리다이렉트
+      console.log("🔗 카카오 로그인 URL:", res.data); // ← 이거 찍어보면 어디로 가는지 나옴
+      window.location.href = res.data;
     } catch (err) {
-      console.error("카카오 로그인 URL 요청 실패:", err);
+      console.error("❌ 카카오 로그인 URL 요청 실패:", err);
     }
   };
 
@@ -44,26 +44,44 @@ const Login = () => {
         params: { code },
       });
 
-      const authHeader = res.headers["authorization"]; // 액세스 토큰 or Pre-Register 토큰
+      // ✅ 1. 응답 로그 찍어보기
+      console.log("🔐 Kakao login response:", res);
+      const authHeader = res.headers["authorization"]; // 토큰이 여기에 있어야 함
+
+      // ✅ 2. 헤더가 있는지 먼저 체크
+      if (!authHeader) {
+        console.error("❌ Authorization 헤더 없음. 백엔드 응답 확인 필요");
+        return;
+      }
+
       const userData = res.data;
+      console.log("👤 사용자 정보:", userData);
 
       if (userData.signed) {
-        // ✅ Bearer 제거 후 저장
-        localStorage.setItem(
-          "access_token",
-          authHeader?.replace("Bearer ", "")
-        );
+        // 기존 사용자 → 토큰 저장 후 메인으로
+        localStorage.setItem("access_token", authHeader.replace("Bearer ", ""));
         navigate("/");
       } else {
-        // 🆕 신규 사용자 → 닉네임 입력받고 회원가입 API 호출
+        // 🆕 신규 사용자 → 닉네임 입력받기
         const nickname = prompt("닉네임을 입력해주세요:");
         if (!nickname) return;
+
+        // ✅ 3. 회원가입 API 호출 전 로그 찍기
+        console.log("📨 회원가입 요청 시도: ", nickname);
+        console.log("📨 Authorization 헤더:", authHeader);
 
         const signupRes = await axios.post(
           `${API_BASE}/auth/kakao/signup`,
           { nickname },
-          { headers: { Authorization: `Bearer ${authHeader}` } }
+          {
+            headers: {
+              Authorization: `Bearer ${authHeader}`, // ✅ Bearer 붙여야 함
+            },
+          }
         );
+
+        // ✅ 4. 회원가입 응답 확인
+        console.log("📨 회원가입 응답:", signupRes);
 
         localStorage.setItem(
           "access_token",
@@ -72,7 +90,8 @@ const Login = () => {
         navigate("/");
       }
     } catch (err) {
-      console.error("카카오 로그인 처리 실패:", err);
+      // ✅ 5. 오류가 있다면 응답 전체 확인
+      console.error("❌ 카카오 로그인 처리 실패:", err.response || err);
     }
   };
 
