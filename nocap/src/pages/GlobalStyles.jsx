@@ -50,15 +50,22 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #ffffff; /* or 원하는 배경색 */
   }
     
   #root {
   width: 100%;
-  max-width: 402px;
-  margin: 0 auto; /* ✅ 중앙 정렬 */
+  margin: 0 auto;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 `;
 
 export default GlobalStyle;
