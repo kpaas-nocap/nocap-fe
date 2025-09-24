@@ -9,6 +9,9 @@ const Main = () => {
   const [showAddBox, setShowAddBox] = useState(false);
   const navigate = useNavigate();
   const goSearch = () => navigate(`/search`);
+  const goNews = () => navigate(`/news`);
+  const goAnal = () => navigate(`/analysis`);
+  const goMy = () => navigate(`/my`);
 
   const rankData = [
     {
@@ -59,12 +62,32 @@ const Main = () => {
           src={`${process.env.PUBLIC_URL}/images/logo.png`}
           alt="logo"
         />
-        <img
-          id="menu"
-          src={`${process.env.PUBLIC_URL}/images/menu.svg`}
-          alt="menu"
-          onClick={toggleSidebar}
-        />
+
+        {/* 모바일 메뉴 (햄버거 아이콘) */}
+        <M.MobileOnly>
+          <img
+            id="menu"
+            src={`${process.env.PUBLIC_URL}/images/menu.svg`}
+            alt="menu"
+            onClick={toggleSidebar}
+          />
+        </M.MobileOnly>
+
+        {/* PC 메뉴 */}
+        <M.DesktopOnly>
+          <M.Menu>
+            <div id="tag">홈</div>
+            <div id="tag" onClick={goNews}>
+              뉴스
+            </div>
+            <div id="tag" onClick={goAnal}>
+              기사분석
+            </div>
+            <div id="tag" onClick={goMy}>
+              마이페이지
+            </div>
+          </M.Menu>
+        </M.DesktopOnly>
       </M.Header>
       <M.Body>
         <M.SearchBar>
@@ -82,59 +105,99 @@ const Main = () => {
             alt="search"
           />
         </M.SearchBar>
-        {showAddBox && (
-          <M.AddBox>
-            <M.ANews>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/clip.svg`}
-                alt="clip"
-              />
-              <div>기사 URL 추가</div>
-            </M.ANews>
-            <M.Hr />
-            <M.AVid>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/video.svg`}
-                alt="video"
-              />
-              <div>동영상 분석</div>
-            </M.AVid>
-            <M.AMore>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/more_dot.svg`}
-                alt="more"
-              />
-              <div>더 보기</div>
-            </M.AMore>
-          </M.AddBox>
-        )}
-        <M.Ranking>
-          <M.RTitle>오늘의 인기뉴스</M.RTitle>
+        <M.MobileOnly>
+          {showAddBox && (
+            <M.AddBox>
+              <M.ANews>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/clip.svg`}
+                  alt="clip"
+                />
+                <div>기사 URL 추가</div>
+              </M.ANews>
+              <M.Hr />
+              <M.AVid>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/video.svg`}
+                  alt="video"
+                />
+                <div>동영상 분석</div>
+              </M.AVid>
+              <M.AMore>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/more_dot.svg`}
+                  alt="more"
+                />
+                <div>더 보기</div>
+              </M.AMore>
+            </M.AddBox>
+          )}
+          <M.Ranking>
+            <M.RTitle>오늘의 인기뉴스</M.RTitle>
 
-          <M.SliderWrapper {...handlers}>
-            <M.SliderContainer currentIndex={currentIndex}>
-              {rankData.map((item, idx) => (
-                <M.RBox key={idx}>
-                  <M.Han>
-                    <img
-                      id="cc"
-                      src={`${process.env.PUBLIC_URL}/images/sbs.png`}
-                      alt="sbs"
-                    />
-                    <div id="title">{item.title}</div>
-                  </M.Han>
-                  <div id="from">{item.from}</div>
-                </M.RBox>
+            <M.SliderWrapper {...handlers}>
+              <M.SliderContainer currentIndex={currentIndex}>
+                {rankData.map((item, idx) => (
+                  <M.RBox key={idx}>
+                    <M.Han>
+                      <img
+                        id="cc"
+                        src={`${process.env.PUBLIC_URL}/images/sbs.png`}
+                        alt="sbs"
+                      />
+                      <div id="title">{item.title}</div>
+                    </M.Han>
+                    <div id="from">{item.from}</div>
+                  </M.RBox>
+                ))}
+              </M.SliderContainer>
+            </M.SliderWrapper>
+
+            <M.Pagenation>
+              {rankData.map((_, i) => (
+                <M.Dot key={i} active={i === currentIndex} />
               ))}
-            </M.SliderContainer>
-          </M.SliderWrapper>
+            </M.Pagenation>
+          </M.Ranking>
+        </M.MobileOnly>
 
-          <M.Pagenation>
-            {rankData.map((_, i) => (
-              <M.Dot key={i} active={i === currentIndex} />
-            ))}
-          </M.Pagenation>
-        </M.Ranking>
+        <M.DesktopOnly>
+          <M.Famous>
+            <M.Text>
+              <M.TTitle>
+                <div id="title">오늘의 인기뉴스</div>
+                <div id="hr" />
+                <div id="date">2025년 09월 19일</div>
+              </M.TTitle>
+              <div id="category">사회일반</div>
+              <div id="title">
+                롯데카드 "해킹 사고로 297만명 고객 정보 유출…28만명 정보는 부정
+                사용 가능성"
+              </div>
+              <M.More>
+                <div id="det">자세히 보기</div>
+                <div id="hr" />
+              </M.More>
+              <M.Page>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/left_g.svg`}
+                  alt="left_g"
+                />
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/right_b.svg`}
+                  alt="right_b"
+                />
+              </M.Page>
+            </M.Text>
+            <M.Img>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/news.jpg`}
+                alt="news"
+              />
+              <div id="back" />
+            </M.Img>
+          </M.Famous>
+        </M.DesktopOnly>
 
         <M.Recent>
           <M.Title>최근 팩트체크</M.Title>
