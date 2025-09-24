@@ -56,7 +56,7 @@ const Login = () => {
 
       if (userData.signed) {
         // 기존 사용자 → 토큰 저장
-        localStorage.setItem("access_token", authHeader); // ✅ Bearer 포함해서 저장
+        localStorage.setItem("accessToken", `Bearer` authHeader); // ✅ Bearer 포함해서 저장
         navigate("/");
       } else {
         // 신규 사용자 → 닉네임 입력받기
@@ -77,7 +77,7 @@ const Login = () => {
 
         const newAuthHeader = signupRes.headers["authorization"];
         if (newAuthHeader) {
-          localStorage.setItem("access_token", newAuthHeader); // ✅ 다시 저장
+          localStorage.setItem("accessToken", `Bearer` newAuthHeader); // ✅ 다시 저장
         }
 
         navigate("/");
