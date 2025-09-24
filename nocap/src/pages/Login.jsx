@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as L from "../styles/StyledLogin";
 import axios from "axios";
-const API_BASE = "http://13.209.98.128"; // ⚠️ 배포 주소로 바꾸세요!
+const API_BASE = "https://www.nocap.kr";
 
 const Login = () => {
   const navigate = useNavigate();
