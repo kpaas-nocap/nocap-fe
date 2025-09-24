@@ -56,7 +56,7 @@ const Login = () => {
 
       if (userData.signed) {
         // 기존 사용자 → 토큰 저장
-        localStorage.setItem("accessToken", `Bearer ${authHeader}`);
+        localStorage.setItem("accessToken", authHeader);
 
         navigate("/");
       } else {
@@ -78,7 +78,7 @@ const Login = () => {
 
         const newAuthHeader = signupRes.headers["authorization"];
         if (newAuthHeader) {
-          localStorage.setItem("accessToken", `Bearer ${newAuthHeader}`);
+          localStorage.setItem("accessToken", newAuthHeader);
         }
 
         navigate("/");
