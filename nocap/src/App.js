@@ -27,6 +27,7 @@ import InquiryDet from "./pages/InquiryDet";
 import Analysis from "./pages/Analysis";
 import Premium from "./pages/Premium";
 import Article from "./pages/Article";
+import InquiryCom from "./pages/InquiryCom";
 
 // ✅ 페이지 전환용 라우트 컴포넌트
 function AppRoutes() {
@@ -73,6 +74,7 @@ function AppRoutes() {
         <Route path="/my/edit" element={<Edit />} />
         <Route path="/my/payment" element={<Payment />} />
         <Route path="/my/inquiry" element={<Inquiry />} />
+        <Route path="/my/inquiry/comment" element={<InquiryCom />} />
         <Route path="/my/inquiry/write" element={<InquiryDet />} />
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/premium" element={<Premium />} />

@@ -34,7 +34,7 @@ const My = () => {
           return;
         }
 
-        const res = await axios.get("http://13.209.98.128/api/nocap/user/me", {
+        const res = await axios.get("https://www.nocap.kr/api/nocap/user/me", {
           headers: {
             Authorization: `${token}`,
           },
@@ -63,7 +63,7 @@ const My = () => {
       }
 
       // ✅ 백엔드 로그아웃 API 호출
-      await axios.post("http://13.209.98.128/auth/logout", null, {
+      await axios.post("https://www.nocap.kr/auth/logout", null, {
         headers: {
           Authorization: `${token}`,
         },

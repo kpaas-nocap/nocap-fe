@@ -39,13 +39,22 @@ const AnalRec = () => {
             <A.Title>
               "이준석 제명" 청원 60만 넘겨 마감‥ 역대 청원 2위 기록
             </A.Title>
-            <A.Date>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/date.svg`}
-                alt="date"
-              />
-              <div>2025/07/16</div>
-            </A.Date>
+            <A.Icons>
+              <A.Comment>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/comment.svg`}
+                  alt="comment"
+                />
+                <div>댓글 6개</div>
+              </A.Comment>
+              <A.Date>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/date.svg`}
+                  alt="date"
+                />
+                <div>2025/07/16</div>
+              </A.Date>
+            </A.Icons>
           </A.Component>
         </A.List>
       </A.Body>

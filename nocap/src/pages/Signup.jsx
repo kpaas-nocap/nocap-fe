@@ -47,7 +47,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://13.209.98.128/auth/form/signup",
+        "https://www.nocap.kr/auth/form/signup",
         signupData
       );
 

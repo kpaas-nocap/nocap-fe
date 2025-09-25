@@ -83,7 +83,7 @@ export const InputE = styled.div`
 
   input {
     margin-left: 12px;
-    color: #b2b2b2;
+    color: black;
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
