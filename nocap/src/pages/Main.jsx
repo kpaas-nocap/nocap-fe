@@ -76,7 +76,11 @@ const Main = () => {
         {/* PC 메뉴 */}
         <M.DesktopOnly>
           <M.Menu>
-            <div id="tag">홈</div>
+            <div id="tag">
+              홈
+              <div id="circle" />
+            </div>
+            <div id="tag">NOCAP 소개</div>
             <div id="tag" onClick={goNews}>
               뉴스
             </div>

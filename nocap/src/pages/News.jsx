@@ -31,24 +31,57 @@ const News = () => {
 
   const goDet = () => navigate(`/news/detail`);
   const goBack = () => navigate(-1);
+  const goMain = () => navigate(`/`);
+  const goAnal = () => navigate(`/analysis`);
+  const goMy = () => navigate(`/my`);
 
   return (
     <N.Container>
-      <N.Header>
-        <img
-          id="menu"
-          src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
-          alt="back"
-          onClick={goBack}
-        />
-        <div>뉴스</div>
-        <img
-          id="search"
-          src={`${process.env.PUBLIC_URL}/images/search_b.svg`}
-          alt="search"
-          onClick={toggleSidebar}
-        />
-      </N.Header>
+      <N.MobileOnly>
+        <N.Header>
+          <img
+            id="menu"
+            src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
+            alt="back"
+            onClick={goBack}
+          />
+          <div>뉴스</div>
+          <img
+            id="search"
+            src={`${process.env.PUBLIC_URL}/images/search_b.svg`}
+            alt="search"
+            onClick={toggleSidebar}
+          />
+        </N.Header>
+      </N.MobileOnly>
+
+      <N.DesktopOnly>
+        <N.Head>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
+            alt="logo"
+            id="logo"
+          />
+          <N.Menu>
+            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+              홈
+            </div>
+            <div id="tag" title="NOCAP 서비스 소개">
+              NOCAP 소개
+            </div>
+            <div id="tag" title="최신 뉴스 보기">
+              뉴스
+              <div id="circle" />
+            </div>
+            <div id="tag" onClick={goAnal} title="뉴스 기사 분석하러 가기">
+              기사분석
+            </div>
+            <div id="tag" onClick={goMy} title="마이 페이지로 이동">
+              마이페이지
+            </div>
+          </N.Menu>
+        </N.Head>
+      </N.DesktopOnly>
 
       <N.Body>
         <N.Category>
@@ -75,7 +108,7 @@ const News = () => {
               </N.Down>
             </N.TImg>
           </N.Img>
-          <N.Text>
+          {/* <N.Text>
             <div id="title">내란특검 "尹 2차 대면조사 종료</div>
             <div id="content">
               {contentText
@@ -85,7 +118,7 @@ const News = () => {
                   <div key={index}>• {line}</div>
                 ))}
             </div>
-          </N.Text>
+          </N.Text> */}
         </N.List>
       </N.Body>
 

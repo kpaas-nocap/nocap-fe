@@ -10,10 +10,37 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 402px;
+  width: 100%;
+  max-width: 402px;
   flex-shrink: 0;
   padding-bottom: 200px;
-  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    max-width: 100%; /* ✅ PC에서 화면이 꽉 차게 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fff;
+  }
+`;
+
+// 모바일에서만 보이게
+export const MobileOnly = styled.div`
+  display: block;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+// PC에서만 보이게
+export const DesktopOnly = styled.div`
+  display: none;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
 `;
 
 export const Header = styled.div`
@@ -48,6 +75,51 @@ export const Hr = styled.div`
   margin-top: 6px;
 `;
 
+export const Head = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 130px 0 75px;
+  height: 100px;
+
+  #logo {
+    width: 188px;
+  }
+`;
+
+export const Menu = styled.div`
+  width: 800px;
+  // height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 120px;
+
+  #tag {
+    margin-top: 16px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 110% */
+    display: flex;
+
+    #circle {
+      margin-top: -3px;
+      margin-left: 35px;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background-color: #213ce9;
+      border-radius: 50%;
+      position: absolute;
+    }
+  }
+`;
+
 export const Body = styled.div`
   margin-top: 30px;
   display: flex;
@@ -55,11 +127,47 @@ export const Body = styled.div`
   align-items: center;
 `;
 
+export const Layout = styled.div`
+  display: flex;
+  flex-direction: column; // 기본: 모바일 세로 정렬
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    justify-content: center; // 중앙 정렬
+    gap: 60px;
+    align-items: flex-start;
+  }
+`;
+
+export const LeftPannel = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+    margin-top: 75px;
+  }
+`;
+
+export const RightPannel = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    width: 368px;
+    margin-top: 162px;
+  }
+`;
+
 export const Up = styled.div`
   display: flex;
   flex-direction: column;
   width: 368px;
   align-items: start;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+  }
 `;
 
 export const Category = styled.div`
@@ -83,6 +191,25 @@ export const Category = styled.div`
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.28px;
   margin-right: auto;
+
+  @media screen and (min-width: 768px) {
+    display: inline-flex; /* ✅ inline-flex로 바꿔서 텍스트 크기에 맞게 조정 */
+    width: auto; /* ✅ 고정된 width 제거 */
+    padding: 5px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 50px;
+    border: 2px solid #213ce9;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.32px;
+    background: transparent;
+  }
 `;
 
 export const Title = styled.div`
@@ -95,6 +222,17 @@ export const Title = styled.div`
   font-weight: 700;
   line-height: 30px; /* 150% */
   letter-spacing: -0.4px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 10px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 107.143% */
+    letter-spacing: -0.56px;
+  }
 `;
 
 export const Date = styled.div`
@@ -107,6 +245,10 @@ export const Date = styled.div`
   line-height: normal;
   letter-spacing: -0.26px;
   text-align: left;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 15px;
+  }
 `;
 
 export const Img = styled.div`
@@ -116,6 +258,14 @@ export const Img = styled.div`
 
   img {
     width: 368px;
+  }
+
+  @media screen and (min-width: 768px) {
+    margin-top: 50px;
+
+    img {
+      width: 100%;
+    }
   }
 `;
 
@@ -128,12 +278,28 @@ export const Exp = styled.div`
   line-height: normal;
   text-align: left;
   width: 368px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 10px;
+    color: #969696;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+  }
 `;
 
 export const ContentWrapper = styled.div`
   position: relative;
   width: 368px;
   margin-top: 30px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 40px;
+    width: 620px;
+  }
 `;
 
 export const Content = styled.div`
@@ -148,6 +314,13 @@ export const Content = styled.div`
   /* 25px(line-height) x 5줄 = 125px */
   overflow: hidden;
   transition: max-height 0.3s ease;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+    text-align: left;
+
+    max-height: ${({ expanded }) => (expanded ? "none" : "250px")};
+  }
 `;
 
 export const GradientOverlay = styled.div`
@@ -184,6 +357,11 @@ export const Button = styled.div`
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(2px);
   margin-top: 24px;
+
+  &:hover {
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
 `;
 
 export const Related = styled.div`
@@ -192,6 +370,10 @@ export const Related = styled.div`
   flex-direction: column;
   width: 368px;
   align-items: start;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+  }
 `;
 
 export const RTitle = styled.div`
@@ -358,6 +540,11 @@ export const Comment = styled.div`
   flex-direction: column;
   width: 368px;
   align-items: start;
+
+  @media screen and (min-width: 768px) {
+    widith: 620px;
+    margin-top: 60px;
+  }
 `;
 
 export const Detail = styled.div`
@@ -404,6 +591,10 @@ export const Input = styled.div`
   margin-top: 32px;
   display: flex;
   flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+  }
 `;
 
 export const Profile = styled.div`
@@ -463,6 +654,14 @@ export const TextArea = styled.div`
       line-height: normal;
       letter-spacing: -0.325px;
     }
+
+    @media screen and (min-width: 768px) {
+      width: 580px;
+
+      textarea {
+        font-size: 15px;
+      }
+    }
   }
 `;
 
@@ -473,6 +672,10 @@ export const IHr = styled.div`
   background: #d9d9d9;
   margin-left: 1px;
   margin-top: auto;
+
+  @media screen and (min-width: 768px) {
+    width: 618px;
+  }
 `;
 
 export const Down = styled.div`
@@ -482,6 +685,10 @@ export const Down = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+  }
 `;
 
 export const Char = styled.div`
@@ -506,6 +713,16 @@ export const Char = styled.div`
     font-weight: 500;
     line-height: normal;
     letter-spacing: -0.325px;
+  }
+
+  @media screen and (min-width: 768px) {
+    #now {
+      font-size: 15px;
+    }
+
+    #max {
+      font-size: 15px;
+    }
   }
 `;
 
@@ -562,6 +779,16 @@ export const Sort = styled.div`
     line-height: normal;
     letter-spacing: -0.3px;
   }
+
+  @media screen and (min-width: 768px) {
+    #new {
+      font-size: 15px;
+    }
+
+    #up {
+      font-size: 15px;
+    }
+  }
 `;
 
 export const RList = styled.div`
@@ -569,6 +796,10 @@ export const RList = styled.div`
   flex-direction: column;
   width: 368px;
   align-items: center;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+  }
 `;
 
 export const Comp = styled.div`
@@ -576,6 +807,11 @@ export const Comp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 23px;
+    width: 620px;
+  }
 `;
 
 export const Small = styled.div`
@@ -603,6 +839,30 @@ export const Small = styled.div`
     line-height: normal;
     letter-spacing: -0.25px;
   }
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+
+    #username {
+      color: #000;
+      font-family: Pretendard;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px; /* 106.667% */
+      letter-spacing: -0.375px;
+    }
+
+    #date {
+      color: #aaa;
+      font-family: Pretendard;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: normal;
+      letter-spacing: -0.325px;
+    }
+  }
 `;
 
 export const CDet = styled.div`
@@ -616,6 +876,12 @@ export const CDet = styled.div`
   letter-spacing: -0.35px;
   text-align: left;
   margin-top: 9px;
+
+  @media screen and (min-width: 768px) {
+    width: 610px;
+    font-size: 15px;
+    margin-top: 14px;
+  }
 `;
 
 export const Icon = styled.div`
@@ -625,6 +891,11 @@ export const Icon = styled.div`
   width: 368px;
   justify-content: space-between;
   margin-bottom: 4px;
+
+  @media screen and (min-width: 768px) {
+    width: 620px;
+    margin-top: 14px;
+  }
 `;
 
 export const Decl = styled.div`
@@ -646,6 +917,13 @@ export const Decl = styled.div`
     width: 13px;
     height: 13px;
   }
+`;
+
+export const AHr = styled.div`
+  width: 622px;
+  height: 1px;
+  flex-shrink: 0;
+  background: #d9d9d9;
 `;
 
 export const Thumb = styled.div`
