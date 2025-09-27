@@ -10,10 +10,37 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 402px;
+  width: 100%;
+  max-width: 402px;
   flex-shrink: 0;
   padding-bottom: 200px;
-  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    max-width: 100%; /* ✅ PC에서 화면이 꽉 차게 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fff;
+  }
+`;
+
+// 모바일에서만 보이게
+export const MobileOnly = styled.div`
+  display: block;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+// PC에서만 보이게
+export const DesktopOnly = styled.div`
+  display: none;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
 `;
 
 export const Header = styled.div`
@@ -50,6 +77,51 @@ export const Header = styled.div`
   }
 `;
 
+export const Head = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 130px 0 75px;
+  height: 100px;
+
+  #logo {
+    width: 188px;
+  }
+`;
+
+export const Menu = styled.div`
+  width: 800px;
+  // height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 120px;
+
+  #tag {
+    margin-top: 16px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 110% */
+    display: flex;
+
+    #circle {
+      margin-top: -3px;
+      margin-left: 35px;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background-color: #213ce9;
+      border-radius: 50%;
+      position: absolute;
+    }
+  }
+`;
+
 export const Body = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,6 +148,27 @@ export const Category = styled.div`
       color: #000000;
     }
   }
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    width: 806px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 51px;
+
+    div {
+      color: #b2b2b2;
+      font-family: Pretendard;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px; /* 111.111% */
+
+      &.active {
+        color: #000000;
+      }
+    }
+  }
 `;
 
 export const List = styled.div`
@@ -83,6 +176,11 @@ export const List = styled.div`
   flex-direction: column;
   gap: 13px;
   margin-top: 15px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 100px;
+    gap: 45px;
+  }
 `;
 
 export const Img = styled.div`

@@ -54,8 +54,9 @@ export const Header = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 243px 0 75px;
-    height: 144px;
+    padding: 0 130px 0 75px;
+    height: 100px;
+    margin-top: 0px;
 
     #logo {
       width: 188px;
@@ -82,20 +83,34 @@ export const DesktopOnly = styled.div`
 `;
 
 export const Menu = styled.div`
-  width: 570px;
-  height: 22px;
+  width: 800px;
+  // height: 22px;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 120px;
 
   #tag {
+    margin-top: 16px;
     color: #000;
     font-family: Pretendard;
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: 22px; /* 110% */
+    display: flex;
+
+    #circle {
+      margin-top: -3px;
+      margin-left: 18px;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background-color: #213ce9;
+      border-radius: 50%;
+      position: absolute;
+    }
   }
 `;
 
