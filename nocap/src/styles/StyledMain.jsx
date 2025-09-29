@@ -392,43 +392,25 @@ export const Text = styled.div`
   flex-direction: column;
   align-items: start;
   width: 423px;
+  height: 276px;
+`;
 
-  #category {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.28px;
-    display: inline-flex;
-    padding: 5px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 50px;
-    border: 1px solid #213ce9;
-    margin-top: 31px;
-  }
-
-  #title {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 28px; /* 140% */
-    letter-spacing: -0.4px;
-    margin-top: 5px;
-    word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
-    overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
-    display: -webkit-box;
-    -webkit-line-clamp: 2; // 최대 2줄
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-top: auto; // 아래로 밀어내기
-  }
+export const Tit = styled.div`
+  color: #000;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px; /* 140% */
+  letter-spacing: -0.4px;
+  word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
+  overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // 최대 2줄
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: auto; // 아래로 밀어내기
 `;
 
 export const TTitle = styled.div`
@@ -436,6 +418,7 @@ export const TTitle = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 40px;
 
   #title {
     color: #213ce9;
@@ -471,6 +454,7 @@ export const More = styled.div`
   margin-top: 48px;
   gap: 5px;
   align-items: center;
+  margin-bottom: auto;
 
   #det {
     color: #000;

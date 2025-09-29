@@ -3,15 +3,34 @@ import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import * as M from "../styles/StyledMain";
 import Sidebar from "./Sidebar"; // 컴포넌트 경로에 따라 조정
+import axios from "axios";
 
 const Main = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAddBox, setShowAddBox] = useState(false);
+  const [popNews, setPopNews] = useState(null); // ✅ 인기뉴스 데이터 상태 추가
   const navigate = useNavigate();
   const goSearch = () => navigate(`/search`);
   const goNews = () => navigate(`/news`);
   const goAnal = () => navigate(`/analysis`);
   const goMy = () => navigate(`/my`);
+
+  // 인기뉴스 가져오기
+  useEffect(() => {
+    const fetchPopNews = async () => {
+      try {
+        const res = await axios.get("https://www.nocap.kr/api/nocap/popnews");
+        // console.log("✅ 인기뉴스 API 응답:", res.data); // 🔥 전체 응답 출력
+        if (res.data && res.data.length > 0) {
+          setPopNews(res.data[0]); // ✅ 첫 번째 뉴스만 사용
+        }
+      } catch (err) {
+        console.error("❌ 인기뉴스 불러오기 실패:", err);
+      }
+    };
+
+    fetchPopNews();
+  }, []);
 
   const rankData = [
     {
@@ -171,13 +190,14 @@ const Main = () => {
               <M.TTitle>
                 <div id="title">오늘의 인기뉴스</div>
                 <div id="hr" />
-                <div id="date">2025년 09월 19일</div>
+                <div id="date">
+                  {popNews ? popNews.date : "날짜 불러오는 중..."}
+                </div>
               </M.TTitle>
-              <div id="category">사회일반</div>
-              <div id="title">
-                롯데카드 "해킹 사고로 297만명 고객 정보 유출…28만명 정보는 부정
-                사용 가능성"
-              </div>
+              {/* <div id="category">사회일반</div> */}
+              <M.Tit>
+                {popNews ? popNews.title : "인기뉴스 제목을 불러오는 중..."}
+              </M.Tit>
               <M.More>
                 <div id="det">자세히 보기</div>
                 <div id="hr" />
@@ -195,7 +215,11 @@ const Main = () => {
             </M.Text>
             <M.Img>
               <img
-                src={`${process.env.PUBLIC_URL}/images/news.jpg`}
+                src={
+                  popNews
+                    ? popNews.image
+                    : `${process.env.PUBLIC_URL}/images/news.jpg`
+                }
                 alt="news"
               />
               <div id="back" />

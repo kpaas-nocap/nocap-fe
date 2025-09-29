@@ -11,6 +11,7 @@ const NDetail = () => {
   const goMy = () => navigate(`/my`);
   const goMain = () => navigate(`/`);
   const goNews = () => navigate(`/news`);
+  const goArticle = () => navigate(`/analysis/article`);
 
   return (
     <N.Container>
@@ -99,7 +100,7 @@ const NDetail = () => {
             <N.RTitle>최근 분석된 뉴스 보기</N.RTitle>
 
             <N.RList>
-              <N.RComp>
+              <N.RComp onClick={goArticle}>
                 <N.RDet>
                   <N.RCate>사회</N.RCate>
                   <N.RCc>v.daum.net</N.RCc>
