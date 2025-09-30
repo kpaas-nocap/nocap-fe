@@ -141,7 +141,7 @@ export const SearchBar = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 0 15px 0 25px;
 
   background: linear-gradient(#fff, #fff) padding-box,
     linear-gradient(270deg, #213ce9, #ffffff, #213ce9) border-box;
@@ -153,10 +153,6 @@ export const SearchBar = styled.div`
 
   box-shadow: 0 0 8px 2px rgba(33, 60, 233, 0.2); /* 은은한 파란 그림자 */
 
-  #plus {
-    margin-right: 10px;
-  }
-
   #url {
     color: #adadad;
     font-family: Pretendard;
@@ -164,8 +160,7 @@ export const SearchBar = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 133.333% */
-    margin-right: auto;
-    width: 290px;
+    width: 350px;
   }
 
   img {
@@ -196,92 +191,12 @@ export const SearchBar = styled.div`
   }
 `;
 
-export const AddBox = styled.div`
-  position: absolute;
-  top: 133px;
-  left: 30px;
-  margin-top: 4px;
-  width: 150px;
-  height: 108px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: #e8ebff;
-  padding: 7px 7px 18px 9px;
-  z-index: 1000;
-`;
-
-export const ANews = styled.div`
-  margin-top: 5px;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-
-  img {
-    margin-left: 4px;
-    height: 14px;
-  }
-
-  div {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-`;
-
 export const Hr = styled.div`
   margin-top: 8px;
   width: 130px;
   height: 1px;
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.5);
-`;
-
-export const AVid = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  align-items: center;
-
-  img {
-    height: 16px;
-    aspect-ratio: 1/1;
-  }
-
-  div {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-`;
-
-export const AMore = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 15px;
-  gap: 5px;
-  align-items: center;
-
-  img {
-    height: 16px;
-    aspect-ratio: 1/1;
-  }
-
-  div {
-    color: #000;
-    font-family: Pretendard;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
 `;
 
 export const Ranking = styled.div`

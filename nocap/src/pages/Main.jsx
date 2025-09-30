@@ -82,7 +82,6 @@ const Main = () => {
           alt="logo"
         />
 
-        {/* 모바일 메뉴 (햄버거 아이콘) */}
         <M.MobileOnly>
           <img
             id="menu"
@@ -92,7 +91,6 @@ const Main = () => {
           />
         </M.MobileOnly>
 
-        {/* PC 메뉴 */}
         <M.DesktopOnly>
           <M.Menu>
             <div id="tag">
@@ -114,14 +112,8 @@ const Main = () => {
       </M.Header>
       <M.Body>
         <M.SearchBar>
-          <img
-            id="plus"
-            src={`${process.env.PUBLIC_URL}/images/plus.svg`}
-            alt=""
-            onClick={() => setShowAddBox((prev) => !prev)}
-          />
           <div id="url" onClick={goSearch}>
-            기사를 검색하세요
+            뉴스 키워드 또는 기사 URL을 입력하세요
           </div>
           <img
             src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
@@ -129,32 +121,6 @@ const Main = () => {
           />
         </M.SearchBar>
         <M.MobileOnly>
-          {showAddBox && (
-            <M.AddBox>
-              <M.ANews>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/clip.svg`}
-                  alt="clip"
-                />
-                <div>기사 URL 추가</div>
-              </M.ANews>
-              <M.Hr />
-              <M.AVid>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/video.svg`}
-                  alt="video"
-                />
-                <div>동영상 분석</div>
-              </M.AVid>
-              <M.AMore>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_dot.svg`}
-                  alt="more"
-                />
-                <div>더 보기</div>
-              </M.AMore>
-            </M.AddBox>
-          )}
           <M.Ranking>
             <M.RTitle>오늘의 인기뉴스</M.RTitle>
 
