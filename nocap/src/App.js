@@ -29,6 +29,7 @@ import Premium from "./pages/Premium";
 import Article from "./pages/Article";
 import InquiryCom from "./pages/InquiryCom";
 import SResult from "./pages/SResult";
+import NSearch from "./pages/NSearch";
 
 // ✅ 페이지 전환용 라우트 컴포넌트
 function AppRoutes() {
@@ -81,6 +82,7 @@ function AppRoutes() {
         <Route path="/premium" element={<Premium />} />
         <Route path="/analysis/article" element={<Article />} />
         <Route path="/search/result" element={<SResult />} />
+        <Route path="/news/search" element={<NSearch />} />
       </Routes>
     </AnimatePresence>
   );
