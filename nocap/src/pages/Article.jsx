@@ -70,9 +70,6 @@ const Article = () => {
               뉴스
               <div id="circle" />
             </div>
-            <div id="tag" onClick={goAnal} title="뉴스 기사 분석하러 가기">
-              기사분석
-            </div>
             <div id="tag" onClick={goMy} title="마이 페이지로 이동">
               마이페이지
             </div>

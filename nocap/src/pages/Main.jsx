@@ -12,8 +12,13 @@ const Main = () => {
   const navigate = useNavigate();
   const goSearch = () => navigate(`/search`);
   const goNews = () => navigate(`/news`);
-  const goAnal = () => navigate(`/analysis`);
   const goMy = () => navigate(`/my`);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
+    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
+  }, []);
 
   // 인기뉴스 가져오기
   useEffect(() => {
@@ -101,11 +106,11 @@ const Main = () => {
             <div id="tag" onClick={goNews}>
               뉴스
             </div>
-            <div id="tag" onClick={goAnal}>
-              기사분석
-            </div>
-            <div id="tag" onClick={goMy}>
-              마이페이지
+            <div
+              id="tag"
+              onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+            >
+              {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
           </M.Menu>
         </M.DesktopOnly>

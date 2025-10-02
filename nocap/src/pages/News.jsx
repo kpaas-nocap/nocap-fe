@@ -32,8 +32,13 @@ const News = () => {
   const goDet = () => navigate(`/news/detail`);
   const goBack = () => navigate(-1);
   const goMain = () => navigate(`/`);
-  const goAnal = () => navigate(`/analysis`);
   const goMy = () => navigate(`/my`);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
+    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
+  }, []);
 
   return (
     <N.Container>
@@ -73,11 +78,11 @@ const News = () => {
               뉴스
               <div id="circle" />
             </div>
-            <div id="tag" onClick={goAnal} title="뉴스 기사 분석하러 가기">
-              기사분석
-            </div>
-            <div id="tag" onClick={goMy} title="마이 페이지로 이동">
-              마이페이지
+            <div
+              id="tag"
+              onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+            >
+              {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
           </N.Menu>
         </N.Head>
