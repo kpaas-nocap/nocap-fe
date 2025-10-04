@@ -25,9 +25,9 @@ const Main = () => {
     const fetchPopNews = async () => {
       try {
         const res = await axios.get("https://www.nocap.kr/api/nocap/popnews");
-        // console.log("✅ 인기뉴스 API 응답:", res.data); // 🔥 전체 응답 출력
         if (res.data && res.data.length > 0) {
-          setPopNews(res.data[0]); // ✅ 첫 번째 뉴스만 사용
+          setPopNewsList(res.data);
+          setCurrentNewsIndex(0); // 첫 뉴스부터 시작
         }
       } catch (err) {
         console.error("❌ 인기뉴스 불러오기 실패:", err);
@@ -77,6 +77,19 @@ const Main = () => {
   const [activeContent, setActiveContent] = useState("home");
 
   const toggleSidebar = () => setIsOpen((prev) => !prev);
+
+  const [popNewsList, setPopNewsList] = useState([]); // 전체 인기뉴스 리스트
+  const [currentNewsIndex, setCurrentNewsIndex] = useState(0); // 현재 보여줄 인덱스
+
+  const handlePrevNews = () => {
+    setCurrentNewsIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
+  const handleNextNews = () => {
+    setCurrentNewsIndex((prev) =>
+      prev < popNewsList.length - 1 ? prev + 1 : prev
+    );
+  };
 
   return (
     <M.Container>
@@ -162,34 +175,45 @@ const Main = () => {
                 <div id="title">오늘의 인기뉴스</div>
                 <div id="hr" />
                 <div id="date">
-                  {popNews ? popNews.date : "날짜 불러오는 중..."}
+                  {popNewsList[currentNewsIndex]?.date || "날짜 로딩 중..."}
                 </div>
               </M.TTitle>
               {/* <div id="category">사회일반</div> */}
               <M.Tit>
-                {popNews ? popNews.title : "인기뉴스 제목을 불러오는 중..."}
+                {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
               </M.Tit>
-              <M.More>
+              <M.More
+                onClick={() =>
+                  navigate("/news/detail", {
+                    state: popNewsList[currentNewsIndex], // 현재 보고 있는 뉴스 하나
+                  })
+                }
+                style={{ cursor: "pointer" }}
+              >
                 <div id="det">자세히 보기</div>
                 <div id="hr" />
               </M.More>
+
               <M.Page>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/left_g.svg`}
-                  alt="left_g"
+                  alt="left"
+                  onClick={handlePrevNews}
+                  style={{ cursor: "pointer" }}
                 />
                 <img
                   src={`${process.env.PUBLIC_URL}/images/right_b.svg`}
-                  alt="right_b"
+                  alt="right"
+                  onClick={handleNextNews}
+                  style={{ cursor: "pointer" }}
                 />
               </M.Page>
             </M.Text>
             <M.Img>
               <img
                 src={
-                  popNews
-                    ? popNews.image
-                    : `${process.env.PUBLIC_URL}/images/news.jpg`
+                  popNewsList[currentNewsIndex]?.image ||
+                  `${process.env.PUBLIC_URL}/images/news.jpg`
                 }
                 alt="news"
               />

@@ -128,6 +128,51 @@ export const Body = styled.div`
   align-items: center;
 `;
 
+export const Search = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  margin-top: 64px;
+
+  img {
+    width: 19.999px;
+    height: 19.998px;
+    aspect-ratio: 20/20;
+  }
+
+  input {
+    width: 760px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 111.111% */
+    outline: none;
+    border: none;
+    background: transparent;
+
+    &placeholder {
+      color: #686868;
+      font-family: Pretendard;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px; /* 111.111% */
+    }
+  }
+`;
+
+export const Hr = styled.div`
+  margin-top: 12px;
+  width: 806px;
+  height: 1px;
+  flex-shrink: 0;
+  background: #000;
+`;
+
 export const Category = styled.div`
   display: flex;
   width: 368px;
@@ -219,7 +264,7 @@ export const Up = styled.div`
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
     ),
-    url("/images/news.jpg");
+    url(${(props) => props.$bg});
   background-size: 368px 226px;
   background-position: top left;
   border-radius: 24px 24px 0 0;
@@ -242,9 +287,9 @@ export const Down = styled.div`
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
     ),
-    url("/images/news.jpg");
+    url(${(props) => props.$bg});
   background-size: 368px 226px;
-  background-position: left -37px; /* Up 높이만큼 올려서 이어지게 */
+  background-position: left -37px;
   border-radius: 0 0 24px 24px;
   display: flex;
   flex-direction: column;

@@ -333,6 +333,11 @@ export const Content = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 25px; /* 156.25% */
+
+    p {
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
   }
 `;
 

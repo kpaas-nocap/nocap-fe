@@ -3,12 +3,7 @@ import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import * as N from "../styles/StyledNews";
 import NSide from "./NSide"; // 컴포넌트 경로에 따라 조정
-
-const contentText = `
-12·3 비상계엄 관련 내란·외환 혐의 2차 조사
-조사 시간 총 9시간 30분
-오전엔 체포영장 저지 혐의, 오후엔 국무회의 상황 조사
-`;
+import axios from "axios";
 
 const News = () => {
   const [selectedCategory, setSelectedCategory] = useState("정치");
@@ -21,6 +16,36 @@ const News = () => {
     "IT/과학",
     "기타",
   ];
+  const categoryMap = {
+    정치: 100,
+    경제: 101,
+    사회: 102,
+    "생활/문화": 103,
+    세계: 104,
+    "IT/과학": 105,
+    기타: 106,
+  };
+
+  const [newsList, setNewsList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchCategoryNews = async (categoryName) => {
+    const categoryCode = categoryMap[categoryName];
+    if (!categoryCode) return;
+
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `https://www.nocap.kr/api/nocap/search/category/${categoryCode}`
+      );
+      setNewsList(res.data); // 백엔드 응답에 맞게 조정
+    } catch (error) {
+      console.error("카테고리 뉴스 조회 실패:", error);
+      setNewsList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [activeContent, setActiveContent] = useState("news");
@@ -39,6 +64,41 @@ const News = () => {
     const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
     setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
   }, []);
+
+  // ✅ 검색어 상태
+  const [query, setQuery] = useState("");
+  // ✅ 최근 검색어 상태
+  const [recentSearches, setRecentSearches] = useState([]);
+
+  // ✅ 로컬스토리지에서 최근 검색어 불러오기
+  useEffect(() => {
+    const savedSearches =
+      JSON.parse(localStorage.getItem("recentSearches")) || [];
+    setRecentSearches(savedSearches);
+  }, []);
+
+  // ✅ 엔터 입력 시 저장 + 이동
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && query.trim() !== "") {
+      const newSearches = [query, ...recentSearches].slice(0, 10);
+      setRecentSearches(newSearches);
+      localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+      navigate(`/search/result?keyword=${encodeURIComponent(query)}`);
+      setQuery(""); // 입력창 초기화
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchCategoryNews(selectedCategory);
+    }
+  }, [selectedCategory]);
 
   return (
     <N.Container>
@@ -89,11 +149,31 @@ const News = () => {
       </N.DesktopOnly>
 
       <N.Body>
+        <N.DesktopOnly>
+          <N.Search>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/search.svg`}
+              alt="search"
+            />
+            <input
+              type="text"
+              placeholder="키워드를 입력하세요"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          </N.Search>
+          <N.Hr />
+        </N.DesktopOnly>
+
         <N.Category>
           {categories.map((item) => (
             <div
               key={item}
-              onClick={() => setSelectedCategory(item)}
+              onClick={() => {
+                setSelectedCategory(item);
+                fetchCategoryNews(item); // 클릭 시 뉴스 요청
+              }}
               className={selectedCategory === item ? "active" : ""}
             >
               {item}
@@ -102,28 +182,26 @@ const News = () => {
         </N.Category>
 
         <N.List>
-          <N.Img onClick={goDet}>
-            <N.Back />
-            <N.TImg>
-              <N.Up>주요뉴스</N.Up>
-              <N.Down>
-                <N.Title>
-                  '초강수' 대출 규제 통했나… 서울 아파트값 상승세 둔화
-                </N.Title>
-              </N.Down>
-            </N.TImg>
-          </N.Img>
-          {/* <N.Text>
-            <div id="title">내란특검 "尹 2차 대면조사 종료</div>
-            <div id="content">
-              {contentText
-                .trim()
-                .split("\n")
-                .map((line, index) => (
-                  <div key={index}>• {line}</div>
-                ))}
-            </div>
-          </N.Text> */}
+          {loading ? (
+            <div>로딩 중...</div>
+          ) : newsList.length === 0 ? (
+            <div>뉴스가 없습니다.</div>
+          ) : (
+            newsList.map((item, idx) => (
+              <N.Img
+                key={idx}
+                onClick={() => navigate("/news/detail", { state: item })}
+              >
+                <N.Back />
+                <N.TImg>
+                  <N.Up $bg={item.image}>{selectedCategory}</N.Up>
+                  <N.Down $bg={item.image}>
+                    <N.Title>{item.title}</N.Title>
+                  </N.Down>
+                </N.TImg>
+              </N.Img>
+            ))
+          )}
         </N.List>
       </N.Body>
 

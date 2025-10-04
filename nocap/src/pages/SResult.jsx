@@ -22,10 +22,11 @@ const SResult = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://www.nocap.kr/api/nocap/search/keyword/${encodeURIComponent(
+        `https://www.nocap.kr/api/nocap/search?search=${encodeURIComponent(
           keyword
         )}`
       );
+
       setResults(res.data);
     } catch (error) {
       console.error("뉴스 데이터를 불러오는 데 실패했습니다:", error);
@@ -94,7 +95,11 @@ const SResult = () => {
             <div>검색 결과가 없습니다.</div>
           ) : (
             results.map((item, idx) => (
-              <S.Comp key={idx}>
+              <S.Comp
+                key={idx}
+                onClick={() => navigate("/news/detail", { state: item })}
+                style={{ cursor: "pointer" }} // UX 개선
+              >
                 <S.Det>
                   <S.Text>
                     <div id="title">{item.title}</div>
