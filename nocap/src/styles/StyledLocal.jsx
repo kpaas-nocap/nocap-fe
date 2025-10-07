@@ -10,10 +10,19 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 402px;
+  width: 100%;
+  max-width: 402px;
   flex-shrink: 0;
   padding-bottom: 80px;
-  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    max-width: 100%; /* ✅ PC에서 화면이 꽉 차게 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fafbff;
+  }
 `;
 
 export const Header = styled.div`
@@ -21,6 +30,69 @@ export const Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+`;
+
+// 모바일에서만 보이게
+export const MobileOnly = styled.div`
+  display: block;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+// PC에서만 보이게
+export const DesktopOnly = styled.div`
+  display: none;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
+`;
+
+export const Head = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 130px 0 75px;
+  height: 100px;
+
+  #logo {
+    width: 188px;
+  }
+`;
+
+export const Menu = styled.div`
+  width: 800px;
+  // height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 120px;
+
+  #tag {
+    margin-top: 16px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 110% */
+    display: flex;
+
+    #circle {
+      margin-top: -3px;
+      margin-left: 130px;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background-color: #213ce9;
+      border-radius: 50%;
+      position: absolute;
+    }
+  }
 `;
 
 export const Back = styled.div`
@@ -44,6 +116,43 @@ export const Title = styled.div`
     font-style: normal;
     font-weight: 600;
     line-height: 20px; /* 100% */
+  }
+
+  @media screen and (min-width: 768px) {
+    margin-top: 43px;
+
+    div {
+      color: #000;
+      font-family: Pretendard;
+      font-size: 30px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+`;
+
+export const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 33px;
+  }
+`;
+
+export const Frame = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    width: 460px;
+    height: 505px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: #fff;
   }
 `;
 
@@ -83,7 +192,7 @@ export const InputE = styled.div`
 
   input {
     margin-left: 12px;
-    color: #b2b2b2;
+    color: black;
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
@@ -237,8 +346,40 @@ export const Find = styled.div`
 export const Go = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: auto;
-  // margin-bottom: 80px;
+  margin-top: 200px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 25px;
+  }
+`;
+
+export const Kakao = styled.div`
+  width: 368px;
+  height: 54px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #fae300;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  margin-top: 15px;
+
+  img {
+    width: 22.071px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  div {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 `;
 
 export const Signup = styled.div`

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as L from "../styles/StyledLogin";
 import axios from "axios";
-const API_BASE = "http://13.209.98.128"; // ⚠️ 배포 주소로 바꾸세요!
+const API_BASE = "https://www.nocap.kr";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,17 +19,17 @@ const Login = () => {
     navigate(`/login/local`);
   };
 
-  // 1️⃣ 카카오 로그인 URL 가져오기 → 이동
   const handleKakaoLogin = async () => {
     try {
       const res = await axios.get(`${API_BASE}/auth/kakao/login`);
-      window.location.href = res.data; // 카카오 로그인 페이지로 리다이렉트
+      console.log("🔗 카카오 로그인 URL:", res.data);
+      window.location.href = res.data;
     } catch (err) {
-      console.error("카카오 로그인 URL 요청 실패:", err);
+      console.error("❌ 카카오 로그인 URL 요청 실패:", err);
     }
   };
 
-  // 2️⃣ redirect_uri에서 code 파라미터 읽고 백엔드 로그인 처리
+  // 카카오 로그인 후 redirect_uri에서 code 파라미터 확인
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
@@ -44,35 +44,47 @@ const Login = () => {
         params: { code },
       });
 
-      const authHeader = res.headers["authorization"]; // 액세스 토큰 or Pre-Register 토큰
+      const authHeader = res.headers["authorization"]; // ex: Bearer eyJ...
+
+      if (!authHeader) {
+        console.error("❌ Authorization 헤더 없음. 백엔드 응답 확인 필요");
+        return;
+      }
+
       const userData = res.data;
+      console.log("👤 사용자 정보:", userData);
 
       if (userData.signed) {
-        // ✅ Bearer 제거 후 저장
-        localStorage.setItem(
-          "access_token",
-          authHeader?.replace("Bearer ", "")
-        );
+        // 기존 사용자 → 토큰 저장
+        localStorage.setItem("accessToken", authHeader);
+
         navigate("/");
       } else {
-        // 🆕 신규 사용자 → 닉네임 입력받고 회원가입 API 호출
+        // 신규 사용자 → 닉네임 입력받기
         const nickname = prompt("닉네임을 입력해주세요:");
         if (!nickname) return;
+
+        console.log("📨 회원가입 요청 시도:", nickname);
 
         const signupRes = await axios.post(
           `${API_BASE}/auth/kakao/signup`,
           { nickname },
-          { headers: { Authorization: `Bearer ${authHeader}` } }
+          {
+            headers: {
+              Authorization: authHeader, // ✅ 이미 Bearer 포함된 상태
+            },
+          }
         );
 
-        localStorage.setItem(
-          "access_token",
-          signupRes.headers["authorization"]?.replace("Bearer ", "")
-        );
+        const newAuthHeader = signupRes.headers["authorization"];
+        if (newAuthHeader) {
+          localStorage.setItem("accessToken", newAuthHeader);
+        }
+
         navigate("/");
       }
     } catch (err) {
-      console.error("카카오 로그인 처리 실패:", err);
+      console.error("❌ 카카오 로그인 처리 실패:", err.response || err);
     }
   };
 

@@ -132,11 +132,41 @@ export const Title = styled.div`
   text-overflow: ellipsis;
 `;
 
+export const Icons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;\
+  width: 178px;
+  padding: 5px 5px 5px 7px;
+  align-items: center;
+`;
+
+export const Comment = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+
+  img {
+    width: 14px;
+    height: 14px;
+    aspect-ratio: 1/1;
+  }
+
+  div {
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 160% */
+    letter-spacing: -0.3px;
+  }
+`;
+
 export const Date = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2px;
-  margin-left: auto;
 
   img {
     width: 14px;

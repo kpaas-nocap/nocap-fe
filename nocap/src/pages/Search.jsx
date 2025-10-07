@@ -18,9 +18,11 @@ const Search = () => {
   // ✅ Enter 입력 시 저장
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && query.trim() !== "") {
-      const newSearches = [query, ...recentSearches].slice(0, 10); // 최대 10개 저장
+      const newSearches = [query, ...recentSearches].slice(0, 10);
       setRecentSearches(newSearches);
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+      navigate(`/search/result?keyword=${encodeURIComponent(query)}`);
       setQuery(""); // 입력창 비우기
     }
   };
@@ -59,7 +61,7 @@ const Search = () => {
           <input
             ref={inputRef} // ✅ 자동 포커스
             type="text"
-            placeholder="기사를 검색하세요."
+            placeholder="뉴스 키워드 또는 기사 URL을 입력하세요."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -70,23 +72,44 @@ const Search = () => {
       <S.Recent>
         <S.Title>최근 검색</S.Title>
         <S.List>
-          {recentSearches.map((item, index) => (
-            <S.Result key={index}>
+          {recentSearches.length === 0 ? (
+            <div
+              style={{
+                padding: "30px",
+                color: "#888",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "15px",
+                fontFamily: "Pretendard",
+                fontSize: "15px",
+              }}
+            >
               <img
-                id="search"
-                src={`${process.env.PUBLIC_URL}/images/search.svg`}
-                alt="search"
+                src={`${process.env.PUBLIC_URL}/images/mark.svg`}
+                style={{ width: "38px", height: "38px" }}
               />
-              <div>{item}</div>
-              <img
-                id="x"
-                src={`${process.env.PUBLIC_URL}/images/x_b.svg`}
-                alt="x"
-                onClick={() => handleDelete(index)}
-                style={{ cursor: "pointer" }}
-              />
-            </S.Result>
-          ))}
+              최근 검색 기록이 없습니다.
+            </div>
+          ) : (
+            recentSearches.map((item, index) => (
+              <S.Result key={index}>
+                <img
+                  id="search"
+                  src={`${process.env.PUBLIC_URL}/images/search.svg`}
+                  alt="search"
+                />
+                <div>{item}</div>
+                <img
+                  id="x"
+                  src={`${process.env.PUBLIC_URL}/images/x_b.svg`}
+                  alt="x"
+                  onClick={() => handleDelete(index)}
+                  style={{ cursor: "pointer" }}
+                />
+              </S.Result>
+            ))
+          )}
         </S.List>
       </S.Recent>
     </S.Container>

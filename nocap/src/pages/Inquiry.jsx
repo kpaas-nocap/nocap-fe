@@ -6,6 +6,7 @@ const Inquiry = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const goWrite = () => navigate(`/my/inquiry/write`);
+  const goCom = () => navigate(`/my/inquiry/comment`);
 
   return (
     <I.Container>
@@ -20,7 +21,7 @@ const Inquiry = () => {
 
       <I.Body>
         <I.Comp>
-          <I.Element>
+          <I.Element onClick={goCom}>
             <I.Detail>
               <div id="category">이용문의</div>
               <div id="title">문의 내용</div>

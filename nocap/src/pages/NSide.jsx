@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import * as M from "../styles/StyledNSide";
@@ -22,23 +22,39 @@ const sidebarVariants = {
 const NSide = ({ isOpen, toggleSidebar, activeContent, setActiveContent }) => {
   const navigate = useNavigate();
   const goPre = () => navigate(`/premium`);
-  // ✅ 선택된 카테고리 상태 (초기값: "정치")
-  const [selectedCategory, setSelectedCategory] = useState("정치");
+  const inputRef = useRef(null);
 
-  // ✅ 카테고리 배열
-  const categories = [
-    "정치",
-    "경제",
-    "사회",
-    "생활/문화",
-    "IT/과학",
-    "세계",
-    "기타",
-  ];
+  const [query, setQuery] = useState("");
+  const [recentSearches, setRecentSearches] = useState([]);
 
-  // ✅ 카테고리 선택 함수
-  const handleSelectCategory = (category) => {
-    setSelectedCategory(category);
+  // ✅ 최근 검색어 로딩
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("recentSearches")) || [];
+    setRecentSearches(saved);
+  }, []);
+
+  // ✅ 엔터로 검색
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && query.trim() !== "") {
+      const newSearches = [query, ...recentSearches]
+        .filter((item, idx, arr) => arr.indexOf(item) === idx)
+        .slice(0, 10); // 중복 제거 후 10개 제한
+
+      setRecentSearches(newSearches);
+      localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+      // 👉 사이드바 닫고 검색 페이지 이동
+      navigate(`/news/search?keyword=${encodeURIComponent(query)}`);
+      toggleSidebar();
+      setQuery(""); // 입력창 초기화
+    }
+  };
+
+  // ✅ 개별 삭제
+  const handleDelete = (index) => {
+    const updated = recentSearches.filter((_, i) => i !== index);
+    setRecentSearches(updated);
+    localStorage.setItem("recentSearches", JSON.stringify(updated));
   };
 
   return (
@@ -82,35 +98,51 @@ const NSide = ({ isOpen, toggleSidebar, activeContent, setActiveContent }) => {
                     src={`${process.env.PUBLIC_URL}/images/search_b.svg`}
                     alt="search"
                   />
-                  <input type="text" placeholder="결과 내 재검색" />
+                  <input
+                    type="text"
+                    placeholder="키워드를 입력하세요."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  />
                 </M.Input>
                 <M.Hr />
               </M.Search>
 
               <M.Category>
                 <M.Title>
-                  <div>카테고리</div>
-                  <hr />
+                  <div>최근검색어</div>
                 </M.Title>
                 <M.List>
-                  {categories.map((category) => (
-                    <M.Comp
-                      key={category}
-                      onClick={() => handleSelectCategory(category)}
-                    >
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/${
-                          selectedCategory === category
-                            ? "check_b.svg"
-                            : "check.svg"
-                        }`}
-                        alt="check"
-                      />
-                      <div>{category}</div>
-                    </M.Comp>
-                  ))}
+                  {recentSearches.length === 0 ? (
+                    <div style={{ color: "#aaa", padding: "10px" }}>
+                      최근 검색 기록이 없습니다.
+                    </div>
+                  ) : (
+                    recentSearches.map((item, index) => (
+                      <M.Comp key={index}>
+                        <M.Left>
+                          <img
+                            src={`${process.env.PUBLIC_URL}/images/search.svg`}
+                            alt="search"
+                          />
+                          <div>{item}</div>
+                        </M.Left>
+                        <M.Right>
+                          <img
+                            src={`${process.env.PUBLIC_URL}/images/x_b.svg`}
+                            alt="x"
+                            onClick={() => handleDelete(index)}
+                            style={{ cursor: "pointer" }}
+                          />
+                        </M.Right>
+                      </M.Comp>
+                    ))
+                  )}
                 </M.List>
               </M.Category>
+
+              <M.CHr />
 
               <M.Premium onClick={goPre}>
                 <div>프리미엄 구독 하러가기</div>
@@ -119,11 +151,6 @@ const NSide = ({ isOpen, toggleSidebar, activeContent, setActiveContent }) => {
                   alt="more"
                 />
               </M.Premium>
-
-              <M.Button>
-                <M.Reset>초기화</M.Reset>
-                <M.Apply>적용</M.Apply>
-              </M.Button>
             </M.Body>
           </motion.div>
         </M.SidebarWrapper>
