@@ -5,32 +5,27 @@ import * as N from "../styles/StyledNDet";
 function formatContentToParagraphs(content) {
   if (!content) return [];
 
-  // 1. 출처, 기자 이메일, 공백 등의 불필요한 문장 제거
+  // 🧹 1️⃣ 안내문 3줄 제거
   const bannedPatterns = [
-    /\[사진 출처.*?\]/g,
-    /©.*?무단 전재.*?(금지)?/g,
-    /기자\(.*?\)/g,
-    /\/?뉴스1|연합뉴스/g,
-    /https?:\/\/\S+/g, // URL 제거
+    /글자\s*크기\s*설정\s*파란원을\s*좌우로\s*움직이시면\s*글자크기가\s*변경\s*됩니다[.\s]*/gi,
+    /가\s*매우\s*작은\s*폰트\s*작은\s*폰트\s*보통\s*폰트\s*큰\s*폰트\s*매우\s*큰\s*폰트\s*가\s*이\s*글자크기로\s*변경됩니다[.\s]*/gi,
+    /\(예시\)\s*가장\s*빠른\s*뉴스가\s*있고\s*다양한\s*정보,\s*쌍방향\s*소통이\s*숨쉬는\s*다음뉴스를\s*만나보세요[.\s]*/gi,
   ];
   bannedPatterns.forEach((pattern) => {
     content = content.replace(pattern, "");
   });
 
-  // 2. 문단 나누기 기준: 마침표/물음표/느낌표 뒤 공백 기준으로 문장 분리
-  const sentences = content.split(/(?<=[.?!])\s+(?=[^a-z])/gi);
+  // 🧹 2️⃣ 불필요한 공백 제거
+  content = content.replace(/\s{2,}/g, " ").trim();
 
-  // 3. 문단은 2~3문장씩 묶기
-  const paragraphs = [];
-  for (let i = 0; i < sentences.length; i += 2) {
-    const para = sentences
-      .slice(i, i + 2)
-      .join(" ")
-      .trim();
-    if (para) paragraphs.push(para);
-  }
+  // 🧹 3️⃣ 문장 단위 분리 (날짜 등 숫자 보호)
+  const sentenceRegex = /(?<=[^0-9][.?!])\s+(?=[가-힣A-Z])/g;
+  // 숫자 다음 마침표는 끊지 않음 → "2025.10.7." 보호됨
 
-  return paragraphs;
+  const sentences = content.split(sentenceRegex);
+
+  // ✅ 문장 배열로 반환
+  return sentences.filter((s) => s.trim().length > 0);
 }
 
 const NDetail = () => {
@@ -63,7 +58,7 @@ const NDetail = () => {
     }
   };
 
-  // ✅ content 콘솔 출력
+  // ✅ content 콘솔 확인
   useEffect(() => {
     if (news?.content) {
       console.log("받아온 content:", news.content);
@@ -77,52 +72,11 @@ const NDetail = () => {
 
   const [reporter, setReporter] = useState("");
   const [date, setDate] = useState("");
-  const [parsedContent, setParsedContent] = useState("");
 
-  useEffect(() => {
-    if (!news?.content) return;
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(news.content, "text/html");
-
-    const section = doc.querySelector("section");
-    if (!section) return;
-
-    // ✅ 순서대로 정렬된 요소 리스트
-    const nodes = Array.from(section.childNodes);
-
-    const allowedTags = ["P", "FIGURE"];
-    const bannedKeywords = [
-      "글자크기",
-      "제보",
-      "Copyright",
-      "저작권",
-      "기사 원문",
-      "MBC 뉴스",
-      "영상편집",
-      "전화",
-      "이메일",
-      "카카오톡",
-    ];
-
-    const filtered = nodes.filter((node) => {
-      if (!(node instanceof HTMLElement)) return false;
-
-      const tag = node.tagName;
-      const text = node.textContent?.trim() || "";
-
-      return (
-        allowedTags.includes(tag) &&
-        !bannedKeywords.some((kw) => text.includes(kw))
-      );
-    });
-
-    // ✅ node.outerHTML 로 재조립
-    const cleanHTML = filtered.map((el) => el.outerHTML).join("\n\n");
-    setParsedContent(cleanHTML);
-  }, [news]);
-
+  // ✅ HTML 제거는 필요 없으므로 content 문자열 그대로 처리
   const formattedParagraphs = formatContentToParagraphs(news?.content);
+
+  const { popNewsId } = location.state || {}; // 혹시 필요 시
 
   return (
     <N.Container>
@@ -175,8 +129,18 @@ const NDetail = () => {
 
           <N.Detail>
             <N.Info>
-              <div id="reporter">{reporter}</div>
-              <div id="date">입력 {date}</div>
+              {/* ✅ 전달받은 날짜 출력 */}
+              <div id="date">
+                {news?.date
+                  ? new Date(news.date).toLocaleString("ko-KR", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : ""}
+              </div>
             </N.Info>
             <img
               src={`${process.env.PUBLIC_URL}/images/link.svg`}

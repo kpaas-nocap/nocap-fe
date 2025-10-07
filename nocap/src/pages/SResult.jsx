@@ -56,6 +56,41 @@ const SResult = () => {
   const [activeContent, setActiveContent] = useState("home");
   const [isOpen, setIsOpen] = useState(false);
 
+  // ✅ 뉴스 클릭 시 조회기록 저장 + 이동
+  const handleResultClick = async (item) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        navigate("/login/local");
+        return;
+      }
+
+      // ✅ 조회기록 저장
+      await axios.post(
+        "https://www.nocap.kr/api/nocap/history/record",
+        {
+          url: item.url,
+          title: item.title,
+          content: item.content,
+          date: item.date,
+          image: item.image,
+        },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      console.log("🟢 조회기록 저장 완료:", item.title);
+
+      // ✅ 상세 페이지 이동
+      navigate("/news/detail", { state: item });
+    } catch (error) {
+      console.error("⚠️ 검색결과 클릭 시 조회기록 저장 실패:", error);
+    }
+  };
+
   return (
     <S.Container>
       <S.Header>
@@ -97,8 +132,8 @@ const SResult = () => {
             results.map((item, idx) => (
               <S.Comp
                 key={idx}
-                onClick={() => navigate("/news/detail", { state: item })}
-                style={{ cursor: "pointer" }} // UX 개선
+                onClick={() => handleResultClick(item)} // ✅ 수정된 부분
+                style={{ cursor: "pointer" }}
               >
                 <S.Det>
                   <S.Text>

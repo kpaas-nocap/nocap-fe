@@ -57,6 +57,13 @@ export const Body = styled.div`
 export const List = styled.div`
   margin-top: 11px;
   display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export const Box = styled.div`
+  // margin-top: 11px;
+  display: flex;
   align-items: start;
   flex-direction: row;
   gap: 4px;
@@ -120,7 +127,7 @@ export const Info = styled.div`
 `;
 
 export const Title = styled.div`
-  width: 292px;
+  width: 325px;
   flex-shrink: 0;
   color: #000;
   font-family: Pretendard;
@@ -138,40 +145,18 @@ export const Title = styled.div`
   overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
 `;
 
-export const Public = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  align-items: center;
-
-  img {
-    width: 16px;
-    height: 16px;
-    aspect-ratio: 1/1;
-  }
-
-  div {
-    color: #686868;
-    font-family: Pretendard;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 133.333% */
-    letter-spacing: -0.36px;
-  }
-`;
-
 export const Image = styled.div`
   width: 334px;
   height: 143px;
   flex-shrink: 0;
-  margin-top: 5px;
+  margin-top: 15px;
   border-radius: 10px;
+  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
 
   img {
-    width: 334px;
-    height: 143px;
-    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
     border-radius: 10px;
   }
 `;

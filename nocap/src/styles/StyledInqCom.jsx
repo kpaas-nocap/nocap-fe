@@ -151,6 +151,7 @@ export const A = styled.div`
     line-height: normal;
     word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
     overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
+    white-space: pre-wrap; /* ✅ 줄바꿈(\n)을 그대로 표시 */
   }
 `;
 

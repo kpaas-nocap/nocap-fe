@@ -44,6 +44,7 @@ export const Body = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  gap: 20px;
 `;
 
 export const Comp = styled.div`
@@ -60,6 +61,7 @@ export const Element = styled.div`
   width: 368px;
 
   #success {
+    width: 60px;
     color: #abbaf9;
     text-align: center;
     font-family: Pretendard;

@@ -26,6 +26,8 @@ const My = () => {
 
   const [commentCount, setCommentCount] = useState(0); // ✅ 댓글 개수 상태
   const [analysisCount, setAnalysisCount] = useState(0); // 분석 기록 개수
+  const [bookmarkCount, setBookmarkCount] = useState(0); // ✅ 북마크 개수 추가
+  const [historyCount, setHistoryCount] = useState(0); // ✅ 최근 본 뉴스 개수 추가
 
   // ✅ 유저 정보 불러오기
   useEffect(() => {
@@ -99,6 +101,36 @@ const My = () => {
     };
 
     fetchCommentCount();
+
+    // ✅ 북마크 수
+    const fetchBookmarkCount = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await axios.get("https://www.nocap.kr/api/nocap/bookmark", {
+          headers: { Authorization: `${token}` },
+        });
+        if (Array.isArray(res.data)) setBookmarkCount(res.data.length);
+      } catch (err) {
+        console.error("북마크 불러오기 실패:", err);
+      }
+    };
+
+    fetchBookmarkCount();
+
+    // ✅ 최근 본 뉴스 수
+    const fetchHistoryCount = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await axios.get("https://www.nocap.kr/api/nocap/history", {
+          headers: { Authorization: `${token}` },
+        });
+        if (Array.isArray(res.data)) setHistoryCount(res.data.length);
+      } catch (err) {
+        console.error("최근 본 뉴스 불러오기 실패:", err);
+      }
+    };
+
+    fetchHistoryCount(); // ✅ 호출 추가
   }, [navigate]);
 
   const handleLogoutClick = () => {
@@ -218,7 +250,7 @@ const My = () => {
           <M.Component onClick={goRecent}>
             <div id="title">최근 본 뉴스</div>
             <div id="group">
-              <div id="num">3</div>
+              <div id="num">{historyCount}</div>
               <div id="detail">개</div>
             </div>
           </M.Component>
@@ -232,7 +264,7 @@ const My = () => {
           <M.Component onClick={goBookmark}>
             <div id="title">북마크</div>
             <div id="group">
-              <div id="num">10</div>
+              <div id="num">{bookmarkCount}</div>
               <div id="detail">개</div>
             </div>
           </M.Component>
