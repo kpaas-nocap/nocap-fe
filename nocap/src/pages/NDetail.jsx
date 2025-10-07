@@ -1,6 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as N from "../styles/StyledNDet";
+
+function formatContentToParagraphs(content) {
+  if (!content) return [];
+
+  // 1. 출처, 기자 이메일, 공백 등의 불필요한 문장 제거
+  const bannedPatterns = [
+    /\[사진 출처.*?\]/g,
+    /©.*?무단 전재.*?(금지)?/g,
+    /기자\(.*?\)/g,
+    /\/?뉴스1|연합뉴스/g,
+    /https?:\/\/\S+/g, // URL 제거
+  ];
+  bannedPatterns.forEach((pattern) => {
+    content = content.replace(pattern, "");
+  });
+
+  // 2. 문단 나누기 기준: 마침표/물음표/느낌표 뒤 공백 기준으로 문장 분리
+  const sentences = content.split(/(?<=[.?!])\s+(?=[^a-z])/gi);
+
+  // 3. 문단은 2~3문장씩 묶기
+  const paragraphs = [];
+  for (let i = 0; i < sentences.length; i += 2) {
+    const para = sentences
+      .slice(i, i + 2)
+      .join(" ")
+      .trim();
+    if (para) paragraphs.push(para);
+  }
+
+  return paragraphs;
+}
 
 const NDetail = () => {
   const navigate = useNavigate();
@@ -11,6 +42,87 @@ const NDetail = () => {
   const goMy = () => navigate(`/my`);
   const goMain = () => navigate(`/`);
   const goNews = () => navigate(`/news`);
+  const goArticle = () => navigate(`/analysis/article`);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
+    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
+  }, []);
+
+  // 컴포넌트 상단
+  const location = useLocation();
+  const news = location.state;
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(news?.url);
+      alert("기사 링크가 복사되었습니다!");
+    } catch (err) {
+      alert("복사에 실패했습니다.");
+    }
+  };
+
+  // ✅ content 콘솔 출력
+  useEffect(() => {
+    if (news?.content) {
+      console.log("받아온 content:", news.content);
+    } else {
+      console.warn("content가 전달되지 않았습니다.");
+    }
+
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, [news]);
+
+  const [reporter, setReporter] = useState("");
+  const [date, setDate] = useState("");
+  const [parsedContent, setParsedContent] = useState("");
+
+  useEffect(() => {
+    if (!news?.content) return;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(news.content, "text/html");
+
+    const section = doc.querySelector("section");
+    if (!section) return;
+
+    // ✅ 순서대로 정렬된 요소 리스트
+    const nodes = Array.from(section.childNodes);
+
+    const allowedTags = ["P", "FIGURE"];
+    const bannedKeywords = [
+      "글자크기",
+      "제보",
+      "Copyright",
+      "저작권",
+      "기사 원문",
+      "MBC 뉴스",
+      "영상편집",
+      "전화",
+      "이메일",
+      "카카오톡",
+    ];
+
+    const filtered = nodes.filter((node) => {
+      if (!(node instanceof HTMLElement)) return false;
+
+      const tag = node.tagName;
+      const text = node.textContent?.trim() || "";
+
+      return (
+        allowedTags.includes(tag) &&
+        !bannedKeywords.some((kw) => text.includes(kw))
+      );
+    });
+
+    // ✅ node.outerHTML 로 재조립
+    const cleanHTML = filtered.map((el) => el.outerHTML).join("\n\n");
+    setParsedContent(cleanHTML);
+  }, [news]);
+
+  const formattedParagraphs = formatContentToParagraphs(news?.content);
 
   return (
     <N.Container>
@@ -44,11 +156,11 @@ const NDetail = () => {
               뉴스
               <div id="circle" />
             </div>
-            <div id="tag" onClick={goAnal} title="뉴스 기사 분석하러 가기">
-              기사분석
-            </div>
-            <div id="tag" onClick={goMy} title="마이 페이지로 이동">
-              마이페이지
+            <div
+              id="tag"
+              onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+            >
+              {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
           </N.Menu>
         </N.Head>
@@ -57,38 +169,34 @@ const NDetail = () => {
       <N.Body>
         <N.News>
           <N.Title>
-            <N.Category>경제</N.Category>
-            <div id="title">
-              '초강수' 대출 규제 통했나…서울 아파트값 상승세 둔화
-            </div>
+            <N.Category>{news?.category || "카테고리"}</N.Category>
+            <div id="title">{news?.title || "제목 없음"}</div>
           </N.Title>
 
           <N.Detail>
             <N.Info>
-              <div id="reporter">박준우 기자</div>
-              <div id="date">입력 2025.07.06 12:41</div>
+              <div id="reporter">{reporter}</div>
+              <div id="date">입력 {date}</div>
             </N.Info>
-            <img src={`${process.env.PUBLIC_URL}/images/link.svg`} alt="link" />
+            <img
+              src={`${process.env.PUBLIC_URL}/images/link.svg`}
+              alt="link"
+              onClick={handleCopyUrl}
+              style={{ cursor: "pointer" }}
+            />
           </N.Detail>
           <N.MobileOnly>
             <N.Hr />
           </N.MobileOnly>
 
           <N.Img>
-            <img src={`${process.env.PUBLIC_URL}/images/news.jpg`} alt="news" />
+            <img src={news?.image || "/images/news.jpg"} alt="news" />
           </N.Img>
+          {/* <N.Content dangerouslySetInnerHTML={{ __html: parsedContent }} /> */}
           <N.Content>
-            정부가 6억원 이상의 주택담보대출을 금지하는 6·27 대책을 발표한 지
-            열흘째에 접어들면서 서울 부동산 상승세가 점차 둔화하는 모습입니다.
-            <br />
-            <br />
-            한국부동산원이 발표한 6월 다섯째주 서울 아파트 가격 동향에 따르면
-            서울의 아파트 매매가격 상승률은 0.4%로 지난 주 대비 소폭 떨어진
-            것으로 나타났습니다.
-            <br />
-            <br />
-            특히 강남·서초 등 강남권은 물론 용산과 성동, 마포 등 집값 상승을
-            주도한 선호지역의 상승폭이 일제히 줄었습니다.
+            {formattedParagraphs.map((p, idx) => (
+              <p key={idx}>{p}</p>
+            ))}
           </N.Content>
 
           <N.Button onClick={goCheck}>팩트체크하기</N.Button>
@@ -99,7 +207,7 @@ const NDetail = () => {
             <N.RTitle>최근 분석된 뉴스 보기</N.RTitle>
 
             <N.RList>
-              <N.RComp>
+              <N.RComp onClick={goArticle}>
                 <N.RDet>
                   <N.RCate>사회</N.RCate>
                   <N.RCc>v.daum.net</N.RCc>

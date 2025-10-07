@@ -3,15 +3,39 @@ import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import * as M from "../styles/StyledMain";
 import Sidebar from "./Sidebar"; // 컴포넌트 경로에 따라 조정
+import axios from "axios";
 
 const Main = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAddBox, setShowAddBox] = useState(false);
+  const [popNews, setPopNews] = useState(null); // ✅ 인기뉴스 데이터 상태 추가
   const navigate = useNavigate();
   const goSearch = () => navigate(`/search`);
   const goNews = () => navigate(`/news`);
-  const goAnal = () => navigate(`/analysis`);
   const goMy = () => navigate(`/my`);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
+    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
+  }, []);
+
+  // 인기뉴스 가져오기
+  useEffect(() => {
+    const fetchPopNews = async () => {
+      try {
+        const res = await axios.get("https://www.nocap.kr/api/nocap/popnews");
+        if (res.data && res.data.length > 0) {
+          setPopNewsList(res.data);
+          setCurrentNewsIndex(0); // 첫 뉴스부터 시작
+        }
+      } catch (err) {
+        console.error("❌ 인기뉴스 불러오기 실패:", err);
+      }
+    };
+
+    fetchPopNews();
+  }, []);
 
   const rankData = [
     {
@@ -54,6 +78,19 @@ const Main = () => {
 
   const toggleSidebar = () => setIsOpen((prev) => !prev);
 
+  const [popNewsList, setPopNewsList] = useState([]); // 전체 인기뉴스 리스트
+  const [currentNewsIndex, setCurrentNewsIndex] = useState(0); // 현재 보여줄 인덱스
+
+  const handlePrevNews = () => {
+    setCurrentNewsIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
+  const handleNextNews = () => {
+    setCurrentNewsIndex((prev) =>
+      prev < popNewsList.length - 1 ? prev + 1 : prev
+    );
+  };
+
   return (
     <M.Container>
       <M.Header>
@@ -63,7 +100,6 @@ const Main = () => {
           alt="logo"
         />
 
-        {/* 모바일 메뉴 (햄버거 아이콘) */}
         <M.MobileOnly>
           <img
             id="menu"
@@ -73,7 +109,6 @@ const Main = () => {
           />
         </M.MobileOnly>
 
-        {/* PC 메뉴 */}
         <M.DesktopOnly>
           <M.Menu>
             <div id="tag">
@@ -84,25 +119,19 @@ const Main = () => {
             <div id="tag" onClick={goNews}>
               뉴스
             </div>
-            <div id="tag" onClick={goAnal}>
-              기사분석
-            </div>
-            <div id="tag" onClick={goMy}>
-              마이페이지
+            <div
+              id="tag"
+              onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+            >
+              {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
           </M.Menu>
         </M.DesktopOnly>
       </M.Header>
       <M.Body>
         <M.SearchBar>
-          <img
-            id="plus"
-            src={`${process.env.PUBLIC_URL}/images/plus.svg`}
-            alt=""
-            onClick={() => setShowAddBox((prev) => !prev)}
-          />
           <div id="url" onClick={goSearch}>
-            기사를 검색하세요
+            뉴스 키워드 또는 기사 URL을 입력하세요
           </div>
           <img
             src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
@@ -110,32 +139,6 @@ const Main = () => {
           />
         </M.SearchBar>
         <M.MobileOnly>
-          {showAddBox && (
-            <M.AddBox>
-              <M.ANews>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/clip.svg`}
-                  alt="clip"
-                />
-                <div>기사 URL 추가</div>
-              </M.ANews>
-              <M.Hr />
-              <M.AVid>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/video.svg`}
-                  alt="video"
-                />
-                <div>동영상 분석</div>
-              </M.AVid>
-              <M.AMore>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_dot.svg`}
-                  alt="more"
-                />
-                <div>더 보기</div>
-              </M.AMore>
-            </M.AddBox>
-          )}
           <M.Ranking>
             <M.RTitle>오늘의 인기뉴스</M.RTitle>
 
@@ -171,31 +174,47 @@ const Main = () => {
               <M.TTitle>
                 <div id="title">오늘의 인기뉴스</div>
                 <div id="hr" />
-                <div id="date">2025년 09월 19일</div>
+                <div id="date">
+                  {popNewsList[currentNewsIndex]?.date || "날짜 로딩 중..."}
+                </div>
               </M.TTitle>
-              <div id="category">사회일반</div>
-              <div id="title">
-                롯데카드 "해킹 사고로 297만명 고객 정보 유출…28만명 정보는 부정
-                사용 가능성"
-              </div>
-              <M.More>
+              {/* <div id="category">사회일반</div> */}
+              <M.Tit>
+                {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
+              </M.Tit>
+              <M.More
+                onClick={() =>
+                  navigate("/news/detail", {
+                    state: popNewsList[currentNewsIndex], // 현재 보고 있는 뉴스 하나
+                  })
+                }
+                style={{ cursor: "pointer" }}
+              >
                 <div id="det">자세히 보기</div>
                 <div id="hr" />
               </M.More>
+
               <M.Page>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/left_g.svg`}
-                  alt="left_g"
+                  alt="left"
+                  onClick={handlePrevNews}
+                  style={{ cursor: "pointer" }}
                 />
                 <img
                   src={`${process.env.PUBLIC_URL}/images/right_b.svg`}
-                  alt="right_b"
+                  alt="right"
+                  onClick={handleNextNews}
+                  style={{ cursor: "pointer" }}
                 />
               </M.Page>
             </M.Text>
             <M.Img>
               <img
-                src={`${process.env.PUBLIC_URL}/images/news.jpg`}
+                src={
+                  popNewsList[currentNewsIndex]?.image ||
+                  `${process.env.PUBLIC_URL}/images/news.jpg`
+                }
                 alt="news"
               />
               <div id="back" />

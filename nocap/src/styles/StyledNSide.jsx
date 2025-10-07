@@ -88,10 +88,18 @@ export const Hr = styled.div`
 `;
 
 export const Category = styled.div`
-  margin-top: 48px;
+  margin-top: 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+export const CHr = styled.div`
+  width: 352px;
+  height: 1px;
+  flex-shrink: 0;
+  background: #e5e5e5;
+  margin-top: 10px;
 `;
 
 export const Title = styled.div`
@@ -122,6 +130,7 @@ export const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+  height: 230px;
 `;
 
 export const Comp = styled.div`
@@ -130,6 +139,38 @@ export const Comp = styled.div`
   align-items: center;
   gap: 8px;
   width: 352px;
+  justify-content: space-between;
+`;
+
+export const Left = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  img {
+    width: 17.957px;
+    height: 16.037px;
+  }
+
+  div {
+    color: #1e1e1e;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.28px;
+  }
+`;
+
+export const Right = styled.div`
+  display: flex;
+
+  img {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
 `;
 
 export const Premium = styled.div`
@@ -153,54 +194,4 @@ export const Premium = styled.div`
     height: 14px;
     flex-shrink: 0;
   }
-`;
-
-export const Button = styled.div`
-  margin-top: 70px;
-  flex-direction: row;
-  display: flex;
-  width: 353px;
-  height: 53px;
-  justify-content: center;
-  align-items: flex-start;
-  flex-shrink: 0;
-`;
-
-export const Reset = styled.div`
-  display: flex;
-  width: 159px;
-  height: 53px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border-radius: 30px 0 0 30px;
-  border: 1px solid #213ce9;
-  background: #fff;
-  color: #213ce9;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 133.333% */
-`;
-
-export const Apply = styled.div`
-  display: flex;
-  width: 194px;
-  height: 53px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border-radius: 0 30px 30px 0;
-  background: #213ce9;
-  color: #fff;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 133.333% */
 `;

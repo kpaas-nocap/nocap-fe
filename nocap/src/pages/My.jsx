@@ -24,6 +24,9 @@ const My = () => {
     setInfoMessageVisible((prev) => !prev); // ✅ 토글
   };
 
+  const [commentCount, setCommentCount] = useState(0); // ✅ 댓글 개수 상태
+  const [analysisCount, setAnalysisCount] = useState(0); // 분석 기록 개수
+
   // ✅ 유저 정보 불러오기
   useEffect(() => {
     const fetchUser = async () => {
@@ -47,6 +50,55 @@ const My = () => {
     };
 
     fetchUser();
+
+    const fetchAnalysisCount = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await axios.get(
+          "https://www.nocap.kr/api/nocap/analysis/my",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        if (Array.isArray(res.data)) {
+          setAnalysisCount(res.data.length);
+        }
+      } catch (err) {
+        console.error("분석 기록 불러오기 실패:", err);
+      }
+    };
+
+    fetchAnalysisCount();
+
+    // ✅ 댓글 개수 불러오기
+    const fetchCommentCount = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await axios.get(
+          "https://www.nocap.kr/api/nocap/comment/my",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        if (Array.isArray(res.data)) {
+          setCommentCount(res.data.length); // ✅ 댓글 개수 저장
+        }
+      } catch (err) {
+        console.error("댓글 개수 불러오기 실패:", err);
+      }
+    };
+
+    fetchCommentCount();
   }, [navigate]);
 
   const handleLogoutClick = () => {
@@ -173,7 +225,7 @@ const My = () => {
           <M.Component onClick={goAnal}>
             <div id="title">분석 기록</div>
             <div id="group">
-              <div id="num">10</div>
+              <div id="num">{analysisCount}</div> {/* ✅ 동적 출력 */}
               <div id="detail">개</div>
             </div>
           </M.Component>
@@ -187,7 +239,7 @@ const My = () => {
           <M.Component onClick={goComment}>
             <div id="title">내 댓글</div>
             <div id="group">
-              <div id="num">10</div>
+              <div id="num">{commentCount}</div> {/* ✅ 동적 출력 */}
               <div id="detail">개</div>
             </div>
           </M.Component>

@@ -47,11 +47,11 @@ export const Header = styled.div`
   width: 402px;
   height: 54px;
   flex-shrink: 0;
-  padding: 17px;
-  display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  display: inline-flex;
+  padding: 13px 175px 17px 16px;
   align-items: center;
+  gap: 143px;
 
   #menu {
     width: 32px;
@@ -68,12 +68,6 @@ export const Header = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 100% */
-  }
-
-  #search {
-    width: 23.999px;
-    height: 24px;
-    flex-shrink: 0;
   }
 `;
 
@@ -130,47 +124,59 @@ export const Body = styled.div`
 
 export const Search = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
+  flex-direction: column;
+  margin-top: 13px;
   gap: 10px;
-  margin-top: 64px;
+  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 64px;
+  }
+`;
+
+export const Input = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
 
   img {
-    width: 19.999px;
-    height: 19.998px;
-    aspect-ratio: 20/20;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
   }
 
   input {
-    width: 760px;
+    width: 312px;
+    border: none;
+    outline: none;
+    background: transparent;
     color: #000;
     font-family: Pretendard;
-    font-size: 18px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 111.111% */
-    outline: none;
-    border: none;
-    background: transparent;
+    line-height: 20px; /* 142.857% */
+  }
 
-    &placeholder {
-      color: #686868;
-      font-family: Pretendard;
+  @media screen and (min-width: 768px) {
+    width: 798px;
+
+    input {
       font-size: 18px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 20px; /* 111.111% */
     }
   }
 `;
 
 export const Hr = styled.div`
-  margin-top: 12px;
-  width: 806px;
-  height: 1px;
+  width: 352px;
+  height: 2px;
   flex-shrink: 0;
   background: #000;
+
+  @media screen and (min-width: 768px) {
+    width: 806px;
+  }
 `;
 
 export const Category = styled.div`
@@ -179,7 +185,7 @@ export const Category = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-top: 5px;
+  margin-top: 15px;
 
   div {
     color: #b2b2b2;
@@ -264,7 +270,7 @@ export const Up = styled.div`
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
     ),
-    url(${(props) => props.$bg});
+    url(${(props) => props.bgImage || "/images/news.jpg"});
   background-size: 368px 226px;
   background-position: top left;
   border-radius: 24px 24px 0 0;
@@ -287,9 +293,9 @@ export const Down = styled.div`
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
     ),
-    url(${(props) => props.$bg});
+    url(${(props) => props.bgImage || "/images/news.jpg"});
   background-size: 368px 226px;
-  background-position: left -37px;
+  background-position: left -37px; /* Up 높이만큼 올려서 이어지게 */
   border-radius: 0 0 24px 24px;
   display: flex;
   flex-direction: column;

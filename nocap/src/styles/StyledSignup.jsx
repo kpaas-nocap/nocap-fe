@@ -10,10 +10,19 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 402px;
+  width: 100%;
+  max-width: 402px;
   flex-shrink: 0;
-  padding-bottom: 200px;
-  align-items: center;
+  padding-bottom: 80px;
+
+  @media screen and (min-width: 768px) {
+    max-width: 100%; /* ✅ PC에서 화면이 꽉 차게 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fafbff;
+  }
 `;
 
 export const Header = styled.div`
@@ -21,6 +30,69 @@ export const Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+`;
+
+// 모바일에서만 보이게
+export const MobileOnly = styled.div`
+  display: block;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+// PC에서만 보이게
+export const DesktopOnly = styled.div`
+  display: none;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
+`;
+
+export const Head = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 130px 0 75px;
+  height: 100px;
+
+  #logo {
+    width: 188px;
+  }
+`;
+
+export const Menu = styled.div`
+  width: 800px;
+  // height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 120px;
+
+  #tag {
+    margin-top: 16px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 110% */
+    display: flex;
+
+    #circle {
+      margin-top: -3px;
+      margin-left: 130px;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background-color: #213ce9;
+      border-radius: 50%;
+      position: absolute;
+    }
+  }
 `;
 
 export const Back = styled.div`
@@ -45,6 +117,30 @@ export const Title = styled.div`
     font-weight: 600;
     line-height: 20px; /* 100% */
   }
+
+  @media screen and (min-width: 768px) {
+    margin-top: 43px;
+    display: flex;
+
+    div {
+      color: #000;
+      font-family: Pretendard;
+      font-size: 30px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+`;
+
+export const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 79px;
+  }
 `;
 
 export const Box = styled.div`
@@ -53,6 +149,17 @@ export const Box = styled.div`
   flex-direction: column;
   gap: 35px;
   margin-top: 72px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 33px;
+    width: 460px;
+    height: 551px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: #fff;
+    align-items: center;
+    padding: 54px 0 44px 0;
+  }
 `;
 
 export const Email = styled.div`
@@ -278,6 +385,8 @@ export const Agree = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  width: 368px;
+  align-items: start;
 `;
 
 export const Privacy = styled.div`
@@ -382,5 +491,9 @@ export const Enter = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 133.333% */
+  }
+
+  @media screen and (min-width: 768px) {
+    margin-top: -10px;
   }
 `;
