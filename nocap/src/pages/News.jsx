@@ -100,6 +100,41 @@ const News = () => {
     }
   }, [selectedCategory]);
 
+  // ✅ 뉴스 클릭 시 상세 페이지 이동 + 조회기록 저장
+  const handleNewsClick = async (item) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        navigate("/login/local");
+        return;
+      }
+
+      // ✅ 조회기록 저장
+      await axios.post(
+        "https://www.nocap.kr/api/nocap/history/record",
+        {
+          url: item.url,
+          title: item.title,
+          content: item.content,
+          date: item.date,
+          image: item.image,
+        },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      console.log("🟢 조회기록 저장 완료:", item.title);
+
+      // ✅ 상세 페이지 이동
+      navigate("/news/detail", { state: item });
+    } catch (error) {
+      console.error("⚠️ 뉴스 클릭 시 조회기록 저장 실패:", error);
+    }
+  };
+
   return (
     <N.Container>
       <N.MobileOnly>
@@ -190,7 +225,7 @@ const News = () => {
             newsList.map((item, idx) => (
               <N.Img
                 key={idx}
-                onClick={() => navigate("/news/detail", { state: item })}
+                onClick={() => handleNewsClick(item)} // ✅ 수정된 부분
               >
                 <N.Back />
                 <N.TImg>

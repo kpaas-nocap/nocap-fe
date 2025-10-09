@@ -113,6 +113,13 @@ export const Thumb = styled.div`
     url("/images/news.jpg");
   background-size: cover;
   background-position: center;
+  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
+  }
 `;
 
 export const Title = styled.div`
