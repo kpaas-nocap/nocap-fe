@@ -20,23 +20,6 @@ const Main = () => {
     setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
   }, []);
 
-  // 인기뉴스 가져오기
-  useEffect(() => {
-    const fetchPopNews = async () => {
-      try {
-        const res = await axios.get("https://www.nocap.kr/api/nocap/popnews");
-        if (res.data && res.data.length > 0) {
-          setPopNewsList(res.data);
-          setCurrentNewsIndex(0); // 첫 뉴스부터 시작
-        }
-      } catch (err) {
-        console.error("❌ 인기뉴스 불러오기 실패:", err);
-      }
-    };
-
-    fetchPopNews();
-  }, []);
-
   const rankData = [
     {
       title: "습지는 메탄 배출의 원흉이다.",
@@ -81,15 +64,77 @@ const Main = () => {
   const [popNewsList, setPopNewsList] = useState([]); // 전체 인기뉴스 리스트
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0); // 현재 보여줄 인덱스
 
-  const handlePrevNews = () => {
-    setCurrentNewsIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  // ✅ 인기뉴스 전체 불러오기
+  useEffect(() => {
+    const fetchPopNews = async () => {
+      try {
+        const res = await axios.get("https://www.nocap.kr/api/nocap/popnews");
+        if (res.data && res.data.length > 0) {
+          setPopNewsList(res.data);
+          setCurrentNewsIndex(0);
+        }
+      } catch (err) {
+        console.error("❌ 인기뉴스 불러오기 실패:", err);
+      }
+    };
+    fetchPopNews();
+  }, []);
+
+  // ✅ axios import 이미 있음
+
+  // ✅ 자세히 보기 버튼 클릭 시 뉴스 상세 불러오기 + 조회기록 저장
+  const handleMoreClick = async () => {
+    try {
+      const selectedNews = popNewsList[currentNewsIndex];
+      if (!selectedNews) return;
+
+      const token = localStorage.getItem("accessToken");
+
+      // ✅ popNewsId로 뉴스 상세 API 호출
+      const detailRes = await axios.get(
+        `https://www.nocap.kr/api/nocap/popnews/${selectedNews.popNewsId}`
+      );
+      const detailedNews = detailRes.data;
+
+      // ✅ 조회기록 저장
+      try {
+        await axios.post(
+          "https://www.nocap.kr/api/nocap/history/record",
+          {
+            url: detailedNews.url,
+            title: detailedNews.title,
+            content: detailedNews.content,
+            date: detailedNews.date,
+            image: detailedNews.image,
+          },
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+        console.log("🟢 조회기록 저장 완료");
+      } catch (historyErr) {
+        console.error("⚠️ 조회기록 저장 실패:", historyErr);
+      }
+
+      // ✅ NDetail로 이동
+      navigate("/news/detail", {
+        state: detailedNews,
+      });
+    } catch (err) {
+      console.error("❌ 인기뉴스 상세 불러오기 실패:", err);
+      alert("뉴스 상세 정보를 불러올 수 없습니다.");
+    }
   };
 
-  const handleNextNews = () => {
+  // ✅ 이전/다음 인기뉴스 이동
+  const handlePrevNews = () =>
+    setCurrentNewsIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  const handleNextNews = () =>
     setCurrentNewsIndex((prev) =>
       prev < popNewsList.length - 1 ? prev + 1 : prev
     );
-  };
 
   return (
     <M.Container>
@@ -182,14 +227,8 @@ const Main = () => {
               <M.Tit>
                 {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
               </M.Tit>
-              <M.More
-                onClick={() =>
-                  navigate("/news/detail", {
-                    state: popNewsList[currentNewsIndex], // 현재 보고 있는 뉴스 하나
-                  })
-                }
-                style={{ cursor: "pointer" }}
-              >
+
+              <M.More onClick={handleMoreClick} style={{ cursor: "pointer" }}>
                 <div id="det">자세히 보기</div>
                 <div id="hr" />
               </M.More>

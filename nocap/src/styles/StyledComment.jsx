@@ -99,9 +99,10 @@ export const News = styled.div`
   img {
     width: 55px;
     height: 55px;
+    overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
     flex-shrink: 0;
     border-radius: 5px;
-    border: 1px solid #213ce9;
     background: lightgray 50% / cover no-repeat;
   }
 `;

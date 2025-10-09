@@ -136,10 +136,12 @@ export const Img = styled.div`
   height: 130px;
   flex-shrink: 0;
   border-radius: 15px;
+  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
 
   img {
-    width: 130px;
-    height: 130px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
     flex-shrink: 0;
     border-radius: 15px;
   }

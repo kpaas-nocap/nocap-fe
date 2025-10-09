@@ -25,19 +25,19 @@ const LocalLogin = () => {
   const goFind = () => navigate(`/find`);
   const goMain = () => navigate(`/`);
   const goLogin = () => navigate(`/login/local`);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // ✅ 1️⃣ 컴포넌트가 마운트될 때 localStorage 에 저장된 이메일 불러오기
   useEffect(() => {
-    const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
-    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
+    const savedEmail = localStorage.getItem("savedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setIsSChecked(true); // 체크박스도 자동으로 체크되게
+    }
   }, []);
 
-  // ✅ 로그인 함수
+  // ✅ 2️⃣ 로그인 함수 수정
   const handleLogin = async () => {
-    const loginData = {
-      userId: email,
-      password: password,
-    };
+    const loginData = { userId: email, password: password };
 
     console.log("📤 로그인 시도:", loginData);
 
@@ -46,35 +46,35 @@ const LocalLogin = () => {
         "https://www.nocap.kr/auth/form/login",
         loginData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
-      // ✅ 응답 출력
-      console.log("✅ 로그인 성공!");
-      console.log("📥 서버 응답:", response.data);
-      console.log("🔐 Access Token:", response.headers["authorization"]);
+      console.log("✅ 로그인 성공!", response.data);
 
-      // ✅ 토큰 저장
       const token = response.headers["authorization"];
-      if (token) {
-        localStorage.setItem("accessToken", token);
+      if (token) localStorage.setItem("accessToken", token);
+
+      // ✅ 아이디 저장 처리
+      if (isSChecked) {
+        localStorage.setItem("savedEmail", email); // 이메일 저장
+      } else {
+        localStorage.removeItem("savedEmail"); // 저장 해제 시 삭제
       }
 
-      // ✅ 원하는 페이지로 이동 (예: 홈 또는 마이페이지)
       navigate("/");
     } catch (error) {
       console.error("❌ 로그인 실패:", error);
       if (error.response) {
-        console.error("📛 서버 응답 오류:", error.response.data);
         alert("이메일 또는 비밀번호가 올바르지 않습니다.");
       } else {
         alert("서버에 문제가 발생했습니다.");
       }
     }
   };
+
+  // ✅ 아이디 저장 토글
+  const toggleSaveId = () => setIsSChecked((prev) => !prev);
 
   const handleKakaoLogin = async () => {
     try {
@@ -223,13 +223,11 @@ const LocalLogin = () => {
               </L.InputP>
             </L.PW>
             <L.Check>
-              <L.SCheckBox
-                checked={isSChecked}
-                onClick={() => setIsSChecked(!isSChecked)}
-              >
+              <L.SCheckBox checked={isSChecked} onClick={toggleSaveId}>
                 {isSChecked && <L.CheckIcon>✔</L.CheckIcon>}
               </L.SCheckBox>
               <L.Save>아이디 저장</L.Save>
+
               <L.KCheckBox
                 checked={isKChecked}
                 onClick={() => setIsKChecked(!isKChecked)}
