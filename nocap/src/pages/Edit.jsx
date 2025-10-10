@@ -12,9 +12,13 @@ const Edit = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showRPassword, setShowRPassword] = useState(false);
+  const [showNPw, setShowNPw] = useState(false);
+
+  const [currentPassword, setCurrentPassword] = useState(""); // 🔐 현재 비밀번호
+  const [newPassword, setNewPassword] = useState(""); // 🆕 새 비밀번호
+  const [confirmPassword, setConfirmPassword] = useState(""); // 🧾 비밀번호 확인
 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passwordError, setPasswordError] = useState("");
   const [confirmError, setConfirmError] = useState("");
@@ -184,6 +188,25 @@ const Edit = () => {
             </E.Input>
           </E.Comp>
           <E.Comp>
+            <E.Title>현재 비밀번호 </E.Title>
+            <E.Input>
+              <input
+                type={showNPw ? "password" : "text"}
+                placeholder="현재 비밀번호를 입력하세요."
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/${
+                  showNPw ? "eye_c.svg" : "eye_o.svg"
+                }`}
+                alt={showNPw ? "close" : "open"}
+                onClick={() => setShowNPw(!showNPw)}
+                style={{ cursor: "pointer" }}
+              />
+            </E.Input>
+          </E.Comp>
+          <E.Comp style={{ marginTop: "55px" }}>
             <E.Title>새 비밀번호</E.Title>
             <E.Input>
               <input

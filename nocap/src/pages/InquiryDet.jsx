@@ -6,6 +6,10 @@ import axios from "axios";
 const InquiryDet = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const goMain = () => navigate(`/`);
+  const goNews = () => navigate(`/news`);
+  const goMy = () => navigate(`/my`);
+  const goEdit = () => navigate(`/my/edit`);
 
   // ✅ 드롭다운 상태
   const [isOpen, setIsOpen] = useState(false);
@@ -106,81 +110,175 @@ const InquiryDet = () => {
 
   return (
     <I.Container>
-      <I.Header>
-        <img
-          onClick={goBack}
-          src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
-          alt="back"
-        />
-        <div>문의하기</div>
-      </I.Header>
+      <I.MobileOnly>
+        <I.Header>
+          <img
+            onClick={goBack}
+            src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
+            alt="back"
+          />
+          <div>문의하기</div>
+        </I.Header>
+      </I.MobileOnly>
 
-      <I.Body>
-        <I.List>
-          <I.Comp>
-            <div id="title">이름(닉네임)</div>
-            <I.Input>
-              <div id="username">{userInfo.username || "불러오는 중..."}</div>
-            </I.Input>
-          </I.Comp>
+      <I.DesktopOnly>
+        <I.Head>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
+            alt="logo"
+            id="logo"
+          />
+          <I.Menu>
+            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+              홈
+            </div>
+            <div id="tag" title="NOCAP 서비스 소개">
+              NOCAP 소개
+            </div>
+            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+              뉴스
+            </div>
+            <div id="tag">
+              마이페이지
+              <div id="circle" />
+            </div>
+          </I.Menu>
+        </I.Head>
+      </I.DesktopOnly>
 
-          {/* ✅ 이메일 input */}
-          <I.Comp>
-            <div id="title">이메일</div>
-            <I.Input>
-              <input
-                type="text"
-                placeholder="이메일을 입력하세요."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </I.Input>
-          </I.Comp>
+      <I.DesktopOnly>
+        <I.Nav>
+          <I.NComp onClick={goMy}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/point_n.png`}
+              alt="point"
+            />
+            <div>내 포인트</div>
+          </I.NComp>
+          <I.NComp>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
+              alt="point"
+            />
+            <div>프리미엄</div>
+          </I.NComp>
+          <I.NComp onClick={goEdit}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+              alt="point"
+            />
+            <div>프로필 수정</div>
+          </I.NComp>
+          <I.NComp>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
+              alt="point"
+            />
+            <div>구매내역</div>
+          </I.NComp>
+          <I.NComp>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/inquiry_c.png`}
+              alt="point"
+            />
+            <div>문의하기</div>
+          </I.NComp>
+        </I.Nav>
+      </I.DesktopOnly>
 
-          {/* ✅ 드롭다운 */}
-          <I.Comp>
-            <div id="title">문의내용 분류</div>
-            <I.Input onClick={() => setIsOpen(!isOpen)}>
-              <input
-                type="text"
-                placeholder="선택 안 함"
-                value={selectedOption}
-                readOnly
-              />
+      <I.Box>
+        <I.DesktopOnly>
+          <I.Up>
+            <I.Prof>
+              <div>{userInfo.username}님</div>
               <img
-                src={`${process.env.PUBLIC_URL}/images/drop.svg`}
-                alt="drop"
-                style={{ cursor: "pointer" }}
+                src={`${process.env.PUBLIC_URL}/images/profile.png`}
+                alt="profile"
               />
-            </I.Input>
+            </I.Prof>
+          </I.Up>
+        </I.DesktopOnly>
 
-            {isOpen && (
-              <I.Dropdown>
-                {options.map((option) => (
-                  <I.Option key={option} onClick={() => handleSelect(option)}>
-                    {option}
-                  </I.Option>
-                ))}
-              </I.Dropdown>
-            )}
-          </I.Comp>
+        <I.Body>
+          <I.List>
+            <I.Comp>
+              <div id="title">이름(닉네임)</div>
+              <I.Input>
+                <div id="username">{userInfo.username || "불러오는 중..."}</div>
+              </I.Input>
+            </I.Comp>
 
-          {/* ✅ 문의내용 */}
-          <I.Comp>
-            <div id="title">문의내용</div>
-            <I.Text>
-              <textarea
-                id="content"
-                placeholder="문의내용을 입력하세요"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              ></textarea>
-            </I.Text>
-          </I.Comp>
-        </I.List>
-      </I.Body>
+            {/* ✅ 이메일 input */}
+            <I.Comp>
+              <div id="title">이메일</div>
+              <I.Input>
+                <input
+                  type="text"
+                  placeholder="이메일을 입력하세요."
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </I.Input>
+            </I.Comp>
 
-      <I.Button onClick={handleSubmit}>등록하기</I.Button>
+            {/* ✅ 드롭다운 */}
+            <I.Comp>
+              <div id="title">문의내용 분류</div>
+              <I.Input onClick={() => setIsOpen(!isOpen)}>
+                <input
+                  type="text"
+                  placeholder="선택 안 함"
+                  value={selectedOption}
+                  readOnly
+                />
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/drop.svg`}
+                  alt="drop"
+                  style={{ cursor: "pointer" }}
+                />
+              </I.Input>
+
+              {isOpen && (
+                <I.Dropdown>
+                  {options.map((option) => (
+                    <I.Option key={option} onClick={() => handleSelect(option)}>
+                      {option}
+                    </I.Option>
+                  ))}
+                </I.Dropdown>
+              )}
+            </I.Comp>
+
+            {/* ✅ 문의내용 */}
+            <I.Comp>
+              <div id="title">문의내용</div>
+              <I.Text>
+                <textarea
+                  id="content"
+                  placeholder="문의내용을 입력하세요"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                ></textarea>
+              </I.Text>
+            </I.Comp>
+          </I.List>
+        </I.Body>
+
+        <I.MobileOnly>
+          <I.Button onClick={handleSubmit}>등록하기</I.Button>
+        </I.MobileOnly>
+
+        <I.DesktopOnly>
+          <I.Btn>
+            <div id="see" onClick={goBack}>
+              문의내역 보기
+            </div>
+            <div id="go" onClick={handleSubmit}>
+              등록하기
+            </div>
+          </I.Btn>
+        </I.DesktopOnly>
+      </I.Box>
     </I.Container>
   );
 };

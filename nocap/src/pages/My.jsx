@@ -19,6 +19,7 @@ const My = () => {
   const goMain = () => navigate(`/`);
   const goNews = () => navigate(`/news`);
   const goEdit = () => navigate(`/my/edit`);
+  const goInquiry = () => navigate(`/my/inquiry`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
@@ -142,6 +143,9 @@ const My = () => {
     };
 
     fetchHistoryCount(); // ✅ 호출 추가
+
+    // ✅ 페이지 처음 로딩 시 "최근 본 뉴스" 탭 데이터 자동 불러오기
+    fetchTabData(0);
   }, [navigate]);
 
   const handleLogoutClick = () => {
@@ -382,7 +386,7 @@ const My = () => {
             />
             <div>구매내역</div>
           </M.NComp>
-          <M.NComp>
+          <M.NComp onClick={goInquiry}>
             <img
               src={`${process.env.PUBLIC_URL}/images/inquiry_n.png`}
               alt="point"

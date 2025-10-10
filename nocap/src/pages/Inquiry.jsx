@@ -7,8 +7,15 @@ const Inquiry = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const goWrite = () => navigate(`/my/inquiry/write`);
+  const goMain = () => navigate(`/`);
+  const goNews = () => navigate(`/news`);
+  const goEdit = () => navigate(`/my/edit`);
+  const goMy = () => navigate(`/my`);
 
   const [inquiries, setInquiries] = useState([]);
+
+  const [username, setUsername] = useState(""); // 사용자 이름
+  const [newUsername, setNewUsername] = useState(""); // 수정용 이름 입력값
 
   // ✅ category 영어 → 한글 변환 맵
   const categoryMap = {
@@ -59,45 +66,165 @@ const Inquiry = () => {
     return `${yyyy}. ${mm}. ${dd} ${hh}:${min}:${ss}`;
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.warn("토큰이 없습니다.");
+          return;
+        }
+
+        const res = await fetch("https://www.nocap.kr/api/nocap/user/me", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error("유저 정보 조회 실패");
+
+        const data = await res.json();
+
+        setUsername(data.username);
+        setNewUsername(data.username); // input에 초기값 설정
+      } catch (err) {
+        console.error("유저 정보 불러오기 실패:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <I.Container>
-      <I.Header>
-        <img
-          onClick={goBack}
-          src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
-          alt="back"
-        />
-        <div>1:1 문의</div>
-      </I.Header>
+      <I.MobileOnly>
+        <I.Header>
+          <img
+            onClick={goBack}
+            src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
+            alt="back"
+          />
+          <div>1:1 문의</div>
+        </I.Header>
+      </I.MobileOnly>
 
-      <I.Body>
-        {inquiries.length > 0 ? (
-          inquiries.map((item) => (
-            <I.Comp key={item.questionId}>
-              <I.Element onClick={() => goCom(item.questionId, item.status)}>
-                <I.Detail>
-                  {/* ✅ 영어 카테고리를 한글로 변환 */}
-                  <div id="category">
-                    {categoryMap[item.category] || item.category}
+      <I.DesktopOnly>
+        <I.Head>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
+            alt="logo"
+            id="logo"
+          />
+          <I.Menu>
+            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+              홈
+            </div>
+            <div id="tag" title="NOCAP 서비스 소개">
+              NOCAP 소개
+            </div>
+            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+              뉴스
+            </div>
+            <div id="tag">
+              마이페이지
+              <div id="circle" />
+            </div>
+          </I.Menu>
+        </I.Head>
+      </I.DesktopOnly>
+
+      <I.DesktopOnly>
+        <I.Nav>
+          <I.NComp onClick={goMy}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/point_n.png`}
+              alt="point"
+            />
+            <div>내 포인트</div>
+          </I.NComp>
+          <I.NComp>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
+              alt="point"
+            />
+            <div>프리미엄</div>
+          </I.NComp>
+          <I.NComp onClick={goEdit}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+              alt="point"
+            />
+            <div>프로필 수정</div>
+          </I.NComp>
+          <I.NComp>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
+              alt="point"
+            />
+            <div>구매내역</div>
+          </I.NComp>
+          <I.NComp>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/inquiry_c.png`}
+              alt="point"
+            />
+            <div>문의하기</div>
+          </I.NComp>
+        </I.Nav>
+      </I.DesktopOnly>
+
+      <I.Box>
+        <I.DesktopOnly>
+          <I.Up>
+            <I.Prof>
+              <div>{username}님</div>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/profile.png`}
+                alt="profile"
+              />
+            </I.Prof>
+            {/* <img
+              id="pencil"
+              src={`${process.env.PUBLIC_URL}/images/pencil.svg`}
+              alt="write"
+            /> */}
+            <div id="write" onClick={goWrite}>
+              새 문의 작성
+            </div>
+          </I.Up>
+        </I.DesktopOnly>
+
+        <I.Body>
+          {inquiries.length > 0 ? (
+            inquiries.map((item) => (
+              <I.Comp key={item.questionId}>
+                <I.Element onClick={() => goCom(item.questionId, item.status)}>
+                  <I.Detail>
+                    {/* ✅ 영어 카테고리를 한글로 변환 */}
+                    <div id="category">
+                      {categoryMap[item.category] || item.category}
+                    </div>
+                    <div id="title">{item.content || "내용 없음"}</div>
+                    <div id="date">작성일 {formatDate(item.createdAt)}</div>
+                  </I.Detail>
+                  <div id="success">
+                    {item.status === "Done" ? "답변완료" : "미답변"}
                   </div>
-                  <div id="title">{item.content || "내용 없음"}</div>
-                  <div id="date">작성일 {formatDate(item.createdAt)}</div>
-                </I.Detail>
-                <div id="success">
-                  {item.status === "Done" ? "답변완료" : "미답변"}
-                </div>
-              </I.Element>
-              <I.Hr />
-            </I.Comp>
-          ))
-        ) : (
-          <div style={{ textAlign: "center", marginTop: "50px" }}>
-            문의 내역이 없습니다.
-          </div>
-        )}
-      </I.Body>
+                </I.Element>
+                <I.Hr />
+              </I.Comp>
+            ))
+          ) : (
+            <div style={{ textAlign: "center", marginTop: "50px" }}>
+              문의 내역이 없습니다.
+            </div>
+          )}
+        </I.Body>
 
-      <I.Button onClick={goWrite}>새 문의 작성</I.Button>
+        <I.MobileOnly>
+          <I.Button onClick={goWrite}>새 문의 작성</I.Button>
+        </I.MobileOnly>
+      </I.Box>
     </I.Container>
   );
 };
