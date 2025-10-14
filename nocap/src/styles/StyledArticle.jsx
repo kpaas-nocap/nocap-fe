@@ -255,16 +255,22 @@ export const Img = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
+  width: 368px;
 
   img {
-    width: 368px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
   }
 
   @media screen and (min-width: 768px) {
     margin-top: 50px;
+    width: 620px;
 
     img {
       width: 100%;
+      object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
     }
   }
 `;
@@ -308,7 +314,7 @@ export const Content = styled.div`
   font-family: Pretendard;
   font-size: 16px;
   font-weight: 500;
-  line-height: 25px;
+  line-height: 1.6; /* ✅ 줄 간격 늘림 */
 
   max-height: ${({ expanded }) => (expanded ? "none" : "125px")};
   /* 25px(line-height) x 5줄 = 125px */
@@ -397,7 +403,7 @@ export const RTitle = styled.div`
 export const List = styled.div`
   width: 368px;
   margin-top: 20px;
-  gap: 20px;
+  gap: 40px;
   display: flex;
   flex-direction: column;
   margin-bottom: 80px;
@@ -429,6 +435,8 @@ export const Text = styled.div`
   flex-direction: column;
   text-align: start;
   width: 239px;
+  height: 100%;
+  justify-content: space-between;
 `;
 
 export const ATitle = styled.div`
@@ -486,7 +494,7 @@ export const Dropdown = styled.div`
     font-size: 13px;
     font-style: normal;
     font-weight: 600;
-    line-height: normal;
+    line-height: 1.6; /* ✅ 줄 간격 늘림 */
     list-style-position: inside; /* ✅ bullet을 ul 내부로 이동 */
     padding-left: 1.5em; /* 전체 들여쓰기 (점 + 여백 확보) */
     text-indent: -1.2em; /* 첫 줄만 당겨서 점 옆으로 맞추기 */

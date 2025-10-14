@@ -474,9 +474,11 @@ export const List = styled.div`
   @media screen and (min-width: 768px) {
     width: 1030px;
     height: 235px;
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
+// ✅ props로 image 받기
 export const Component = styled.div`
   width: 178px;
   height: 136px;
@@ -485,17 +487,17 @@ export const Component = styled.div`
   margin-top: 10px;
   padding: 0 10px 10px 10px;
 
-  /* 배경 이미지 + 그 위에 반투명 블랙 그라데이션 오버레이 */
   background-image: linear-gradient(
       0deg,
       rgba(0, 0, 0, 0.5) 0%,
       rgba(0, 0, 0, 0.5) 100%
     ),
-    url("/images/news.jpg");
+    url(${(props) => props.$bgImage || "/images/news.jpg"});
   background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
 
   div {
     color: #fff;
@@ -505,39 +507,25 @@ export const Component = styled.div`
     font-weight: 700;
     line-height: normal;
     letter-spacing: -0.28px;
-    word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
-    overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
+    word-break: keep-all;
+    overflow-wrap: break-word;
     display: -webkit-box;
-    -webkit-line-clamp: 2; // 최대 2줄
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: auto; // 아래로 밀어내기
+    margin-top: auto;
   }
 
   @media screen and (min-width: 768px) {
     width: 330px;
     height: 235px;
-    flex-shrink: 0;
     padding: 20px;
     margin-top: 60px;
 
     div {
-      color: #fff;
-      font-family: Pretendard;
       font-size: 20px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
       letter-spacing: -0.4px;
-      word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
-      overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
-      display: -webkit-box;
-      -webkit-line-clamp: 2; // 최대 2줄
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: auto; // 아래로 밀어내기
     }
   }
 `;

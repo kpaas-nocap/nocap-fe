@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as E from "../styles/StyledEdit";
+import axios from "axios";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const Edit = () => {
 
   const [username, setUsername] = useState(""); // 사용자 이름
   const [newUsername, setNewUsername] = useState(""); // 수정용 이름 입력값
+
+  const [userId, setUserId] = useState("");
 
   // ✅ 비밀번호 조건 검사 함수
   const validatePassword = (value) => {
@@ -79,6 +82,7 @@ const Edit = () => {
 
         setUsername(data.username);
         setNewUsername(data.username); // input에 초기값 설정
+        setUserId(data.userId); // ✅ 여기 추가
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
       }
@@ -86,6 +90,47 @@ const Edit = () => {
 
     fetchUser();
   }, []);
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      // 비밀번호 확인 에러 있을 경우 요청 방지
+      if (confirmError || passwordError) {
+        alert("입력값을 확인해주세요.");
+        return;
+      }
+
+      // 필드 구성 (입력된 값만 전송)
+      const payload = {
+        userId,
+        ...(newUsername && { username: newUsername }),
+        ...(currentPassword && { currentPassword }),
+        ...(password && { newPassword: password }),
+      };
+
+      const res = await axios.patch(
+        "https://www.nocap.kr/api/nocap/user/update",
+        payload,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      alert("정보가 성공적으로 수정되었습니다.");
+      navigate("/my"); // 예: 마이페이지로 이동
+    } catch (error) {
+      console.error("정보 수정 실패:", error);
+      alert("정보 수정에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <E.Container>
@@ -271,13 +316,15 @@ const Edit = () => {
         </E.Body>
 
         <E.MobileOnly>
-          <E.Button>완료</E.Button>
+          <E.Button onClick={handleSave}>완료</E.Button>
         </E.MobileOnly>
 
         <E.DesktopOnly>
           <E.But>
             <div id="out">회원 탈퇴하기</div>
-            <div id="save">저장하기</div>
+            <div id="save" onClick={handleSave}>
+              저장하기
+            </div>
           </E.But>
         </E.DesktopOnly>
       </E.Box>

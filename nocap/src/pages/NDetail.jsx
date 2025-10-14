@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import * as N from "../styles/StyledNDet";
+import axios from "axios";
 
 function formatContentToParagraphs(content) {
   if (!content) return [];
@@ -32,7 +33,6 @@ const NDetail = () => {
   const navigate = useNavigate();
 
   const goBack = () => navigate(-1);
-  const goCheck = () => navigate(`/loading`);
   const goAnal = () => navigate(`/analysis`);
   const goMy = () => navigate(`/my`);
   const goMain = () => navigate(`/`);
@@ -77,6 +77,73 @@ const NDetail = () => {
   const formattedParagraphs = formatContentToParagraphs(news?.content);
 
   const { popNewsId } = location.state || {}; // 혹시 필요 시
+
+  const goCheck = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login/local");
+      return;
+    }
+
+    // ✅ 로딩 페이지로 이동
+    navigate("/loading");
+
+    try {
+      // 1️⃣ 현재 로그인한 사용자 정보 조회
+      const userRes = await axios.get(
+        "https://www.nocap.kr/api/nocap/user/me",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      const userId = userRes.data.id;
+      console.log("✅ 로그인한 userId:", userId);
+
+      // 2️⃣ 뉴스 데이터 변환
+      const searchNewsDto = {
+        url: news?.url || "",
+        title: news?.title || "",
+        content: news?.content || "",
+        date: news?.date || "",
+        image: news?.image || "",
+      };
+
+      console.log("📦 전송할 searchNewsDto:", searchNewsDto);
+
+      // 3️⃣ 분석 요청 (plan: PREMIUM 추가)
+      const analysisRes = await axios.post(
+        "https://www.nocap.kr/api/nocap/analysis",
+        {
+          userId: userId,
+          plan: "PREMIUM", // ✅ 추가
+          searchNewsDto: searchNewsDto,
+        },
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("✅ 분석 결과:", analysisRes.data);
+
+      // 4️⃣ 분석 결과 페이지로 이동 (analysisId만 전달)
+      if (analysisRes.status === 200) {
+        navigate("/analysis/article", {
+          state: { analysisId: analysisRes.data.analysisId }, // ✅ 전달
+        });
+      }
+    } catch (error) {
+      console.error("❌ 분석 요청 실패:", error);
+      alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+      navigate(-1);
+    }
+  };
 
   return (
     <N.Container>

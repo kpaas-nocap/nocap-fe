@@ -136,6 +136,40 @@ const Main = () => {
       prev < popNewsList.length - 1 ? prev + 1 : prev
     );
 
+  const [analysisList, setAnalysisList] = useState([]);
+
+  useEffect(() => {
+    const fetchAnalysis = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await axios.get("https://www.nocap.kr/api/nocap/analysis", {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        if (res.data) {
+          const sorted = [...res.data].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setAnalysisList(sorted.slice(0, 3)); // 최신 3개만
+        }
+      } catch (err) {
+        console.error("❌ 분석 뉴스 목록 불러오기 실패:", err);
+      }
+    };
+
+    fetchAnalysis();
+  }, []);
+
+  const handleAnalysisClick = (analysisId) => {
+    navigate("/analysis/article", {
+      state: { analysisId },
+    });
+  };
+
   return (
     <M.Container>
       <M.Header>
@@ -264,9 +298,15 @@ const Main = () => {
         <M.Recent>
           <M.Title>최근 팩트체크</M.Title>
           <M.List>
-            <M.Component>
-              <div>진짜 장마 온다… 내일 오후부터 토요일까지 전국에 많은 비</div>
-            </M.Component>
+            {analysisList.map((item) => (
+              <M.Component
+                key={item.analysisId}
+                $bgImage={item.image} // ✅ 여기서 이미지 props 전달
+                onClick={() => handleAnalysisClick(item.analysisId)}
+              >
+                <div>{item.mainNewsTitle}</div>
+              </M.Component>
+            ))}
           </M.List>
         </M.Recent>
       </M.Body>
