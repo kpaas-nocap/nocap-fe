@@ -814,7 +814,7 @@ export const Comp = styled.div`
   margin-top: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
 
   @media screen and (min-width: 768px) {
     margin-top: 23px;

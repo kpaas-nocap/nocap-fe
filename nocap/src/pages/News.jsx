@@ -102,14 +102,17 @@ const News = () => {
 
   // ✅ 뉴스 클릭 시 상세 페이지 이동 + 조회기록 저장
   const handleNewsClick = async (item) => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        navigate("/login/local");
-        return;
-      }
+    const token = localStorage.getItem("accessToken");
 
-      // ✅ 조회기록 저장
+    // ✅ 토큰 없으면 기록 저장은 건너뛰고 바로 이동만
+    if (!token) {
+      console.log("🔒 로그인되지 않음 → 기록 저장 생략");
+      navigate("/news/detail", { state: item });
+      return;
+    }
+
+    try {
+      // ✅ 로그인된 경우에만 조회기록 저장
       await axios.post(
         "https://www.nocap.kr/api/nocap/history/record",
         {
@@ -127,12 +130,12 @@ const News = () => {
       );
 
       console.log("🟢 조회기록 저장 완료:", item.title);
-
-      // ✅ 상세 페이지 이동
-      navigate("/news/detail", { state: item });
     } catch (error) {
       console.error("⚠️ 뉴스 클릭 시 조회기록 저장 실패:", error);
     }
+
+    // ✅ 상세 페이지로는 항상 이동
+    navigate("/news/detail", { state: item });
   };
 
   return (

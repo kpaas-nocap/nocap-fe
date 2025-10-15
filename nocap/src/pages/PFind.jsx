@@ -111,7 +111,6 @@ const PFind = () => {
 
           <P.DesktopOnly>
             <P.Go>
-              <P.Signup onClick={goReset}>비밀번호 재설정</P.Signup>
               <P.Login onClick={handleFindPassword}>비밀번호 찾기</P.Login>
             </P.Go>
           </P.DesktopOnly>
@@ -120,7 +119,6 @@ const PFind = () => {
 
       <P.MobileOnlyBut>
         <P.Go>
-          <P.Signup onClick={goReset}>비밀번호 재설정</P.Signup>
           <P.Login onClick={handleFindPassword}>비밀번호 찾기</P.Login>
         </P.Go>
       </P.MobileOnlyBut>

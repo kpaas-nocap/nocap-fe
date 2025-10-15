@@ -254,7 +254,7 @@ export const Signup = styled.div`
 
 export const Login = styled.div`
   display: flex;
-  width: 184px;
+  width: 368px;
   height: 53px;
   justify-content: center;
   align-items: center;

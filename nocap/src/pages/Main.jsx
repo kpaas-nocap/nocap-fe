@@ -142,7 +142,6 @@ const Main = () => {
     const fetchAnalysis = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        if (!token) return;
 
         const res = await axios.get("https://www.nocap.kr/api/nocap/analysis", {
           headers: {
@@ -296,7 +295,7 @@ const Main = () => {
         </M.DesktopOnly>
 
         <M.Recent>
-          <M.Title>최근 팩트체크</M.Title>
+          <M.Title>최근 분석된 기사</M.Title>
           <M.List>
             {analysisList.map((item) => (
               <M.Component

@@ -245,6 +245,7 @@ const My = () => {
               newsImage: news.image,
               newsTitle: news.mainNewsTitle,
               newsDate: formatDate(news.date),
+              analysisId: news.analysisId, // ✅ 추가
             };
           });
 
@@ -259,10 +260,15 @@ const My = () => {
 
       if (index === 0) {
         const res = await axios.get("https://www.nocap.kr/api/nocap/history", {
-          headers: { Authorization: token },
+          headers: { Authorization: `${token}` },
         });
+
         result = res.data.map((item) => ({
+          id: item.id,
+          url: item.url,
           title: item.title,
+          content: item.content,
+          date: item.date,
           image: item.image,
         }));
       } else if (index === 1) {
@@ -275,6 +281,7 @@ const My = () => {
         result = res.data.map((item) => ({
           title: item.mainNewsTitle,
           image: item.image,
+          analysisId: item.analysisId, // ✅ 추가
         }));
       } else if (index === 2) {
         const bookmarkRes = await axios.get(
@@ -297,6 +304,7 @@ const My = () => {
         result = detailRes.map((r) => ({
           title: r.data.mainNewsTitle,
           image: r.data.image,
+          analysisId: r.data.analysisId, // ✅ 추가
         }));
       }
 
@@ -309,6 +317,41 @@ const My = () => {
   const handleTabClick = (index) => {
     setSelected(index);
     fetchTabData(index);
+  };
+
+  const handleNavigateToAnalysis = (id) => {
+    navigate("/analysis/article", {
+      state: { analysisId: id },
+    });
+  };
+
+  const handleNavigateToNewsDetailFromHistory = async (historyId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      // ✅ 상세조회 API 호출
+      const res = await axios.get(
+        `https://www.nocap.kr/api/nocap/history/${historyId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      // ✅ 필요한 데이터만 추출
+      const { id, createdAt, ...newsData } = res.data;
+
+      // ✅ 상세페이지로 이동
+      navigate("/news/detail", { state: newsData });
+    } catch (err) {
+      console.error("❌ 최근 본 뉴스 상세 조회 실패:", err);
+      alert("뉴스 상세 정보를 불러오는 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -532,7 +575,10 @@ const My = () => {
               {selected === 3 ? (
                 <M.CommentList>
                   {commentList.map((item, i) => (
-                    <M.CommentItem key={i}>
+                    <M.CommentItem
+                      key={i}
+                      onClick={() => handleNavigateToAnalysis(item.analysisId)} // ✅ 클릭 시 이동
+                    >
                       <M.Content>{item.content}</M.Content>
                       <M.News>
                         <img src={item.newsImage} alt="image" />
@@ -552,7 +598,19 @@ const My = () => {
               ) : (
                 <M.Li>
                   {compList.map((item, i) => (
-                    <M.Comp key={i}>
+                    <M.Comp
+                      key={i}
+                      onClick={() => {
+                        console.log("🟡 item:", item); // ✅ 이거 찍어봐야 함
+                        console.log("🟢 item.id:", item.id); // ✅ 이거도 확인
+                        if (selected === 0) {
+                          // ✅ '최근 본 뉴스' 탭이면 상세조회 API 호출
+                          handleNavigateToNewsDetailFromHistory(item.id);
+                        } else {
+                          handleNavigateToAnalysis(item.analysisId);
+                        }
+                      }}
+                    >
                       <img src={item.image} alt="preview" />
                       <div>{item.title}</div>
                     </M.Comp>

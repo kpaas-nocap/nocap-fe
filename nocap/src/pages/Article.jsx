@@ -22,6 +22,38 @@ const Article = () => {
   const [analysisData, setAnalysisData] = useState(null); // ✅ 분석 데이터 상태 추가
   const [loading, setLoading] = useState(true);
 
+  const [maskedUsername, setMaskedUsername] = useState("사용자");
+
+  const maskUsername = (username = "") => {
+    if (username.length <= 1) return "*";
+    const visibleLength = Math.ceil(username.length / 2); // 반띵
+    const visible = username.slice(0, visibleLength);
+    const masked = "*".repeat(username.length - visibleLength);
+    return visible + masked;
+  };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await axios.get("https://www.nocap.kr/api/nocap/user/me", {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        const rawUsername = res.data.username || "사용자";
+        setMaskedUsername(maskUsername(rawUsername));
+      } catch (err) {
+        console.error("❌ 사용자 정보 불러오기 실패:", err);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
   const toggleBookmark = () => {
     setBookmarked((prev) => !prev);
   };
@@ -128,6 +160,40 @@ const Article = () => {
     newsComparisonDtos,
     comments,
   } = analysisData;
+
+  const handleSubmitComment = async () => {
+    if (!text.trim()) return; // 빈 문자열 방지
+
+    const token = localStorage.getItem("accessToken");
+    const analysisId = analysisData?.analysisId;
+
+    if (!token || !analysisId) {
+      console.error("❌ 토큰 또는 analysisId 없음");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://www.nocap.kr/api/nocap/comment/create",
+        {
+          analysisId: analysisId,
+          content: text.trim(),
+        },
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("✅ 댓글 등록 성공:", response.data);
+      setText(""); // 입력창 초기화
+      window.location.reload(); // 새로고침으로 댓글 목록 반영
+    } catch (err) {
+      console.error("❌ 댓글 등록 실패:", err);
+    }
+  };
 
   return (
     <A.Container>
@@ -395,13 +461,13 @@ const Article = () => {
                     src={`${process.env.PUBLIC_URL}/images/profile.png`}
                     alt="profile"
                   />
-                  <div>홍**</div>
+                  <div>{maskedUsername}</div>
                 </A.Profile>
                 <A.TextArea>
                   <textarea
                     value={text}
                     onChange={handleChange}
-                    placeholder="다양한 의견이 서로 존중될 수 있도록 다른 사람에게 불쾌감을 주는 욕설, 혐오, 비하의 표현이나 타인의 권리를 침해하는 내용은 주의해 주세요. 모든 작성자는 본인이 작성한 의견에 대해 법적 책임을 갖는다는 점 유의하시기 바랍니다."
+                    placeholder="다양한 의견이 서로 존중될 수 있도록..."
                   ></textarea>
                 </A.TextArea>
                 <A.IHr />
@@ -411,9 +477,7 @@ const Article = () => {
                     <div id="max"> / 200</div>
                   </A.Char>
 
-                  <A.Btn
-                    active={text.length > 0} // ✅ 스타일링 조건
-                  >
+                  <A.Btn active={text.length > 0} onClick={handleSubmitComment}>
                     등록
                   </A.Btn>
                 </A.Down>
@@ -449,6 +513,12 @@ const Article = () => {
                 {comments?.length > 0 ? (
                   comments.map((c) => (
                     <A.Comp key={c.commentId}>
+                      <A.Small>
+                        <div id="username">{maskUsername(c.username)}</div>
+                        <div id="date">
+                          {new Date(c.date).toLocaleString("ko-KR")}
+                        </div>
+                      </A.Small>
                       <A.CDet>{c.content}</A.CDet>
                       <A.Icon>
                         <A.Thumb>

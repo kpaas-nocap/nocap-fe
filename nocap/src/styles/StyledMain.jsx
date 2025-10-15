@@ -497,7 +497,6 @@ export const Component = styled.div`
   background-position: center;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
 
   div {
     color: #fff;
