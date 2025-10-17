@@ -23,6 +23,7 @@ const My = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
+  const [point, setPoint] = useState(0); // 🆕 포인트 상태 추가
 
   const [infoMessageVisible, setInfoMessageVisible] = useState(false); // ✅ 상태 추가
 
@@ -58,6 +59,7 @@ const My = () => {
         });
 
         setUsername(res.data.username); // ✅ username 저장
+        setPoint(res.data.point); // ✅ point 상태 저장
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
       }
@@ -263,14 +265,17 @@ const My = () => {
           headers: { Authorization: `${token}` },
         });
 
-        result = res.data.map((item) => ({
-          id: item.id,
-          url: item.url,
-          title: item.title,
-          content: item.content,
-          date: item.date,
-          image: item.image,
-        }));
+        result = res.data
+          .slice() // 원본 배열 훼손 방지
+          .reverse() // ✅ 최신순 정렬
+          .map((item) => ({
+            id: item.id,
+            url: item.url,
+            title: item.title,
+            content: item.content,
+            date: item.date,
+            image: item.image,
+          }));
       } else if (index === 1) {
         const res = await axios.get(
           "https://www.nocap.kr/api/nocap/analysis/my",
@@ -353,6 +358,16 @@ const My = () => {
       alert("뉴스 상세 정보를 불러오는 중 오류가 발생했습니다.");
     }
   };
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxBarWidth = isMobile ? 300 : 569; // ✅ 화면에 따른 최대 너비 결정
 
   return (
     <M.Container>
@@ -478,7 +493,7 @@ const My = () => {
         <M.Point>
           <M.Left>
             <img src={`${process.env.PUBLIC_URL}/images/left.png`} alt="left" />
-            <div>10</div>
+            <div>{point}</div> {/* ✅ 포인트 표시 */}
           </M.Left>
           <M.Hr />
           <M.Rank onClick={goPre}>
@@ -492,12 +507,23 @@ const My = () => {
 
         <M.Chance>
           <div id="base">분석할 수 있는 기회가</div>
-          <div id="num">10번</div>
+          <div id="num">{point}번</div> {/* ✅ 포인트 표시 */}
           <div id="base">남았어요</div>
         </M.Chance>
 
         <M.Bar>
-          <div id="bar" />
+          <div id="bar">
+            <div
+              id="fill"
+              style={{
+                width: `${(Math.min(point, 10) / 10) * maxBarWidth}px`, // ✅ 반응형 너비 적용
+                backgroundColor: "#213CE9",
+                height: "100%",
+                borderRadius: "inherit",
+                transition: "width 0.3s ease-in-out",
+              }}
+            />
+          </div>
           <img src={`${process.env.PUBLIC_URL}/images/rank.svg`} alt="rank" />
         </M.Bar>
 

@@ -436,6 +436,8 @@ export const Bar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 354px;
 
   #bar {
     width: 300px;
@@ -443,6 +445,13 @@ export const Bar = styled.div`
     flex-shrink: 0;
     border-radius: 9.479px;
     background: #e5e9ef;
+    overflow: hidden; /* ✅ 내부 fill이 넘치지 않도록 */
+  }
+
+  #fill {
+    height: 100%;
+    border-radius: inherit;
+    background-color: #213ce9;
   }
 
   img {
@@ -456,6 +465,8 @@ export const Bar = styled.div`
   }
 
   @media screen and (min-width: 768px){
+
+  width: 630px;
 
   #bar{
     width: 569px;

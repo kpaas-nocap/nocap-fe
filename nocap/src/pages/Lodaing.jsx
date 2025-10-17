@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as L from "../styles/StyledLoading";
+import axios from "axios";
+
+const images = [
+  "/images/loading1.png",
+  "/images/loading2.png",
+  "/images/loading3.png",
+];
 
 const Loading = () => {
   return (

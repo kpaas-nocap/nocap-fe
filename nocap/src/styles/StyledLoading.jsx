@@ -10,10 +10,19 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 402px;
+  width: 100%;
+  max-width: 402px;
   flex-shrink: 0;
   padding-bottom: 200px;
-  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    max-width: 100%; /* ✅ PC에서 화면이 꽉 차게 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fafbff;
+  }
 `;
 
 // 도트 애니메이션: opacity 밝아졌다 어두워지기
