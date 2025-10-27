@@ -18,9 +18,22 @@ const Article = () => {
   const [text, setText] = useState("");
   const [selected, setSelected] = useState("new");
   const [bookmarked, setBookmarked] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ 로그인 여부 상태 추가
+
+  const token = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, []); // ✅ 반드시 useEffect 내부에서 호출!
 
   const [analysisData, setAnalysisData] = useState(null); // ✅ 분석 데이터 상태 추가
   const [loading, setLoading] = useState(true);
+
+  // 추가: 댓글을 로컬에서 관리할 상태
+  const [comments, setComments] = useState([]);
+  // 추가: 요청 중인 commentId들을 잠그기 위한 상태 (중복 클릭 방지)
+  const [disabledVotes, setDisabledVotes] = useState({});
 
   const [maskedUsername, setMaskedUsername] = useState("사용자");
 
@@ -135,9 +148,8 @@ const Article = () => {
           }
         );
 
-        console.log("✅ 분석 결과:", res.data);
         setAnalysisData(res.data);
-        setBookmarked(res.data.bookmarked || false);
+        // 책갈피 정보 등도 기존처럼 처리
       } catch (err) {
         console.error("❌ 분석 결과 불러오기 실패:", err);
       } finally {
@@ -148,45 +160,101 @@ const Article = () => {
     fetchAnalysisData();
   }, [location.state]);
 
-  if (loading) return <div>로딩 중...</div>;
-  if (!analysisData) return <div>분석 결과를 불러올 수 없습니다.</div>;
+  // analysisData가 바뀌면 comments 상태를 초기화
+  useEffect(() => {
+    if (analysisData?.comments) {
+      // comments 배열을 안전하게 복사해서 로컬 상태로 사용
+      setComments(
+        analysisData.comments.map((c) => ({
+          ...c,
+        }))
+      );
+    }
+  }, [analysisData]);
 
-  const {
-    category,
-    mainNewsTitle,
-    date,
-    image,
-    mainNewsDto,
-    newsComparisonDtos,
-    comments,
-  } = analysisData;
-
-  const handleSubmitComment = async () => {
-    if (!text.trim()) return; // 빈 문자열 방지
-
+  // 추천/비추천 요청 함수
+  const handleVote = async (commentId, action) => {
     const token = localStorage.getItem("accessToken");
-    const analysisId = analysisData?.analysisId;
-
-    if (!token || !analysisId) {
-      console.error("❌ 토큰 또는 analysisId 없음");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login/local");
       return;
     }
 
+    // 이미 요청 중이면 무시
+    if (disabledVotes[commentId]) return;
+
+    // UI 즉시 잠금(중복 클릭 방지)
+    setDisabledVotes((prev) => ({ ...prev, [commentId]: true }));
+
     try {
-      const response = await axios.post(
-        "https://www.nocap.kr/api/nocap/comment/create",
-        {
-          analysisId: analysisId,
-          content: text.trim(),
-        },
+      const payload = {
+        commentId: commentId,
+        action: action, // "RECOMMEND" or "NON_RECOMMEND"
+      };
+
+      const res = await axios.post(
+        "https://www.nocap.kr/api/nocap/comment/recommend",
+        payload,
         {
           headers: {
-            Authorization: token,
+            Authorization: `${token}`,
             "Content-Type": "application/json",
           },
         }
       );
 
+      // 성공 시, 로컬 comments 카운트 업데이트 (낙관적 업데이트)
+      if (res.status === 200 || res.status === 201) {
+        setComments((prev) =>
+          prev.map((c) => {
+            if (c.commentId !== commentId) return c;
+            // 백엔드가 실제로 어떤 응답을 주는지에 따라 조정 가능.
+            // 여기서는 버튼 클릭 시 단순히 +1 처리
+            if (action === "RECOMMEND") {
+              return { ...c, recommendation: (c.recommendation || 0) + 1 };
+            } else {
+              return {
+                ...c,
+                nonRecommendation: (c.nonRecommendation || 0) + 1,
+              };
+            }
+          })
+        );
+      } else {
+        // 실패 시 (status 200이 아니면) 안내
+        console.error("추천 API 응답 오류:", res);
+        alert("요청이 정상적으로 처리되지 않았습니다.");
+      }
+    } catch (err) {
+      console.error("추천 요청 실패:", err);
+      alert("추천 요청 중 오류가 발생했습니다.");
+    } finally {
+      // 잠금 해제
+      setDisabledVotes((prev) => {
+        const copy = { ...prev };
+        delete copy[commentId];
+        return copy;
+      });
+    }
+  };
+
+  const handleSubmitComment = async () => {
+    if (!text.trim()) return; // 빈 문자열 방지
+    const token = localStorage.getItem("accessToken");
+    const analysisId = analysisData?.analysisId;
+    if (!token || !analysisId) {
+      console.error("❌ 토큰 또는 analysisId 없음");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        "https://www.nocap.kr/api/nocap/comment/create",
+        { analysisId: analysisId, content: text.trim() },
+        {
+          headers: { Authorization: token, "Content-Type": "application/json" },
+        }
+      );
       console.log("✅ 댓글 등록 성공:", response.data);
       setText(""); // 입력창 초기화
       window.location.reload(); // 새로고침으로 댓글 목록 반영
@@ -194,6 +262,20 @@ const Article = () => {
       console.error("❌ 댓글 등록 실패:", err);
     }
   };
+
+  // 렌더링: loading / error 처리 유지
+  if (loading) return <div>로딩 중...</div>;
+  if (!analysisData) return <div>분석 결과를 불러올 수 없습니다.</div>;
+
+  // ✅ 이 아래는 무조건 analysisData가 유효한 상태
+  const {
+    category,
+    mainNewsTitle,
+    date,
+    image,
+    mainNewsDto,
+    newsComparisonDtos,
+  } = analysisData;
 
   return (
     <A.Container>
@@ -322,35 +404,38 @@ const Article = () => {
             </A.Detail>
           </A.Comment>
 
-          <A.Input>
-            <A.Profile>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/profile.png`}
-                alt="profile"
-              />
-              <div>홍**</div>
-            </A.Profile>
-            <A.TextArea>
-              <textarea
-                value={text}
-                onChange={handleChange}
-                placeholder="다양한 의견이 서로 존중될 수 있도록 다른 사람에게 불쾌감을 주는 욕설, 혐오, 비하의 표현이나 타인의 권리를 침해하는 내용은 주의해 주세요. 모든 작성자는 본인이 작성한 의견에 대해 법적 책임을 갖는다는 점 유의하시기 바랍니다."
-              ></textarea>
-            </A.TextArea>
-            <A.IHr />
-            <A.Down>
-              <A.Char>
-                <div id="now">{text.length} </div>
-                <div id="max"> / 200</div>
-              </A.Char>
-
-              <A.Btn
-                active={text.length > 0} // ✅ 스타일링 조건
-              >
-                등록
-              </A.Btn>
-            </A.Down>
-          </A.Input>
+          {isLoggedIn ? (
+            <A.Input>
+              <A.Profile>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/profile.png`}
+                  alt="profile"
+                />
+                <div>{maskedUsername}</div>
+              </A.Profile>
+              <A.TextArea>
+                <textarea
+                  value={text}
+                  onChange={handleChange}
+                  placeholder="다양한 의견이 서로 존중될 수 있도록 다른 사람에게 불쾌감을 주는 욕설, 혐오, 비하의 표현이나 타인의 권리를 침해하는 내용은 주의해 주세요. 모든 작성자는 본인이 작성한 의견에 대해 법적 책임을 갖는다는 점 유의하시기 바랍니다."
+                ></textarea>
+              </A.TextArea>
+              <A.IHr />
+              <A.Down>
+                <A.Char>
+                  <div id="now">{text.length} </div>
+                  <div id="max"> / 200</div>
+                </A.Char>
+                <A.Btn active={text.length > 0} onClick={handleSubmitComment}>
+                  등록
+                </A.Btn>
+              </A.Down>
+            </A.Input>
+          ) : (
+            <A.LoginPrompt onClick={() => navigate("/login/local")}>
+              댓글을 작성하려면 로그인 해주세요.
+            </A.LoginPrompt>
+          )}
 
           <A.Sort>
             <div
@@ -382,17 +467,29 @@ const Article = () => {
             {comments?.length > 0 ? (
               comments.map((c) => (
                 <A.Comp key={c.commentId}>
+                  <A.Small>
+                    <div id="username">{maskUsername(c.username)}</div>
+                    <div id="date">
+                      {new Date(c.date).toLocaleString("ko-KR")}
+                    </div>
+                  </A.Small>
+
                   <A.CDet>{c.content}</A.CDet>
+
                   <A.Icon>
                     <A.Thumb>
-                      <A.TUp>
+                      <A.TUp
+                        onClick={() => handleVote(c.commentId, "RECOMMEND")}
+                      >
                         <img
                           src={`${process.env.PUBLIC_URL}/images/good.svg`}
                           alt="good"
                         />
                         <div>{c.recommendation}</div>
                       </A.TUp>
-                      <A.TUp>
+                      <A.TUp
+                        onClick={() => handleVote(c.commentId, "NON_RECOMMEND")}
+                      >
                         <img
                           src={`${process.env.PUBLIC_URL}/images/bad.svg`}
                           alt="bad"
@@ -401,6 +498,7 @@ const Article = () => {
                       </A.TUp>
                     </A.Thumb>
                   </A.Icon>
+
                   <A.AHr />
                 </A.Comp>
               ))
@@ -455,33 +553,41 @@ const Article = () => {
                 </A.Detail>
               </A.Comment>
 
-              <A.Input>
-                <A.Profile>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/profile.png`}
-                    alt="profile"
-                  />
-                  <div>{maskedUsername}</div>
-                </A.Profile>
-                <A.TextArea>
-                  <textarea
-                    value={text}
-                    onChange={handleChange}
-                    placeholder="다양한 의견이 서로 존중될 수 있도록..."
-                  ></textarea>
-                </A.TextArea>
-                <A.IHr />
-                <A.Down>
-                  <A.Char>
-                    <div id="now">{text.length} </div>
-                    <div id="max"> / 200</div>
-                  </A.Char>
-
-                  <A.Btn active={text.length > 0} onClick={handleSubmitComment}>
-                    등록
-                  </A.Btn>
-                </A.Down>
-              </A.Input>
+              {isLoggedIn ? (
+                <A.Input>
+                  <A.Profile>
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/profile.png`}
+                      alt="profile"
+                    />
+                    <div>{maskedUsername}</div>
+                  </A.Profile>
+                  <A.TextArea>
+                    <textarea
+                      value={text}
+                      onChange={handleChange}
+                      placeholder="다양한 의견이 서로 존중될 수 있도록 다른 사람에게 불쾌감을 주는 욕설, 혐오, 비하의 표현이나 타인의 권리를 침해하는 내용은 주의해 주세요. 모든 작성자는 본인이 작성한 의견에 대해 법적 책임을 갖는다는 점 유의하시기 바랍니다."
+                    ></textarea>
+                  </A.TextArea>
+                  <A.IHr />
+                  <A.Down>
+                    <A.Char>
+                      <div id="now">{text.length} </div>
+                      <div id="max"> / 200</div>
+                    </A.Char>
+                    <A.Btn
+                      active={text.length > 0}
+                      onClick={handleSubmitComment}
+                    >
+                      등록
+                    </A.Btn>
+                  </A.Down>
+                </A.Input>
+              ) : (
+                <A.LoginPrompt onClick={() => navigate("/login/local")}>
+                  댓글을 작성하려면 로그인 해주세요.
+                </A.LoginPrompt>
+              )}
 
               <A.Sort>
                 <div
@@ -519,17 +625,25 @@ const Article = () => {
                           {new Date(c.date).toLocaleString("ko-KR")}
                         </div>
                       </A.Small>
+
                       <A.CDet>{c.content}</A.CDet>
+
                       <A.Icon>
                         <A.Thumb>
-                          <A.TUp>
+                          <A.TUp
+                            onClick={() => handleVote(c.commentId, "RECOMMEND")}
+                          >
                             <img
                               src={`${process.env.PUBLIC_URL}/images/good.svg`}
                               alt="good"
                             />
                             <div>{c.recommendation}</div>
                           </A.TUp>
-                          <A.TUp>
+                          <A.TUp
+                            onClick={() =>
+                              handleVote(c.commentId, "NON_RECOMMEND")
+                            }
+                          >
                             <img
                               src={`${process.env.PUBLIC_URL}/images/bad.svg`}
                               alt="bad"
@@ -538,6 +652,7 @@ const Article = () => {
                           </A.TUp>
                         </A.Thumb>
                       </A.Icon>
+
                       <A.AHr />
                     </A.Comp>
                   ))

@@ -189,17 +189,20 @@ const Main = () => {
 
         <M.DesktopOnly>
           <M.Menu>
-            <div id="tag">
+            <div id="tag" style={{ cursor: "pointer" }}>
               홈
               <div id="circle" />
             </div>
-            <div id="tag">NOCAP 소개</div>
-            <div id="tag" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }}>
+              NOCAP 소개
+            </div>
+            <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
               뉴스
             </div>
             <div
               id="tag"
               onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+              style={{ cursor: "pointer" }}
             >
               {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
@@ -256,12 +259,11 @@ const Main = () => {
                   {popNewsList[currentNewsIndex]?.date || "날짜 로딩 중..."}
                 </div>
               </M.TTitle>
-              {/* <div id="category">사회일반</div> */}
-              <M.Tit>
+              <M.Tit onClick={handleMoreClick} style={{ cursor: "pointer" }}>
                 {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
               </M.Tit>
 
-              <M.More onClick={handleMoreClick} style={{ cursor: "pointer" }}>
+              <M.More c style={{ cursor: "pointer" }} onClick={handleMoreClick}>
                 <div id="det">자세히 보기</div>
                 <div id="hr" />
               </M.More>
@@ -281,7 +283,7 @@ const Main = () => {
                 />
               </M.Page>
             </M.Text>
-            <M.Img>
+            <M.Img onClick={handleMoreClick} style={{ cursor: "pointer" }}>
               <img
                 src={
                   popNewsList[currentNewsIndex]?.image ||
@@ -302,6 +304,7 @@ const Main = () => {
                 key={item.analysisId}
                 $bgImage={item.image} // ✅ 여기서 이미지 props 전달
                 onClick={() => handleAnalysisClick(item.analysisId)}
+                style={{ cursor: "pointer" }}
               >
                 <div>{item.mainNewsTitle}</div>
               </M.Component>

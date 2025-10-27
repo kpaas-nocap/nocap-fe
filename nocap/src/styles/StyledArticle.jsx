@@ -927,6 +927,44 @@ export const Decl = styled.div`
   }
 `;
 
+export const LoginPrompt = styled.div`
+  width: 368px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 1px solid #a5b1ff;
+  background: #eceeff;
+  color: #b2b2b2;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.325px;
+  align-items: center;
+  padding: 15px 14px;
+  margin-top: 32.5px;
+
+  @media screen and (min-width: 768px) {
+    width: 622px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    border: 1px solid #a5b1ff;
+    background: #eceeff;
+    color: #b2b2b2;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.375px;
+    align-items: center;
+    padding: 14px 23px;
+    margin-top: 20px;
+  }
+`;
+
 export const AHr = styled.div`
   width: 622px;
   height: 1px;
@@ -961,5 +999,16 @@ export const TUp = styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.25px;
+  }
+
+  @media screen and (min-width: 768px) {
+    img {
+      width: 18px;
+      height: 18px;
+    }
+
+    div {
+      font-size: 14px;
+    }
   }
 `;

@@ -223,8 +223,8 @@ export const List = styled.div`
   margin-top: 15px;
 
   @media screen and (min-width: 768px) {
-    margin-top: 100px;
-    gap: 45px;
+    gap: 20px;
+    width: 657px;
   }
 `;
 
@@ -319,33 +319,201 @@ export const Title = styled.div`
 export const Text = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  padding: 12px 6px;
-  width: 368px;
-  height: 121px;
-  flex-shrink: 0;
-  border-radius: 20px;
-  background: linear-gradient(0deg, #213ce9 0%, #213ce9 100%),
-    lightgray 50% / cover no-repeat;
+  text-align: left;
+  justify-content: space-between;
+  height: 100px;
 
   #title {
-    margin-left: 12px;
-    color: #fff;
+    display: flex;
+    flex-shrink: 0;
+    color: #000;
     font-family: Pretendard;
-    font-size: 19px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 700;
-    line-height: 22px; /* 115.789% */
-    letter-spacing: 0.38px;
+    line-height: 20px; /* 100% */
   }
 
-  #content {
-    color: #fff;
+  #date {
+    display: flex;
+    flex-shrink: 0;
+    color: #969696;
     font-family: Pretendard;
-    font-size: 15px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 500;
-    line-height: 22px; /* 146.667% */
-    letter-spacing: -0.3px;
+    line-height: normal;
+  }
+`;
+
+export const Desk = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  margin-top: 100px;
+`;
+
+export const Comp = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 657px;
+  gap: 20px;
+`;
+
+export const Image = styled.div`
+  width: 183.115px;
+  height: 117px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-size: cover; // ✅ 비율 유지하며 채우기
+  background-position: center; // ✅ 중앙 정렬
+  background-repeat: no-repeat; // ✅ 반복 없음
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
+  }
+`;
+
+export const Recent = styled.div`
+  width: 272px;
+  flex-shrink: 0;
+  text-align: left;
+
+  #title {
+    color: #213ce9;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 20px;
+  }
+`;
+
+export const RBox = styled.div`
+  width: 272px;
+  height: 552px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px;
+`;
+
+export const First = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+
+  img {
+    width: 232px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 10px;
+  }
+
+  #title {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 142.857% */
+    word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
+    overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
+    display: -webkit-box;
+    -webkit-line-clamp: 2; // 최대 2줄
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
+`;
+
+export const RList = styled.div`
+  gap: 14px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+`;
+
+export const RComp = styled.div`
+  gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 232px;
+`;
+
+export const RImg = styled.div`
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-size: cover; // ✅ 비율 유지하며 채우기
+  background-position: center; // ✅ 중앙 정렬
+  background-repeat: no-repeat; // ✅ 반복 없음
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
+  }
+`;
+
+export const RText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  text-align: left;
+  height: 100%;
+
+  #title {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 16px; /* 133.333% */
+    letter-spacing: -0.24px;
+    word-break: keep-all; // 단어 중간에서 줄바꿈 안 함 (한글 기준)
+    overflow-wrap: break-word; // 영어 등 긴 단어는 줄바꿈 가능
+    display: -webkit-box;
+    -webkit-line-clamp: 2; // 최대 2줄
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin: 0;
+  }
+
+  #date {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    align-items: center;
+
+    img {
+      width: 10px;
+      height: 10px;
+      aspect-ratio: 1/1;
+    }
+
+    div {
+      color: #969696;
+      font-family: Pretendard;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
   }
 `;

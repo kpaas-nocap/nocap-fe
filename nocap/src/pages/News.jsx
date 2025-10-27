@@ -29,6 +29,21 @@ const News = () => {
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [recentAnalysis, setRecentAnalysis] = useState([]);
+
+  const fetchAnalysisData = async () => {
+    try {
+      const res = await axios.get("https://www.nocap.kr/api/nocap/analysis");
+      setRecentAnalysis(res.data);
+    } catch (error) {
+      console.error("⚠️ 분석 데이터 불러오기 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalysisData();
+  }, []);
+
   const fetchCategoryNews = async (categoryName) => {
     const categoryCode = categoryMap[categoryName];
     if (!categoryCode) return;
@@ -59,6 +74,12 @@ const News = () => {
   const goMain = () => navigate(`/`);
   const goMy = () => navigate(`/my`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleAnalysisClick = (analysisId) => {
+    navigate("/analysis/article", {
+      state: { analysisId },
+    });
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
@@ -219,28 +240,116 @@ const News = () => {
           ))}
         </N.Category>
 
-        <N.List>
-          {loading ? (
-            <div>로딩 중...</div>
-          ) : newsList.length === 0 ? (
-            <div>뉴스가 없습니다.</div>
-          ) : (
-            newsList.map((item, idx) => (
-              <N.Img
-                key={idx}
-                onClick={() => handleNewsClick(item)} // ✅ 수정된 부분
-              >
-                <N.Back />
-                <N.TImg>
-                  <N.Up $bg={item.image}>{selectedCategory}</N.Up>
-                  <N.Down $bg={item.image}>
-                    <N.Title>{item.title}</N.Title>
-                  </N.Down>
-                </N.TImg>
-              </N.Img>
-            ))
-          )}
-        </N.List>
+        <N.MobileOnly>
+          <N.List>
+            {loading ? (
+              <div>로딩 중...</div>
+            ) : newsList.length === 0 ? (
+              <div>뉴스가 없습니다.</div>
+            ) : (
+              newsList.map((item, idx) => (
+                <N.Img
+                  key={idx}
+                  onClick={() => handleNewsClick(item)} // ✅ 수정된 부분
+                >
+                  <N.Back />
+                  <N.TImg>
+                    <N.Up $bg={item.image}>{selectedCategory}</N.Up>
+                    <N.Down $bg={item.image}>
+                      <N.Title>{item.title}</N.Title>
+                    </N.Down>
+                  </N.TImg>
+                </N.Img>
+              ))
+            )}
+          </N.List>
+        </N.MobileOnly>
+
+        <N.DesktopOnly>
+          <N.Desk>
+            <N.List>
+              {loading ? (
+                <div>로딩 중...</div>
+              ) : newsList.length === 0 ? (
+                <div>뉴스가 없습니다.</div>
+              ) : (
+                newsList.map((item, idx) => (
+                  <N.Comp
+                    key={idx}
+                    onClick={() => handleNewsClick(item)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <N.Image
+                      style={{ backgroundImage: `url(${item.image})` }}
+                    />
+                    <N.Text>
+                      <div id="title">{item.title}</div>
+                      <div id="date">{item.date}</div>
+                    </N.Text>
+                  </N.Comp>
+                ))
+              )}
+            </N.List>
+
+            <N.Recent>
+              <div id="title">최근 분석된 뉴스</div>
+              <N.RBox>
+                {recentAnalysis.length > 0 &&
+                  (() => {
+                    const sorted = [...recentAnalysis].sort(
+                      (a, b) => b.analysisId - a.analysisId
+                    );
+                    const firstItem = sorted[0];
+                    const listItems = sorted.slice(1, 5);
+
+                    return (
+                      <>
+                        {/* ✅ 첫 번째 컴포넌트 클릭 처리 */}
+                        <N.First
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            handleAnalysisClick(firstItem.analysisId)
+                          }
+                        >
+                          <img src={firstItem.image} alt="분석 이미지" />
+                          <div id="title">{firstItem.mainNewsTitle}</div>
+                        </N.First>
+
+                        {/* ✅ 아래 리스트 4개 클릭 처리 */}
+                        <N.RList>
+                          {listItems.map((item, idx) => (
+                            <N.RComp
+                              key={idx}
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                handleAnalysisClick(item.analysisId)
+                              }
+                            >
+                              <N.RImg
+                                style={{
+                                  backgroundImage: `url(${item.image})`,
+                                }}
+                              />
+                              <N.RText>
+                                <div id="title">{item.mainNewsTitle}</div>
+                                <div id="date">
+                                  <div>
+                                    {new Date(item.date).toLocaleString(
+                                      "ko-KR"
+                                    )}
+                                  </div>
+                                </div>
+                              </N.RText>
+                            </N.RComp>
+                          ))}
+                        </N.RList>
+                      </>
+                    );
+                  })()}
+              </N.RBox>
+            </N.Recent>
+          </N.Desk>
+        </N.DesktopOnly>
       </N.Body>
 
       <NSide

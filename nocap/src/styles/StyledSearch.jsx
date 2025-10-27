@@ -10,10 +10,37 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 402px;
+  width: 100%;
+  max-width: 402px;
   flex-shrink: 0;
   padding-bottom: 200px;
-  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    max-width: 100%; /* ✅ PC에서 화면이 꽉 차게 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fafbff;
+  }
+`;
+
+// 모바일에서만 보이게
+export const MobileOnly = styled.div`
+  display: block;
+
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+// PC에서만 보이게
+export const DesktopOnly = styled.div`
+  display: none;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
 `;
 
 export const Header = styled.div`
@@ -29,6 +56,13 @@ export const Header = styled.div`
     height: 24px;
     flex-shrink: 0;
   }
+`;
+
+export const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 export const Input = styled.div`
@@ -53,13 +87,89 @@ export const Input = styled.div`
   input {
     border: none;
     outline: none;
-    color: #adadad;
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 133.333% */
     width: 264px;
+    color: black;
+
+    &placeholder {
+      color: #adadad;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    width: 700px;
+    height: 60px;
+    padding: 15px 25px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    border: 1.505px solid #213ce9;
+    background: #fff;
+    box-shadow: 0 0 8.024px 2.006px rgba(33, 60, 233, 0.3);
+    margin-top: 75px;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+
+    input {
+      font-size: 20px;
+      width: 95%;
+    }
+  }
+`;
+
+export const Head = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 130px 0 75px;
+  height: 100px;
+
+  #logo {
+    width: 188px;
+  }
+`;
+
+export const Menu = styled.div`
+  width: 800px;
+  // height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 120px;
+
+  #tag {
+    margin-top: 16px;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 110% */
+    display: flex;
+
+    #circle {
+      margin-top: -3px;
+      margin-left: 18px;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background-color: #213ce9;
+      border-radius: 50%;
+      position: absolute;
+    }
   }
 `;
 
@@ -68,6 +178,10 @@ export const Recent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 102px;
+  }
 `;
 
 export const Title = styled.div`
@@ -82,6 +196,17 @@ export const Title = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 20px; /* 133.333% */
+
+  @media screen and (min-width: 768px) {
+    color: #686868;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 700px;
+    margin-left: 7px;
+  }
 `;
 
 export const List = styled.div`
@@ -89,6 +214,10 @@ export const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 50px;
+  }
 `;
 
 export const Result = styled.div`
@@ -122,5 +251,26 @@ export const Result = styled.div`
     width: 15px;
     height: 15px;
     flex-shrink: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 685px;
+    align-items: center;
+    justify-content: space-between;
+
+    #search {
+      width: 24.833px;
+      height: 21.701px;
+    }
+
+    div {
+      width: 620px;
+      font-size: 18px;
+    }
+
+    #x {
+      width: 25px;
+      height: 25px;
+    }
   }
 `;

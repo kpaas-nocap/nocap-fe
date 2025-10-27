@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as E from "../styles/StyledEdit";
 import axios from "axios";
+import Delete from "./Delete";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ const Edit = () => {
   const goNews = () => navigate(`/news`);
   const goInquiry = () => navigate(`/my/inquiry`);
   const goMy = () => navigate(`/my`);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showRPassword, setShowRPassword] = useState(false);
@@ -129,6 +132,42 @@ const Edit = () => {
     } catch (error) {
       console.error("정보 수정 실패:", error);
       alert("정보 수정에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    console.log("취소 버튼 눌림!");
+    setIsModalOpen(false);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("탈퇴 시도: 토큰 없음");
+        navigate("/login");
+        return;
+      }
+
+      // ✅ 백엔드 탈퇴 API 호출
+      await axios.delete("https://www.nocap.kr/api/nocap/user/delete", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      console.log("탈퇴");
+    } catch (err) {
+      console.error("탈퇴 API 호출 실패:", err);
+      // 실패해도 토큰은 지워주고 로그인 페이지로 이동
+    } finally {
+      localStorage.removeItem("accessToken");
+      navigate("/");
+      setIsModalOpen(false);
     }
   };
 
@@ -321,7 +360,12 @@ const Edit = () => {
 
         <E.DesktopOnly>
           <E.But>
-            <div id="out">회원 탈퇴하기</div>
+            <div id="out" onClick={handleDeleteClick}>
+              회원 탈퇴하기
+            </div>
+            {isModalOpen && (
+              <Delete onConfirm={handleConfirm} onCancel={handleCancel} />
+            )}
             <div id="save" onClick={handleSave}>
               저장하기
             </div>

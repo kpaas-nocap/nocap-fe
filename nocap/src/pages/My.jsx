@@ -505,9 +505,9 @@ const My = () => {
           </M.Rank>
         </M.Point>
 
-        <M.Chance>
+        {/* <M.Chance>
           <div id="base">분석할 수 있는 기회가</div>
-          <div id="num">{point}번</div> {/* ✅ 포인트 표시 */}
+          <div id="num">{point}번</div> 
           <div id="base">남았어요</div>
         </M.Chance>
 
@@ -516,7 +516,7 @@ const My = () => {
             <div
               id="fill"
               style={{
-                width: `${(Math.min(point, 10) / 10) * maxBarWidth}px`, // ✅ 반응형 너비 적용
+                width: `${(Math.min(point, 10) / 10) * maxBarWidth}px`, 
                 backgroundColor: "#213CE9",
                 height: "100%",
                 borderRadius: "inherit",
@@ -525,12 +525,7 @@ const My = () => {
             />
           </div>
           <img src={`${process.env.PUBLIC_URL}/images/rank.svg`} alt="rank" />
-        </M.Bar>
-
-        <M.Number>
-          <div>0번</div>
-          <div>10번</div>
-        </M.Number>
+        </M.Bar> */}
 
         <M.MobileOnly>
           <M.Archive>

@@ -16,51 +16,51 @@ export const ModalBackground = styled.div`
 export const ModalBox = styled.div`
   padding: 24px;
   text-align: center;
-  width: 334px;
-  height: 210px;
+  width: 510px;
+  height: 295px;
   flex-shrink: 0;
   border-radius: 20px;
   background: #fff;
 
   p {
-    margin-left: -8px;
+    margin-top: 12px;
     display: flex;
-    width: 219.188px;
+    width: 291px;
     height: 20.952px;
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
     color: #000;
-    text-align: center;
     font-family: Pretendard;
-    font-size: 20px;
+    font-size: 25px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 100% */
+    line-height: 31.737px; /* 126.946% */
   }
 `;
 
 export const Content = styled.div`
-  margin-top: 12px;
+  margin-top: 48px;
   display: flex;
   height: 62.857px;
   flex-direction: column;
   justify-content: center;
   flex-shrink: 0;
   text-align: left;
+  width: 456px;
 
   div {
     color: #686868;
     font-family: Pretendard;
-    font-size: 14px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: 31.737px; /* 158.683% */
   }
 `;
 
 export const ButtonWrapper = styled.div`
-  margin-top: 11px;
+  margin-top: 40px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -71,39 +71,38 @@ export const ButtonWrapper = styled.div`
 
 export const Cancel = styled.button`
   display: flex;
-  width: 130px; /* 또는 더 작게 */
-  height: 52px;
+  width: 201px;
+  height: 65px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  border-radius: 30px;
+  border-radius: 40px;
   background: #fff;
   color: #213ce9;
   text-align: center;
   font-family: Pretendard;
-  font-size: 15px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 133.333% */
+  line-height: 24.564px;
+  outline: none;
   border: none;
 `;
 
 export const Logoutbtn = styled.button`
-  margin-left: 15px;
   display: flex;
-  width: 130px; /* 또는 더 작게 */
-  height: 52px;
+  width: 219px;
+  height: 65px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  border-radius: 30px;
+  border-radius: 40px;
   background: #213ce9;
   color: #fff;
   text-align: center;
   font-family: Pretendard;
-  font-size: 15px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 133.333% */
-  border: none;
+  line-height: 24.564px; /* 136.466% */
 `;
