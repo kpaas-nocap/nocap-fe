@@ -506,13 +506,13 @@ export const Number = styled.div`
 export const Archive = styled.div`
   margin-top: 47.5px;
   width: 368px;
-  height: 418px;
+  height: 354px;
   flex-shrink: 0;
   background-color: #ebedff;
   display: flex;
   flex-direction: column;
   padding: 20px 7px;
-  border-radius: 15px 15px 0 0;
+  border-radius: 50px;
   align-items: center;
 `;
 

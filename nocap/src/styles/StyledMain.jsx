@@ -222,7 +222,9 @@ export const RTitle = styled.div`
 export const RBox = styled.div`
   margin-top: 11px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 7px;
+  justify-content: space-between;
   padding: 22px;
   width: 369px;
   height: 121px;
@@ -230,39 +232,43 @@ export const RBox = styled.div`
   border-radius: 15px;
   border: 2px solid #f1f1ff;
   background: #fefeff;
+  padding: 24px 15px 24px 20px;
 
-  #from {
-    margin-top: 5px;
-    color: #adadad;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.28px;
+  img {
+    width: 98px;
+    height: 70px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
   }
 `;
 
 export const Han = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  text-align: left;
+  width: 226px;
 
   #title {
     color: #000;
     font-family: Pretendard;
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
     letter-spacing: -0.32px;
   }
 
-  #cc {
-    // width: 45px;
-    height: 25px;
-    flex-shrink: 0;
+  #from {
+    color: #adadad;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.26px;
   }
 `;
 

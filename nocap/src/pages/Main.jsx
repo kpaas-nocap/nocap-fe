@@ -169,6 +169,48 @@ const Main = () => {
     });
   };
 
+  const handleMoreClickFromIndex = async (index) => {
+    try {
+      const selectedNews = popNewsList[index];
+      if (!selectedNews) return;
+
+      const token = localStorage.getItem("accessToken");
+
+      const detailRes = await axios.get(
+        `https://www.nocap.kr/api/nocap/popnews/${selectedNews.popNewsId}`
+      );
+      const detailedNews = detailRes.data;
+
+      try {
+        await axios.post(
+          "https://www.nocap.kr/api/nocap/history/record",
+          {
+            url: detailedNews.url,
+            title: detailedNews.title,
+            content: detailedNews.content,
+            date: detailedNews.date,
+            image: detailedNews.image,
+          },
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+        console.log("🟢 조회기록 저장 완료");
+      } catch (historyErr) {
+        console.error("⚠️ 조회기록 저장 실패:", historyErr);
+      }
+
+      navigate("/news/detail", {
+        state: detailedNews,
+      });
+    } catch (err) {
+      console.error("❌ 뉴스 상세 불러오기 실패:", err);
+      alert("뉴스 상세 정보를 불러올 수 없습니다.");
+    }
+  };
+
   return (
     <M.Container>
       <M.Header>
@@ -219,30 +261,37 @@ const Main = () => {
             alt="search"
           />
         </M.SearchBar>
+
         <M.MobileOnly>
           <M.Ranking>
             <M.RTitle>오늘의 인기뉴스</M.RTitle>
 
             <M.SliderWrapper {...handlers}>
               <M.SliderContainer currentIndex={currentIndex}>
-                {rankData.map((item, idx) => (
-                  <M.RBox key={idx}>
+                {popNewsList.slice(0, 4).map((item, idx) => (
+                  <M.RBox
+                    key={idx}
+                    onClick={() => handleMoreClickFromIndex(idx)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <M.Han>
-                      <img
-                        id="cc"
-                        src={`${process.env.PUBLIC_URL}/images/sbs.png`}
-                        alt="sbs"
-                      />
                       <div id="title">{item.title}</div>
+                      <div id="from">{item.date}</div>
                     </M.Han>
-                    <div id="from">{item.from}</div>
+                    <img
+                      src={
+                        item.image ||
+                        `${process.env.PUBLIC_URL}/images/news.jpg`
+                      }
+                      alt="news"
+                    />
                   </M.RBox>
                 ))}
               </M.SliderContainer>
             </M.SliderWrapper>
 
             <M.Pagenation>
-              {rankData.map((_, i) => (
+              {popNewsList.slice(0, 4).map((_, i) => (
                 <M.Dot key={i} active={i === currentIndex} />
               ))}
             </M.Pagenation>

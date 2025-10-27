@@ -54,6 +54,29 @@ const Recent = () => {
     fetchHistory();
   }, []);
 
+  // ✅ 이미지 클릭 시: 상세조회 → 상세 페이지로 이동
+  const handleNavigateToNewsDetailFromHistory = async (historyId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      const res = await axios.get(
+        `https://www.nocap.kr/api/nocap/history/${historyId}`,
+        { headers: { Authorization: `${token}` } }
+      );
+
+      // { id, createdAt, ...newsData } 형태라고 가정
+      const { id, createdAt, ...newsData } = res.data || {};
+      navigate("/news/detail", { state: newsData });
+    } catch (err) {
+      console.error("❌ 최근 본 뉴스 상세 조회 실패:", err);
+      alert("뉴스 상세 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <R.Container>
       <R.Header>
@@ -93,7 +116,12 @@ const Recent = () => {
                     <R.Title>{item.title}</R.Title>
                   </R.Info>
 
-                  <R.Image>
+                  <R.Image
+                    onClick={() =>
+                      handleNavigateToNewsDetailFromHistory(item.id)
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
                     <img
                       src={
                         item.image

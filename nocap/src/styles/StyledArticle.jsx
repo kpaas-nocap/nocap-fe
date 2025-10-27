@@ -73,6 +73,7 @@ export const Hr = styled.div`
   flex-shrink: 0;
   background: #d9d9d9;
   margin-top: 6px;
+  margin-left: 17px;
 `;
 
 export const Head = styled.div`
@@ -815,6 +816,7 @@ export const Comp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
+  width: 100%;
 
   @media screen and (min-width: 768px) {
     margin-top: 23px;
@@ -966,10 +968,14 @@ export const LoginPrompt = styled.div`
 `;
 
 export const AHr = styled.div`
-  width: 622px;
+  width: 368px;
   height: 1px;
   flex-shrink: 0;
   background: #d9d9d9;
+
+  @media screen and (min-width: 768px) {
+    width: 622px;
+  }
 `;
 
 export const Thumb = styled.div`
