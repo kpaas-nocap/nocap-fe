@@ -492,7 +492,7 @@ const My = () => {
 
         <M.Point>
           <M.Left>
-            <img src={`${process.env.PUBLIC_URL}/images/left.png`} alt="left" />
+            <img src={`${process.env.PUBLIC_URL}/images/left.svg`} alt="left" />
             <div>{point}</div> {/* ✅ 포인트 표시 */}
           </M.Left>
           <M.Hr />

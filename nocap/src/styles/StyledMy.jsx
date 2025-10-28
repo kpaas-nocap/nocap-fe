@@ -328,6 +328,9 @@ export const Left = styled.div`
     width: 35px;
     height: 35px;
     aspect-ratio: 1/1;
+    // border-radius: 8px; /* 💡 윤곽 둥글게 */
+    // box-shadow: 0 2px 8px rgba(0, 102, 255, 0.25); /* 💡 파란빛 그림자 추가 */
+    // filter: saturate(1.2) brightness(1.05) contrast(1.1); /* 💡 색감 강조 */
   }
 
   div {

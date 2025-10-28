@@ -39,6 +39,55 @@ const NDetail = () => {
   const goNews = () => navigate(`/news`);
   const goArticle = () => navigate(`/analysis/article`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [recentAnalyses, setRecentAnalyses] = useState([]);
+
+  useEffect(() => {
+    const fetchRecentAnalyses = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      try {
+        const res = await axios.get(
+          "https://www.nocap.kr/api/nocap/analysis/my",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        const sorted = (res.data || [])
+          .sort((a, b) => new Date(b.date) - new Date(a.date)) // 🕐 최신순 정렬
+          .slice(0, 8); // ✂️ 최대 8개로 자르기
+
+        setRecentAnalyses(sorted);
+      } catch (error) {
+        console.error("❌ 최근 분석 데이터 조회 실패:", error);
+      }
+    };
+
+    fetchRecentAnalyses();
+  }, []);
+
+  const formatRelativeTime = (isoDateStr) => {
+    const now = new Date();
+    const target = new Date(isoDateStr);
+    const diffMs = now - target;
+    const diffMin = Math.floor(diffMs / (1000 * 60));
+    const diffHr = Math.floor(diffMin / 60);
+
+    if (diffHr >= 24) {
+      return target.toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    } else if (diffHr >= 1) {
+      return `${diffHr}시간 전`;
+    } else {
+      return `${diffMin}분 전`;
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 읽기
@@ -190,7 +239,7 @@ const NDetail = () => {
       <N.Body>
         <N.News>
           <N.Title>
-            <N.Category>{news?.category || "카테고리"}</N.Category>
+            {news?.category && <N.Category>{news.category}</N.Category>}
             <div id="title">{news?.title || "제목 없음"}</div>
           </N.Title>
 
@@ -238,23 +287,31 @@ const NDetail = () => {
             <N.RTitle>최근 분석된 뉴스 보기</N.RTitle>
 
             <N.RList>
-              <N.RComp onClick={goArticle}>
-                <N.RDet>
-                  <N.RCate>사회</N.RCate>
-                  <N.RCc>v.daum.net</N.RCc>
-                  <N.RTit>
-                    “상속세 60%, 국가가 상속 받냐” 한국서 더는 못 살겠다…떠나는
-                    사람 ‘세계 4위’
-                  </N.RTit>
-                  <N.RTime>5시간 전</N.RTime>
-                </N.RDet>
-                <N.RImg>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/news.jpg`}
-                    alt="news"
-                  />
-                </N.RImg>
-              </N.RComp>
+              {recentAnalyses.map((item) => (
+                <N.RComp
+                  key={item.analysisId}
+                  onClick={() =>
+                    navigate("/analysis/article", {
+                      state: { analysisId: item.analysisId },
+                    })
+                  }
+                >
+                  <N.RDet>
+                    {item.category && <N.RCate>{item.category}</N.RCate>}
+                    <N.RTit>{item.mainNewsTitle}</N.RTit>
+                    <N.RTime>{formatRelativeTime(item.date)}</N.RTime>
+                  </N.RDet>
+                  <N.RImg>
+                    <img
+                      src={
+                        item.image ||
+                        `${process.env.PUBLIC_URL}/images/news.jpg`
+                      }
+                      alt="news"
+                    />
+                  </N.RImg>
+                </N.RComp>
+              ))}
               <N.RHr />
             </N.RList>
           </N.Recent>
