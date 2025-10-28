@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import * as N from "../styles/StyledNDet";
 import axios from "axios";
+import Continue from "./Continue";
 
 function formatContentToParagraphs(content) {
   if (!content) return [];
@@ -40,6 +41,151 @@ const NDetail = () => {
   const goArticle = () => navigate(`/analysis/article`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [recentAnalyses, setRecentAnalyses] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCancel = () => {
+    console.log("취소 버튼 눌림!");
+    setIsModalOpen(false);
+  };
+
+  const handleLogoutClick = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login/local");
+      return;
+    }
+
+    try {
+      const url = news?.url;
+      if (!url) {
+        alert("뉴스 URL 정보를 찾을 수 없습니다.");
+        return;
+      }
+
+      const checkRes = await axios.get(
+        `https://www.nocap.kr/api/nocap/analysis/check`,
+        {
+          params: {
+            id: news?.analysisId || 0,
+            url: url,
+          },
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      const { analyzed, plan, analysisId } = checkRes.data;
+
+      if (analyzed && plan === "PREMIUM") {
+        // ✅ 기존 분석 결과로 바로 이동
+        navigate("/loading");
+        const detailRes = await axios.get(
+          `https://www.nocap.kr/api/nocap/analysis/${analysisId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        navigate("/analysis/article", {
+          state: { analysisId },
+        });
+      } else if (!analyzed && plan === "PREMIUM") {
+        // ✅ 분석은 안 되어 있고 PREMIUM 이면 바로 분석 실행
+        handleConfirm("PREMIUM");
+      } else {
+        // ✅ 이외 모든 경우는 모달 띄움
+        setIsModalOpen(true);
+      }
+    } catch (err) {
+      console.error("❌ 분석 이력 확인 실패:", err);
+      setIsModalOpen(true); // 실패해도 모달 열기
+    }
+  };
+
+  // PREMIUM 분석 실행
+  const handleConfirm = async (plan = "PREMIUM") => {
+    await runAnalysis(plan);
+  };
+
+  // 일반 분석 실행
+  const handleGeneral = async () => {
+    await runAnalysis("NORMAL");
+  };
+
+  // 공통 분석 실행 함수
+  const runAnalysis = async (plan) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login/local");
+      return;
+    }
+
+    navigate("/loading");
+
+    try {
+      const userRes = await axios.get(
+        "https://www.nocap.kr/api/nocap/user/me",
+        {
+          headers: {
+            Authorization: `${token}`, // ✅ Bearer 꼭 포함
+          },
+        }
+      );
+      const userId = userRes.data.id;
+
+      const searchNewsDto = {
+        url: news?.url || "",
+        title: news?.title || "",
+        content: news?.content || "",
+        date: news?.date || "",
+        image: news?.image || "",
+      };
+
+      // ✅ 보내는 데이터 콘솔 확인
+      const payload = {
+        userId,
+        plan,
+        searchNewsDto,
+      };
+      console.log("📦 분석 요청 payload:", payload);
+
+      const analysisRes = await axios.post(
+        "https://www.nocap.kr/api/nocap/analysis",
+        payload,
+        {
+          headers: {
+            Authorization: `${token}`, // 🔥 Bearer 잊지 말기
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("✅ 분석 결과:", analysisRes.data);
+
+      if (analysisRes.status === 200) {
+        navigate("/analysis/article", {
+          state: { analysisId: analysisRes.data.analysisId },
+        });
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          "❌ 응답 오류:",
+          error.response.status,
+          error.response.data
+        );
+      } else {
+        console.error("❌ 네트워크 오류:", error.message);
+      }
+      alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+      navigate(-1);
+    }
+  };
 
   useEffect(() => {
     const fetchRecentAnalyses = async () => {
@@ -127,72 +273,72 @@ const NDetail = () => {
 
   const { popNewsId } = location.state || {}; // 혹시 필요 시
 
-  const goCheck = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/login/local");
-      return;
-    }
+  // const goCheck = async () => {
+  //   const token = localStorage.getItem("accessToken");
+  //   if (!token) {
+  //     alert("로그인이 필요합니다.");
+  //     navigate("/login/local");
+  //     return;
+  //   }
 
-    // ✅ 로딩 페이지로 이동
-    navigate("/loading");
+  //   // ✅ 로딩 페이지로 이동
+  //   navigate("/loading");
 
-    try {
-      // 1️⃣ 현재 로그인한 사용자 정보 조회
-      const userRes = await axios.get(
-        "https://www.nocap.kr/api/nocap/user/me",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+  //   try {
+  //     // 1️⃣ 현재 로그인한 사용자 정보 조회
+  //     const userRes = await axios.get(
+  //       "https://www.nocap.kr/api/nocap/user/me",
+  //       {
+  //         headers: {
+  //           Authorization: token,
+  //         },
+  //       }
+  //     );
 
-      const userId = userRes.data.id;
-      console.log("✅ 로그인한 userId:", userId);
+  //     const userId = userRes.data.id;
+  //     console.log("✅ 로그인한 userId:", userId);
 
-      // 2️⃣ 뉴스 데이터 변환
-      const searchNewsDto = {
-        url: news?.url || "",
-        title: news?.title || "",
-        content: news?.content || "",
-        date: news?.date || "",
-        image: news?.image || "",
-      };
+  //     // 2️⃣ 뉴스 데이터 변환
+  //     const searchNewsDto = {
+  //       url: news?.url || "",
+  //       title: news?.title || "",
+  //       content: news?.content || "",
+  //       date: news?.date || "",
+  //       image: news?.image || "",
+  //     };
 
-      console.log("📦 전송할 searchNewsDto:", searchNewsDto);
+  //     console.log("📦 전송할 searchNewsDto:", searchNewsDto);
 
-      // 3️⃣ 분석 요청 (plan: PREMIUM 추가)
-      const analysisRes = await axios.post(
-        "https://www.nocap.kr/api/nocap/analysis",
-        {
-          userId: userId,
-          plan: "PREMIUM", // ✅ 추가
-          searchNewsDto: searchNewsDto,
-        },
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  //     // 3️⃣ 분석 요청 (plan: PREMIUM 추가)
+  //     const analysisRes = await axios.post(
+  //       "https://www.nocap.kr/api/nocap/analysis",
+  //       {
+  //         userId: userId,
+  //         plan: "PREMIUM", // ✅ 추가
+  //         searchNewsDto: searchNewsDto,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: token,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
 
-      console.log("✅ 분석 결과:", analysisRes.data);
+  //     console.log("✅ 분석 결과:", analysisRes.data);
 
-      // 4️⃣ 분석 결과 페이지로 이동 (analysisId만 전달)
-      if (analysisRes.status === 200) {
-        navigate("/analysis/article", {
-          state: { analysisId: analysisRes.data.analysisId }, // ✅ 전달
-        });
-      }
-    } catch (error) {
-      console.error("❌ 분석 요청 실패:", error);
-      alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
-      navigate(-1);
-    }
-  };
+  //     // 4️⃣ 분석 결과 페이지로 이동 (analysisId만 전달)
+  //     if (analysisRes.status === 200) {
+  //       navigate("/analysis/article", {
+  //         state: { analysisId: analysisRes.data.analysisId }, // ✅ 전달
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ 분석 요청 실패:", error);
+  //     alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
+  //     navigate(-1);
+  //   }
+  // };
 
   return (
     <N.Container>
@@ -279,7 +425,14 @@ const NDetail = () => {
             ))}
           </N.Content>
 
-          <N.Button onClick={goCheck}>팩트체크하기</N.Button>
+          <N.Button onClick={handleLogoutClick}>팩트체크하기</N.Button>
+          {isModalOpen && (
+            <Continue
+              onConfirm={() => handleConfirm("PREMIUM")}
+              onGeneral={handleGeneral}
+              onCancel={() => setIsModalOpen(false)}
+            />
+          )}
         </N.News>
 
         <N.DesktopOnly>

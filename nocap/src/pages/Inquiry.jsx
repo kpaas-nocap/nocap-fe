@@ -135,13 +135,6 @@ const Inquiry = () => {
 
       <I.DesktopOnly>
         <I.Nav>
-          <I.NComp onClick={goMy}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/point_n.png`}
-              alt="point"
-            />
-            <div>내 포인트</div>
-          </I.NComp>
           <I.NComp>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}

@@ -211,13 +211,6 @@ const Edit = () => {
 
       <E.DesktopOnly>
         <E.Nav>
-          <E.NComp onClick={goMy}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/point_n.png`}
-              alt="point"
-            />
-            <div>내 포인트</div>
-          </E.NComp>
           <E.NComp>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}

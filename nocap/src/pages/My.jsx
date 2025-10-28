@@ -418,13 +418,6 @@ const My = () => {
         <M.Nav>
           <M.NComp>
             <img
-              src={`${process.env.PUBLIC_URL}/images/point_c.png`}
-              alt="point"
-            />
-            <div>내 포인트</div>
-          </M.NComp>
-          <M.NComp>
-            <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
               alt="point"
             />

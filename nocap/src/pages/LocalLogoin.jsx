@@ -228,13 +228,13 @@ const LocalLogin = () => {
               </L.SCheckBox>
               <L.Save>아이디 저장</L.Save>
 
-              <L.KCheckBox
+              {/* <L.KCheckBox
                 checked={isKChecked}
                 onClick={() => setIsKChecked(!isKChecked)}
               >
                 {isKChecked && <L.CheckIcon>✔</L.CheckIcon>}
               </L.KCheckBox>
-              <L.Keep>로그인 유지하기</L.Keep>
+              <L.Keep>로그인 유지하기</L.Keep> */}
             </L.Check>
           </L.Input>
           <L.Find onClick={goFind}>비밀번호 찾기</L.Find>
