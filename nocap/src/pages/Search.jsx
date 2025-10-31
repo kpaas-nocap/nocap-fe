@@ -31,7 +31,14 @@ const Search = () => {
       setRecentSearches(newSearches);
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
-      navigate(`/search/result?keyword=${encodeURIComponent(query)}`);
+      if (isMobile) {
+        // 📱 모바일: 기존대로 검색 결과 페이지로 이동
+        navigate(`/search/result?keyword=${encodeURIComponent(query)}`);
+      } else {
+        // 💻 데스크탑: 검색어 포함하여 뉴스 페이지로 이동
+        navigate(`/news?keyword=${encodeURIComponent(query)}`);
+      }
+
       setQuery(""); // 입력창 비우기
     }
   };
@@ -51,6 +58,14 @@ const Search = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+  }, []);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (

@@ -225,7 +225,7 @@ export const Title = styled.div`
   letter-spacing: -0.4px;
 
   @media screen and (min-width: 768px) {
-    margin-top: 10px;
+    margin-top: 20px;
     color: #000;
     font-family: Pretendard;
     font-size: 28px;
@@ -315,7 +315,7 @@ export const Content = styled.div`
   font-family: Pretendard;
   font-size: 16px;
   font-weight: 500;
-  line-height: 1.6; /* ✅ 줄 간격 늘림 */
+  line-height: 2; /* ✅ 줄 간격 늘림 */
 
   max-height: ${({ expanded }) => (expanded ? "none" : "125px")};
   /* 25px(line-height) x 5줄 = 125px */
@@ -927,6 +927,17 @@ export const Decl = styled.div`
     width: 13px;
     height: 13px;
   }
+
+  @media screen and (min-width: 768px) {
+    div {
+      font-size: 14px;
+    }
+
+    img {
+      width: 17px;
+      hieght: 17px;
+    }
+  }
 `;
 
 export const LoginPrompt = styled.div`
@@ -1016,5 +1027,23 @@ export const TUp = styled.div`
     div {
       font-size: 14px;
     }
+  }
+`;
+
+export const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Book = styled.div`
+  width: 24px;
+  height: 24px;
+
+  img {
+    width: 24px;
+    height: 24px;
   }
 `;

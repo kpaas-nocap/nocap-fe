@@ -23,10 +23,10 @@ export default function Logout({ onConfirm, onCancel }) {
           </div>
         </Content>
         <ButtonWrapper>
-          <Cancel id="cancel" onClick={onCancel}>
+          <Cancel id="cancel" onClick={onCancel} style={{ cursor: "pointer" }}>
             취소
           </Cancel>
-          <Logoutbtn id="yes" onClick={onConfirm}>
+          <Logoutbtn id="yes" onClick={onConfirm} style={{ cursor: "pointer" }}>
             탈퇴하기
           </Logoutbtn>
         </ButtonWrapper>

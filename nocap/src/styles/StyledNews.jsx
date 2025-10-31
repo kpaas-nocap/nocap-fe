@@ -381,6 +381,11 @@ export const Recent = styled.div`
   flex-shrink: 0;
   text-align: left;
 
+  /* ✅ 스크롤 시 따라오는 고정 스타일 */
+  position: sticky;
+  top: 100px; /* 화면 상단으로부터의 거리 (헤더 높이에 맞춰 조정) */
+  align-self: flex-start;
+
   #title {
     color: #213ce9;
     font-family: Pretendard;

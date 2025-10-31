@@ -10,6 +10,9 @@ const InquiryDet = () => {
   const goNews = () => navigate(`/news`);
   const goMy = () => navigate(`/my`);
   const goEdit = () => navigate(`/my/edit`);
+  const goIntro = () => navigate(`/introduce`);
+  const goPre = () => navigate(`/premium`);
+  const goPay = () => navigate(`/my/payment`);
 
   // ✅ 드롭다운 상태
   const [isOpen, setIsOpen] = useState(false);
@@ -129,16 +132,16 @@ const InquiryDet = () => {
             id="logo"
           />
           <I.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
             </div>
-            <div id="tag">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goMy}>
               마이페이지
               <div id="circle" />
             </div>
@@ -148,35 +151,28 @@ const InquiryDet = () => {
 
       <I.DesktopOnly>
         <I.Nav>
-          <I.NComp onClick={goMy}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/point_n.png`}
-              alt="point"
-            />
-            <div>내 포인트</div>
-          </I.NComp>
-          <I.NComp>
+          <I.NComp style={{ cursor: "pointer" }} onClick={goPre}>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
               alt="point"
             />
             <div>프리미엄</div>
           </I.NComp>
-          <I.NComp onClick={goEdit}>
+          <I.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
               alt="point"
             />
             <div>프로필 수정</div>
           </I.NComp>
-          <I.NComp>
+          <I.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
               alt="point"
             />
             <div>구매내역</div>
           </I.NComp>
-          <I.NComp>
+          <I.NComp style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/inquiry_c.png`}
               alt="point"
@@ -270,10 +266,10 @@ const InquiryDet = () => {
 
         <I.DesktopOnly>
           <I.Btn>
-            <div id="see" onClick={goBack}>
+            <div id="see" onClick={goBack} style={{ cursor: "pointer" }}>
               문의내역 보기
             </div>
-            <div id="go" onClick={handleSubmit}>
+            <div id="go" onClick={handleSubmit} style={{ cursor: "pointer" }}>
               등록하기
             </div>
           </I.Btn>

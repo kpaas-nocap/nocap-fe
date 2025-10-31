@@ -13,7 +13,8 @@ const PFind = () => {
     navigate(-1);
   };
   const goSuccess = () => navigate(`/find/success`);
-  const goReset = () => navigate(`/find/reset`);
+  const goIntro = () => navigate(`/introduce`);
+  const goNews = () => navigate(`/news`);
   const goMain = () => navigate(`/`);
   const goLogin = () => navigate(`/login/local`);
 
@@ -68,16 +69,16 @@ const PFind = () => {
             id="logo"
           />
           <P.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" onClick={goIntro} style={{ cursor: "pointer" }}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기">
+            <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
               뉴스
             </div>
-            <div id="tag" onClick={goLogin}>
+            <div id="tag" onClick={goLogin} style={{ cursor: "pointer" }}>
               로그인/회원가입
               <div id="circle" />
             </div>
@@ -111,7 +112,12 @@ const PFind = () => {
 
           <P.DesktopOnly>
             <P.Go>
-              <P.Login onClick={handleFindPassword}>비밀번호 찾기</P.Login>
+              <P.Login
+                onClick={handleFindPassword}
+                style={{ cursor: "pointer" }}
+              >
+                비밀번호 찾기
+              </P.Login>
             </P.Go>
           </P.DesktopOnly>
         </P.Frame>
@@ -119,7 +125,9 @@ const PFind = () => {
 
       <P.MobileOnlyBut>
         <P.Go>
-          <P.Login onClick={handleFindPassword}>비밀번호 찾기</P.Login>
+          <P.Login onClick={handleFindPassword} style={{ cursor: "pointer" }}>
+            비밀번호 찾기
+          </P.Login>
         </P.Go>
       </P.MobileOnlyBut>
     </P.Container>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import * as N from "../styles/StyledNews";
+import { useSearchParams } from "react-router-dom";
 import NSide from "./NSide"; // 컴포넌트 경로에 따라 조정
 import axios from "axios";
 
@@ -26,6 +27,8 @@ const News = () => {
     기타: 106,
   };
 
+  const [searchParams] = useSearchParams(); // 🔍 쿼리 파라미터 추출
+
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +42,34 @@ const News = () => {
       console.error("⚠️ 분석 데이터 불러오기 실패:", error);
     }
   };
+
+  const fetchSearchResults = async (keyword) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`https://www.nocap.kr/api/nocap/search`, {
+        params: { search: keyword },
+        headers: {
+          Authorization: undefined, // 인증 제거 (401 방지)
+        },
+      });
+      setNewsList(res.data);
+    } catch (err) {
+      console.error("🔍 검색 API 실패:", err);
+      setNewsList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const keywordFromUrl = searchParams.get("keyword");
+    if (keywordFromUrl) {
+      setQuery(keywordFromUrl); // 검색창에도 반영
+      fetchSearchResults(keywordFromUrl); // ✅ 검색 실행
+    } else {
+      fetchCategoryNews(selectedCategory); // ✅ 기본 카테고리 뉴스 로드
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchAnalysisData();
@@ -73,6 +104,7 @@ const News = () => {
   const goBack = () => navigate(-1);
   const goMain = () => navigate(`/`);
   const goMy = () => navigate(`/my`);
+  const goIntro = () => navigate(`/introduce`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleAnalysisClick = (analysisId) => {
@@ -105,8 +137,8 @@ const News = () => {
       setRecentSearches(newSearches);
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
-      navigate(`/search/result?keyword=${encodeURIComponent(query)}`);
-      setQuery(""); // 입력창 초기화
+      // ✅ 이동 없이, 내부에서 검색 API 호출
+      fetchSearchResults(query);
     }
   };
 
@@ -187,19 +219,20 @@ const News = () => {
             id="logo"
           />
           <N.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기">
+            <div id="tag" style={{ cursor: "pointer" }}>
               뉴스
               <div id="circle" />
             </div>
             <div
               id="tag"
               onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+              style={{ cursor: "pointer" }}
             >
               {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
@@ -234,6 +267,7 @@ const News = () => {
                 fetchCategoryNews(item); // 클릭 시 뉴스 요청
               }}
               className={selectedCategory === item ? "active" : ""}
+              style={{ cursor: "pointer" }}
             >
               {item}
             </div>

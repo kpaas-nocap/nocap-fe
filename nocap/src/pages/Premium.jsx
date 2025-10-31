@@ -5,24 +5,95 @@ import * as P from "../styles/StyledPremium";
 const Premium = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const goMain = () => navigate(`/`);
+  const goIntro = () => navigate(`/introduce`);
+  const goNews = () => navigate(`/news`);
+  const goEdit = () => navigate(`/my/edit`);
+  const goInquiry = () => navigate(`/my/inquiry`);
+  const goPay = () => navigate(`/my/payment`);
+  const goMy = () => navigate(`/my`);
 
   return (
     <P.Container>
-      <P.Header>
-        <img
-          onClick={goBack}
-          src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
-          alt="back"
-        />
-        <div>플랜 업그레이드</div>
-      </P.Header>
+      <P.MobileOnly>
+        <P.Header>
+          <img
+            onClick={goBack}
+            src={`${process.env.PUBLIC_URL}/images/backbtn.svg`}
+            alt="back"
+          />
+          <div>플랜 업그레이드</div>
+        </P.Header>
+      </P.MobileOnly>
+
+      <P.DesktopOnly>
+        <P.Head>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
+            alt="logo"
+            id="logo"
+          />
+          <P.Menu>
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
+              홈
+            </div>
+            <div id="tag" onClick={goIntro} style={{ cursor: "pointer" }}>
+              NOCAP 소개
+            </div>
+            <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
+              뉴스
+            </div>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goMy}>
+              마이페이지
+              <div id="circle" />
+            </div>
+          </P.Menu>
+        </P.Head>
+      </P.DesktopOnly>
+
+      <P.DesktopOnly>
+        <P.Nav>
+          <P.NComp style={{ cursor: "pointer" }}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/premium_c.png`}
+              alt="point"
+            />
+            <div>프리미엄</div>
+          </P.NComp>
+          <P.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+              alt="point"
+            />
+            <div>프로필 수정</div>
+          </P.NComp>
+          <P.NComp style={{ cursor: "pointer" }} onClick={goPay}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
+              alt="point"
+            />
+            <div>구매내역</div>
+          </P.NComp>
+          <P.NComp onClick={goInquiry} style={{ cursor: "pointer" }}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/inquiry_n.png`}
+              alt="point"
+            />
+            <div>문의하기</div>
+          </P.NComp>
+        </P.Nav>
+      </P.DesktopOnly>
+
+      <P.DesktopOnly>
+        <P.Tit>플랜 업그레이드</P.Tit>
+      </P.DesktopOnly>
 
       <P.Body>
         <P.Free>
           <P.Title>🆓 Free</P.Title>
           <P.Price>
             <div id="num">0</div>
-            <div id="cost">원/ 일</div>
+            <div id="cost">원/ 월</div>
           </P.Price>
           <P.Status>나의 현재 플랜</P.Status>
           <P.Detail1>타인이 분석한 기사 열람 가능</P.Detail1>
@@ -36,8 +107,8 @@ const Premium = () => {
         <P.Pro>
           <P.Title>💎 Pro</P.Title>
           <P.Price>
-            <div id="num">?000</div>
-            <div id="cost">원/ 일</div>
+            <div id="num">7900</div>
+            <div id="cost">원/ 월</div>
           </P.Price>
           <P.Use>Pro 이용하기 </P.Use>
           <P.Detail1>타인이 분석한 기사 열람 가능</P.Detail1>

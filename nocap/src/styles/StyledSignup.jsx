@@ -139,7 +139,7 @@ export const Body = styled.div`
   align-items: center;
 
   @media screen and (min-width: 768px) {
-    margin-top: 79px;
+    margin-top: 33px;
   }
 `;
 

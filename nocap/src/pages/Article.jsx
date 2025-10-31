@@ -4,6 +4,31 @@ import * as A from "../styles/StyledArticle";
 import Rate from "./Rate";
 import axios from "axios";
 
+// ✅ 안내 문구 제거 함수 추가
+function cleanContent(text = "") {
+  if (!text) return "";
+
+  return (
+    text
+      // 글자 크기 안내 문장 제거
+      .replace(
+        /글자\s*크기\s*설정\s*파란원을\s*좌우로\s*움직이시면\s*글자크기가\s*변경\s*됩니다[.\s]*/gi,
+        ""
+      )
+      // 폰트 크기 관련 안내 문장 제거
+      .replace(
+        /가\s*매우\s*작은\s*폰트\s*작은\s*폰트\s*보통\s*폰트\s*큰\s*폰트\s*매우\s*큰\s*폰트\s*가\s*이\s*글자크기로\s*변경됩니다[.\s]*/gi,
+        ""
+      )
+      // 다음뉴스 안내문 제거
+      .replace(
+        /\(예시\)\s*가장\s*빠른\s*뉴스가\s*있고\s*다양한\s*정보,\s*쌍방향\s*소통이\s*숨쉬는\s*다음뉴스를\s*만나보세요[.\s]*/gi,
+        ""
+      )
+      .trim()
+  );
+}
+
 const Article = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -12,12 +37,12 @@ const Article = () => {
   const goMy = () => navigate(`/my`);
   const goMain = () => navigate(`/`);
   const goNews = () => navigate(`/news`);
+  const goIntro = () => navigate(`/introduce`);
 
   const [expanded, setExpanded] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [text, setText] = useState("");
   const [selected, setSelected] = useState("new");
-  const [bookmarked, setBookmarked] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ 로그인 여부 상태 추가
 
   const token = localStorage.getItem("accessToken");
@@ -67,8 +92,81 @@ const Article = () => {
     fetchUserInfo();
   }, []);
 
-  const toggleBookmark = () => {
-    setBookmarked((prev) => !prev);
+  // const toggleBookmark = () => {
+  //   setBookmarked((prev) => !prev);
+  // };
+
+  // ✅ Article 컴포넌트 내부 추가 / 수정
+
+  const [bookmarked, setBookmarked] = useState(false);
+
+  // ✅ 북마크 상태 불러오기
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token || !analysisData?.analysisId) return;
+
+      try {
+        const res = await axios.get("https://www.nocap.kr/api/nocap/bookmark", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+
+        if (res.status === 200 && Array.isArray(res.data)) {
+          const isBookmarked = res.data.some(
+            (item) => item.analysisId === analysisData.analysisId
+          );
+          setBookmarked(isBookmarked);
+          console.log("📘 북마크 상태:", isBookmarked);
+        }
+      } catch (err) {
+        console.error("❌ 북마크 목록 불러오기 실패:", err);
+      }
+    };
+
+    fetchBookmarks();
+  }, [analysisData]);
+
+  // ✅ 북마크 저장 함수
+  const handleBookmark = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login/local");
+      return;
+    }
+
+    const analysisId = analysisData?.analysisId;
+    if (!analysisId) return;
+
+    // 이미 북마크된 경우
+    if (bookmarked) {
+      alert("이미 북마크에 저장된 기사입니다.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `https://www.nocap.kr/api/nocap/bookmark/save/${analysisId}`,
+        null,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      if (res.status >= 200 && res.status < 300) {
+        setBookmarked(true);
+        alert("북마크에 추가되었습니다.");
+      } else {
+        alert("북마크 요청이 정상적으로 처리되지 않았습니다.");
+      }
+    } catch (err) {
+      console.error("❌ 북마크 저장 실패:", err);
+      alert("북마크 요청 중 오류가 발생했습니다.");
+    }
   };
 
   const handleChange = (e) => {
@@ -148,8 +246,19 @@ const Article = () => {
           }
         );
 
-        setAnalysisData(res.data);
-        // 책갈피 정보 등도 기존처럼 처리
+        // ✅ 본문 정제 (불필요 문구 제거)
+        const cleanedContent = cleanContent(res.data.mainNewsDto.content);
+
+        // ✅ 정제된 본문으로 교체
+        const cleanedData = {
+          ...res.data,
+          mainNewsDto: {
+            ...res.data.mainNewsDto,
+            content: cleanedContent,
+          },
+        };
+
+        setAnalysisData(cleanedData);
       } catch (err) {
         console.error("❌ 분석 결과 불러오기 실패:", err);
       } finally {
@@ -172,7 +281,35 @@ const Article = () => {
     }
   }, [analysisData]);
 
-  // 추천/비추천 요청 함수
+  // ✅ 댓글 목록 불러오기 (추천 상태 포함)
+  useEffect(() => {
+    const fetchComments = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token || !analysisData?.analysisId) return;
+
+      try {
+        const res = await axios.get(
+          `https://www.nocap.kr/api/nocap/comment/get/${analysisData.analysisId}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        if (res.status === 200 && Array.isArray(res.data)) {
+          // 서버로부터 댓글 목록 동기화
+          setComments(res.data);
+        }
+      } catch (err) {
+        console.error("❌ 댓글 목록 불러오기 실패:", err);
+      }
+    };
+
+    fetchComments();
+  }, [analysisData]);
+
+  // ✅ 추천/비추천 함수
   const handleVote = async (commentId, action) => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -181,10 +318,18 @@ const Article = () => {
       return;
     }
 
-    // 이미 요청 중이면 무시
-    if (disabledVotes[commentId]) return;
+    // 해당 댓글 객체 찾기
+    const targetComment = comments.find((c) => c.commentId === commentId);
+    if (!targetComment) return;
 
-    // UI 즉시 잠금(중복 클릭 방지)
+    // 이미 추천/비추천한 댓글이라면 무시 (또는 alert)
+    if (targetComment.userVoted) {
+      alert("이미 (비)추천한 댓글입니다.");
+      return;
+    }
+
+    // 요청 중 중복 클릭 방지
+    if (disabledVotes[commentId]) return;
     setDisabledVotes((prev) => ({ ...prev, [commentId]: true }));
 
     try {
@@ -204,38 +349,63 @@ const Article = () => {
         }
       );
 
-      // 성공 시, 로컬 comments 카운트 업데이트 (낙관적 업데이트)
-      if (res.status === 200 || res.status === 201) {
+      if (res.status === 200) {
+        // ✅ 서버 응답으로부터 최신 값 반영
+        const updated = res.data;
+
+        // 로컬 상태 동기화
         setComments((prev) =>
           prev.map((c) => {
             if (c.commentId !== commentId) return c;
-            // 백엔드가 실제로 어떤 응답을 주는지에 따라 조정 가능.
-            // 여기서는 버튼 클릭 시 단순히 +1 처리
-            if (action === "RECOMMEND") {
-              return { ...c, recommendation: (c.recommendation || 0) + 1 };
-            } else {
-              return {
-                ...c,
-                nonRecommendation: (c.nonRecommendation || 0) + 1,
-              };
-            }
+            return {
+              ...c,
+              recommendation: updated.recommendation,
+              nonRecommendation: updated.nonRecommendation,
+              userVoted: true, // ✅ 이 필드로 중복 클릭 방지
+            };
           })
         );
       } else {
-        // 실패 시 (status 200이 아니면) 안내
-        console.error("추천 API 응답 오류:", res);
-        alert("요청이 정상적으로 처리되지 않았습니다.");
+        console.warn("⚠️ 추천 API 응답 코드:", res.status);
       }
     } catch (err) {
-      console.error("추천 요청 실패:", err);
-      alert("추천 요청 중 오류가 발생했습니다.");
+      console.error("❌ 추천 요청 실패:", err);
     } finally {
-      // 잠금 해제
       setDisabledVotes((prev) => {
         const copy = { ...prev };
         delete copy[commentId];
         return copy;
       });
+    }
+  };
+
+  // 👇 Article 컴포넌트 내부에 추가 (handleVote 아래 위치 추천)
+  const handleReport = async (commentId) => {
+    const token = localStorage.getItem("accessToken");
+    console.log("🟢 신고 요청 시작:", commentId, token); // ✅ 추가
+
+    try {
+      const res = await axios.post(
+        `https://www.nocap.kr/api/nocap/comment/report/${commentId}`,
+        null,
+        {
+          headers: {
+            Authorization: `${token}`, // ✅ 수정
+          },
+        }
+      );
+
+      console.log("🟢 응답 코드:", res.status); // ✅ 추가
+
+      if (res.status >= 200 && res.status < 300) {
+        alert("신고가 접수되었습니다.");
+      } else {
+        console.warn("⚠️ 응답 코드:", res.status);
+        alert("신고 요청이 정상적으로 처리되지 않았습니다.");
+      }
+    } catch (err) {
+      console.error("❌ 신고 요청 실패:", err);
+      alert("신고 요청 중 오류가 발생했습니다.");
     }
   };
 
@@ -288,13 +458,13 @@ const Article = () => {
             onClick={goBack}
           />
           <img
-            id="bookmark"
             src={`${process.env.PUBLIC_URL}/images/${
-              bookmarked ? "bookmark_b.svg" : "bookmark.svg"
+              bookmarked ? "bookmark_b.svg" : "bookmark_e.svg"
             }`}
-            alt="bookmark"
-            onClick={toggleBookmark}
+            alt="북마크"
+            onClick={handleBookmark}
             style={{ cursor: "pointer" }}
+            id="bookmark"
           />
         </A.Header>
         <A.Hr />
@@ -308,17 +478,17 @@ const Article = () => {
             id="logo"
           />
           <A.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
               <div id="circle" />
             </div>
-            <div id="tag" onClick={goMy} title="마이 페이지로 이동">
+            <div id="tag" onClick={goMy} style={{ cursor: "pointer" }}>
               마이페이지
             </div>
           </A.Menu>
@@ -477,6 +647,16 @@ const Article = () => {
                   <A.CDet>{c.content}</A.CDet>
 
                   <A.Icon>
+                    <A.Decl
+                      onClick={() => handleReport(c.commentId)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div>신고</div>
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/declaration.svg`}
+                        alt="신고"
+                      />
+                    </A.Decl>
                     <A.Thumb>
                       <A.TUp
                         onClick={() => handleVote(c.commentId, "RECOMMEND")}
@@ -514,7 +694,20 @@ const Article = () => {
           <A.LeftPannel>
             <A.Body>
               <A.Up>
-                <A.Category>{category}</A.Category>
+                <A.Top>
+                  <A.Category>{category}</A.Category>
+                  <A.Book
+                    onClick={handleBookmark}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/${
+                        bookmarked ? "bookmark_b.svg" : "bookmark_e.svg"
+                      }`}
+                      alt="북마크"
+                    />
+                  </A.Book>
+                </A.Top>
                 <A.Title>{mainNewsTitle}</A.Title>
                 <A.Date>{new Date(date).toLocaleDateString("ko-KR")}</A.Date>
               </A.Up>
@@ -534,7 +727,10 @@ const Article = () => {
               </A.ContentWrapper>
 
               {!expanded && (
-                <A.Button onClick={() => setExpanded(true)}>
+                <A.Button
+                  onClick={() => setExpanded(true)}
+                  style={{ cursor: "pointer" }}
+                >
                   기사 본문보기
                 </A.Button>
               )}
@@ -549,6 +745,7 @@ const Article = () => {
                     src={`${process.env.PUBLIC_URL}/images/refresh.svg`}
                     alt="refresh"
                     onClick={() => window.location.reload()}
+                    style={{ cursor: "pointer" }}
                   />
                 </A.Detail>
               </A.Comment>
@@ -629,9 +826,20 @@ const Article = () => {
                       <A.CDet>{c.content}</A.CDet>
 
                       <A.Icon>
+                        <A.Decl
+                          onClick={() => handleReport(c.commentId)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div>신고</div>
+                          <img
+                            src={`${process.env.PUBLIC_URL}/images/declaration.svg`}
+                            alt="신고"
+                          />
+                        </A.Decl>
                         <A.Thumb>
                           <A.TUp
                             onClick={() => handleVote(c.commentId, "RECOMMEND")}
+                            style={{ cursor: "pointer" }}
                           >
                             <img
                               src={`${process.env.PUBLIC_URL}/images/good.svg`}
@@ -643,6 +851,7 @@ const Article = () => {
                             onClick={() =>
                               handleVote(c.commentId, "NON_RECOMMEND")
                             }
+                            style={{ cursor: "pointer" }}
                           >
                             <img
                               src={`${process.env.PUBLIC_URL}/images/bad.svg`}

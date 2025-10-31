@@ -11,6 +11,9 @@ const Edit = () => {
   const goNews = () => navigate(`/news`);
   const goInquiry = () => navigate(`/my/inquiry`);
   const goMy = () => navigate(`/my`);
+  const goIntro = () => navigate(`/introduce`);
+  const goPre = () => navigate(`/premium`);
+  const goPay = () => navigate(`/my/payment`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -192,16 +195,16 @@ const Edit = () => {
             id="logo"
           />
           <E.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
             </div>
-            <div id="tag" onClick={goMy}>
+            <div id="tag" onClick={goMy} style={{ cursor: "pointer" }}>
               마이페이지
               <div id="circle" />
             </div>
@@ -211,28 +214,28 @@ const Edit = () => {
 
       <E.DesktopOnly>
         <E.Nav>
-          <E.NComp>
+          <E.NComp style={{ cursor: "pointer" }} onClick={goPre}>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
               alt="point"
             />
             <div>프리미엄</div>
           </E.NComp>
-          <E.NComp>
+          <E.NComp style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/edit_c.png`}
               alt="point"
             />
             <div>프로필 수정</div>
           </E.NComp>
-          <E.NComp>
+          <E.NComp onClick={goPay} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
               alt="point"
             />
             <div>구매내역</div>
           </E.NComp>
-          <E.NComp onClick={goInquiry}>
+          <E.NComp onClick={goInquiry} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/inquiry_n.png`}
               alt="point"
@@ -353,13 +356,17 @@ const Edit = () => {
 
         <E.DesktopOnly>
           <E.But>
-            <div id="out" onClick={handleDeleteClick}>
+            <div
+              id="out"
+              onClick={handleDeleteClick}
+              style={{ cursor: "pointer" }}
+            >
               회원 탈퇴하기
             </div>
             {isModalOpen && (
               <Delete onConfirm={handleConfirm} onCancel={handleCancel} />
             )}
-            <div id="save" onClick={handleSave}>
+            <div id="save" onClick={handleSave} style={{ cursor: "pointer" }}>
               저장하기
             </div>
           </E.But>

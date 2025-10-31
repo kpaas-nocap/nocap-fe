@@ -20,6 +20,8 @@ const My = () => {
   const goNews = () => navigate(`/news`);
   const goEdit = () => navigate(`/my/edit`);
   const goInquiry = () => navigate(`/my/inquiry`);
+  const goIntro = () => navigate(`/introduce`);
+  const goPay = () => navigate(`/my/payment`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
@@ -283,11 +285,14 @@ const My = () => {
             headers: { Authorization: token },
           }
         );
-        result = res.data.map((item) => ({
-          title: item.mainNewsTitle,
-          image: item.image,
-          analysisId: item.analysisId, // ✅ 추가
-        }));
+        result = res.data
+          .slice()
+          .reverse() // ✅ 분석 기록을 최신순으로 정렬
+          .map((item) => ({
+            title: item.mainNewsTitle,
+            image: item.image,
+            analysisId: item.analysisId,
+          }));
       } else if (index === 2) {
         const bookmarkRes = await axios.get(
           "https://www.nocap.kr/api/nocap/bookmark",
@@ -397,16 +402,16 @@ const My = () => {
             id="logo"
           />
           <M.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" onClick={goIntro} style={{ cursor: "pointer" }}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
             </div>
-            <div id="tag">
+            <div id="tag" style={{ cursor: "pointer" }}>
               마이페이지
               <div id="circle" />
             </div>
@@ -416,28 +421,28 @@ const My = () => {
 
       <M.DesktopOnly>
         <M.Nav>
-          <M.NComp>
+          <M.NComp style={{ cursor: "pointer" }} onClick={goPre}>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
               alt="point"
             />
             <div>프리미엄</div>
           </M.NComp>
-          <M.NComp onClick={goEdit}>
+          <M.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
               alt="point"
             />
             <div>프로필 수정</div>
           </M.NComp>
-          <M.NComp>
+          <M.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
               alt="point"
             />
             <div>구매내역</div>
           </M.NComp>
-          <M.NComp onClick={goInquiry}>
+          <M.NComp onClick={goInquiry} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/inquiry_n.png`}
               alt="point"
@@ -468,7 +473,9 @@ const My = () => {
               </M.Identity>
             </M.MobileOnly>
           </M.Detail>
-          <M.Logout onClick={handleLogoutClick}>로그아웃</M.Logout>
+          <M.Logout onClick={handleLogoutClick} style={{ cursor: "pointer" }}>
+            로그아웃
+          </M.Logout>
           {isModalOpen && (
             <Logout onConfirm={handleConfirm} onCancel={handleCancel} />
           )}
@@ -486,7 +493,8 @@ const My = () => {
         <M.Point>
           <M.Left>
             <img src={`${process.env.PUBLIC_URL}/images/left.svg`} alt="left" />
-            <div>{point}</div> {/* ✅ 포인트 표시 */}
+            <div id="detail">남은 분석 횟수</div>
+            <div id="point">{point}</div> {/* ✅ 포인트 표시 */}
           </M.Left>
           <M.Hr />
           <M.Rank onClick={goPre}>
@@ -569,6 +577,7 @@ const My = () => {
                     id="name"
                     className={selected === index ? "active" : ""}
                     onClick={() => handleTabClick(index)}
+                    style={{ cursor: "pointer" }}
                   >
                     {tab}
                   </div>

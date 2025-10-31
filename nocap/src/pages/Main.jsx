@@ -13,6 +13,7 @@ const Main = () => {
   const goSearch = () => navigate(`/search`);
   const goNews = () => navigate(`/news`);
   const goMy = () => navigate(`/my`);
+  const goIntro = () => navigate(`/introduce`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -80,7 +81,20 @@ const Main = () => {
     fetchPopNews();
   }, []);
 
-  // ✅ axios import 이미 있음
+  const getArrowImageSrc = (direction) => {
+    const isFirst = currentNewsIndex === 0;
+    const isLast = currentNewsIndex === popNewsList.length - 1;
+
+    if (direction === "left") {
+      return isFirst
+        ? `${process.env.PUBLIC_URL}/images/left_g.svg`
+        : `${process.env.PUBLIC_URL}/images/left_b.svg`;
+    } else if (direction === "right") {
+      return isLast
+        ? `${process.env.PUBLIC_URL}/images/right_g.svg`
+        : `${process.env.PUBLIC_URL}/images/right_b.svg`;
+    }
+  };
 
   // ✅ 자세히 보기 버튼 클릭 시 뉴스 상세 불러오기 + 조회기록 저장
   const handleMoreClick = async () => {
@@ -235,7 +249,7 @@ const Main = () => {
               홈
               <div id="circle" />
             </div>
-            <div id="tag" style={{ cursor: "pointer" }}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
             <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
@@ -319,13 +333,13 @@ const Main = () => {
 
               <M.Page>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/left_g.svg`}
+                  src={getArrowImageSrc("left")}
                   alt="left"
                   onClick={handlePrevNews}
                   style={{ cursor: "pointer" }}
                 />
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/right_b.svg`}
+                  src={getArrowImageSrc("right")}
                   alt="right"
                   onClick={handleNextNews}
                   style={{ cursor: "pointer" }}

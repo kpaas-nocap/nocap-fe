@@ -39,6 +39,7 @@ const NDetail = () => {
   const goMain = () => navigate(`/`);
   const goNews = () => navigate(`/news`);
   const goArticle = () => navigate(`/analysis/article`);
+  const goIntro = () => navigate(`/introduce`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [recentAnalyses, setRecentAnalyses] = useState([]);
 
@@ -189,26 +190,18 @@ const NDetail = () => {
 
   useEffect(() => {
     const fetchRecentAnalyses = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return;
-
       try {
-        const res = await axios.get(
-          "https://www.nocap.kr/api/nocap/analysis/my",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
+        // ✅ 토큰 필요 없음
+        const res = await axios.get("https://www.nocap.kr/api/nocap/analysis");
 
+        // ✅ 최신순 정렬 및 최대 8개만 표시
         const sorted = (res.data || [])
-          .sort((a, b) => new Date(b.date) - new Date(a.date)) // 🕐 최신순 정렬
-          .slice(0, 8); // ✂️ 최대 8개로 자르기
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 8);
 
         setRecentAnalyses(sorted);
       } catch (error) {
-        console.error("❌ 최근 분석 데이터 조회 실패:", error);
+        console.error("❌ 전체 분석 데이터 조회 실패:", error);
       }
     };
 
@@ -362,19 +355,20 @@ const NDetail = () => {
             id="logo"
           />
           <N.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
               <div id="circle" />
             </div>
             <div
               id="tag"
               onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+              style={{ cursor: "pointer" }}
             >
               {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>

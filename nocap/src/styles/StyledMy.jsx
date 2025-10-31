@@ -333,7 +333,11 @@ export const Left = styled.div`
     // filter: saturate(1.2) brightness(1.05) contrast(1.1); /* 💡 색감 강조 */
   }
 
-  div {
+  #detail {
+    display: none;
+  }
+
+  #point {
     color: #000;
     text-align: right;
     font-family: Pretendard;
@@ -344,7 +348,24 @@ export const Left = styled.div`
   }
 
   @media screen and (min-width: 768px) {
-    width: 251px;
+    width: 291px;
+
+    #detail {
+      display: block;
+      margin-left: 30px;
+      color: #000;
+      text-align: right;
+      font-family: Pretendard;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    #point {
+      margin-left: 100px;
+      font-size: 20px;
+    }
   }
 `;
 

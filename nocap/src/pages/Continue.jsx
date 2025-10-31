@@ -25,10 +25,10 @@ export default function Continue({ onConfirm, onGeneral, onCancel }) {
           </div>
         </Content>
         <ButtonWrapper>
-          <Cancel id="cancel" onClick={onGeneral}>
+          <Cancel id="cancel" onClick={onGeneral} style={{ cursor: "pointer" }}>
             일반분석 하기
           </Cancel>
-          <Logoutbtn id="yes" onClick={onConfirm}>
+          <Logoutbtn id="yes" onClick={onConfirm} style={{ cursor: "pointer" }}>
             프리미엄 분석 하기
           </Logoutbtn>
         </ButtonWrapper>
