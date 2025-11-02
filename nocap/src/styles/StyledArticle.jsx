@@ -73,6 +73,7 @@ export const Hr = styled.div`
   flex-shrink: 0;
   background: #d9d9d9;
   margin-top: 6px;
+  margin-left: 17px;
 `;
 
 export const Head = styled.div`
@@ -224,7 +225,7 @@ export const Title = styled.div`
   letter-spacing: -0.4px;
 
   @media screen and (min-width: 768px) {
-    margin-top: 10px;
+    margin-top: 20px;
     color: #000;
     font-family: Pretendard;
     font-size: 28px;
@@ -255,16 +256,22 @@ export const Img = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* ✅ 넘치는 부분 잘라내기 */
+  width: 368px;
 
   img {
-    width: 368px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
   }
 
   @media screen and (min-width: 768px) {
     margin-top: 50px;
+    width: 620px;
 
     img {
       width: 100%;
+      object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
     }
   }
 `;
@@ -308,7 +315,7 @@ export const Content = styled.div`
   font-family: Pretendard;
   font-size: 16px;
   font-weight: 500;
-  line-height: 25px;
+  line-height: 2; /* ✅ 줄 간격 늘림 */
 
   max-height: ${({ expanded }) => (expanded ? "none" : "125px")};
   /* 25px(line-height) x 5줄 = 125px */
@@ -397,7 +404,7 @@ export const RTitle = styled.div`
 export const List = styled.div`
   width: 368px;
   margin-top: 20px;
-  gap: 20px;
+  gap: 40px;
   display: flex;
   flex-direction: column;
   margin-bottom: 80px;
@@ -429,6 +436,8 @@ export const Text = styled.div`
   flex-direction: column;
   text-align: start;
   width: 239px;
+  height: 100%;
+  justify-content: space-between;
 `;
 
 export const ATitle = styled.div`
@@ -486,7 +495,7 @@ export const Dropdown = styled.div`
     font-size: 13px;
     font-style: normal;
     font-weight: 600;
-    line-height: normal;
+    line-height: 1.6; /* ✅ 줄 간격 늘림 */
     list-style-position: inside; /* ✅ bullet을 ul 내부로 이동 */
     padding-left: 1.5em; /* 전체 들여쓰기 (점 + 여백 확보) */
     text-indent: -1.2em; /* 첫 줄만 당겨서 점 옆으로 맞추기 */
@@ -806,7 +815,8 @@ export const Comp = styled.div`
   margin-top: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
+  width: 100%;
 
   @media screen and (min-width: 768px) {
     margin-top: 23px;
@@ -917,13 +927,66 @@ export const Decl = styled.div`
     width: 13px;
     height: 13px;
   }
+
+  @media screen and (min-width: 768px) {
+    div {
+      font-size: 14px;
+    }
+
+    img {
+      width: 17px;
+      hieght: 17px;
+    }
+  }
+`;
+
+export const LoginPrompt = styled.div`
+  width: 368px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 1px solid #a5b1ff;
+  background: #eceeff;
+  color: #b2b2b2;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.325px;
+  align-items: center;
+  padding: 15px 14px;
+  margin-top: 32.5px;
+
+  @media screen and (min-width: 768px) {
+    width: 622px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    border: 1px solid #a5b1ff;
+    background: #eceeff;
+    color: #b2b2b2;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.375px;
+    align-items: center;
+    padding: 14px 23px;
+    margin-top: 20px;
+  }
 `;
 
 export const AHr = styled.div`
-  width: 622px;
+  width: 368px;
   height: 1px;
   flex-shrink: 0;
   background: #d9d9d9;
+
+  @media screen and (min-width: 768px) {
+    width: 622px;
+  }
 `;
 
 export const Thumb = styled.div`
@@ -953,5 +1016,34 @@ export const TUp = styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.25px;
+  }
+
+  @media screen and (min-width: 768px) {
+    img {
+      width: 18px;
+      height: 18px;
+    }
+
+    div {
+      font-size: 14px;
+    }
+  }
+`;
+
+export const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Book = styled.div`
+  width: 24px;
+  height: 24px;
+
+  img {
+    width: 24px;
+    height: 24px;
   }
 `;

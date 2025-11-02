@@ -257,7 +257,7 @@ export const Thumb = styled.div`
 export const TImg = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: -72px;
+  margin-top: -71px;
   width: 368px;
   height: 226px;
 `;

@@ -35,9 +35,7 @@ const NSearch = () => {
   const fetchData = async (kw) => {
     try {
       const res = await axios.get(
-        `https://www.nocap.kr/api/nocap/search/keyword/${encodeURIComponent(
-          kw
-        )}`
+        `https://www.nocap.kr/api/nocap/search?search=${encodeURIComponent(kw)}`
       );
       setResults(res.data);
     } catch (error) {
@@ -60,8 +58,53 @@ const NSearch = () => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && query.trim() !== "") {
       navigate(`/news/search?keyword=${encodeURIComponent(query)}`);
-      // navigate 후 keyword 바뀌면 위 useEffect에서 fetch 실행됨
     }
+  };
+
+  useEffect(() => {
+    if (query?.trim()) {
+      const delayDebounce = setTimeout(() => {
+        fetchData(query);
+      }, 300); // 입력 후 300ms 뒤 실행
+
+      return () => clearTimeout(delayDebounce); // 타이머 초기화
+    } else {
+      setResults([]); // 빈 문자열일 때 결과 초기화
+    }
+  }, [query]);
+
+  // ✅ 뉴스 클릭 시 상세 페이지 이동 + 조회기록 저장
+  const handleNewsClick = async (item) => {
+    const token = localStorage.getItem("accessToken");
+
+    // 조회기록 저장 (로그인 시에만)
+    if (token) {
+      try {
+        await axios.post(
+          "https://www.nocap.kr/api/nocap/history/record",
+          {
+            url: item.url,
+            title: item.title,
+            content: item.content,
+            date: item.date,
+            image: item.image,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("🟢 조회기록 저장 완료");
+      } catch (err) {
+        console.error("⚠️ 조회기록 저장 실패:", err);
+      }
+    } else {
+      console.log("🔓 비로그인 상태 → 조회기록 저장 생략");
+    }
+
+    // ✅ 뉴스 상세 페이지로 state 직접 전달 (News 페이지와 동일)
+    navigate("/news/detail", { state: item });
   };
 
   return (
@@ -124,7 +167,7 @@ const NSearch = () => {
           <N.Hr />
         </N.Search>
 
-        <N.Category>
+        {/* <N.Category>
           {categories.map((item) => (
             <div
               key={item}
@@ -134,7 +177,7 @@ const NSearch = () => {
               {item}
             </div>
           ))}
-        </N.Category>
+        </N.Category> */}
 
         <N.List>
           {loading ? (
@@ -143,10 +186,14 @@ const NSearch = () => {
             <div>검색 결과가 없습니다.</div>
           ) : (
             results.map((item, idx) => (
-              <N.Img key={idx} onClick={goDet}>
+              <N.Img
+                key={idx}
+                onClick={() => handleNewsClick(item)}
+                style={{ cursor: "pointer" }}
+              >
                 <N.Back />
                 <N.TImg>
-                  <N.Up bgImage={item.image}>주요뉴스</N.Up>
+                  <N.Up bgImage={item.image}></N.Up>
                   <N.Down bgImage={item.image}>
                     <N.Title>{item.title}</N.Title>
                   </N.Down>

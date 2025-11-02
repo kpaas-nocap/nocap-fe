@@ -19,9 +19,13 @@ const My = () => {
   const goMain = () => navigate(`/`);
   const goNews = () => navigate(`/news`);
   const goEdit = () => navigate(`/my/edit`);
+  const goInquiry = () => navigate(`/my/inquiry`);
+  const goIntro = () => navigate(`/introduce`);
+  const goPay = () => navigate(`/my/payment`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
+  const [point, setPoint] = useState(0); // 🆕 포인트 상태 추가
 
   const [infoMessageVisible, setInfoMessageVisible] = useState(false); // ✅ 상태 추가
 
@@ -57,6 +61,7 @@ const My = () => {
         });
 
         setUsername(res.data.username); // ✅ username 저장
+        setPoint(res.data.point); // ✅ point 상태 저장
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
       }
@@ -142,6 +147,9 @@ const My = () => {
     };
 
     fetchHistoryCount(); // ✅ 호출 추가
+
+    // ✅ 페이지 처음 로딩 시 "최근 본 뉴스" 탭 데이터 자동 불러오기
+    fetchTabData(0);
   }, [navigate]);
 
   const handleLogoutClick = () => {
@@ -241,6 +249,7 @@ const My = () => {
               newsImage: news.image,
               newsTitle: news.mainNewsTitle,
               newsDate: formatDate(news.date),
+              analysisId: news.analysisId, // ✅ 추가
             };
           });
 
@@ -255,12 +264,20 @@ const My = () => {
 
       if (index === 0) {
         const res = await axios.get("https://www.nocap.kr/api/nocap/history", {
-          headers: { Authorization: token },
+          headers: { Authorization: `${token}` },
         });
-        result = res.data.map((item) => ({
-          title: item.title,
-          image: item.image,
-        }));
+
+        result = res.data
+          .slice() // 원본 배열 훼손 방지
+          .reverse() // ✅ 최신순 정렬
+          .map((item) => ({
+            id: item.id,
+            url: item.url,
+            title: item.title,
+            content: item.content,
+            date: item.date,
+            image: item.image,
+          }));
       } else if (index === 1) {
         const res = await axios.get(
           "https://www.nocap.kr/api/nocap/analysis/my",
@@ -268,10 +285,14 @@ const My = () => {
             headers: { Authorization: token },
           }
         );
-        result = res.data.map((item) => ({
-          title: item.mainNewsTitle,
-          image: item.image,
-        }));
+        result = res.data
+          .slice()
+          .reverse() // ✅ 분석 기록을 최신순으로 정렬
+          .map((item) => ({
+            title: item.mainNewsTitle,
+            image: item.image,
+            analysisId: item.analysisId,
+          }));
       } else if (index === 2) {
         const bookmarkRes = await axios.get(
           "https://www.nocap.kr/api/nocap/bookmark",
@@ -293,6 +314,7 @@ const My = () => {
         result = detailRes.map((r) => ({
           title: r.data.mainNewsTitle,
           image: r.data.image,
+          analysisId: r.data.analysisId, // ✅ 추가
         }));
       }
 
@@ -306,6 +328,51 @@ const My = () => {
     setSelected(index);
     fetchTabData(index);
   };
+
+  const handleNavigateToAnalysis = (id) => {
+    navigate("/analysis/article", {
+      state: { analysisId: id },
+    });
+  };
+
+  const handleNavigateToNewsDetailFromHistory = async (historyId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      // ✅ 상세조회 API 호출
+      const res = await axios.get(
+        `https://www.nocap.kr/api/nocap/history/${historyId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      // ✅ 필요한 데이터만 추출
+      const { id, createdAt, ...newsData } = res.data;
+
+      // ✅ 상세페이지로 이동
+      navigate("/news/detail", { state: newsData });
+    } catch (err) {
+      console.error("❌ 최근 본 뉴스 상세 조회 실패:", err);
+      alert("뉴스 상세 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxBarWidth = isMobile ? 300 : 569; // ✅ 화면에 따른 최대 너비 결정
 
   return (
     <M.Container>
@@ -335,16 +402,16 @@ const My = () => {
             id="logo"
           />
           <M.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" onClick={goIntro} style={{ cursor: "pointer" }}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
             </div>
-            <div id="tag">
+            <div id="tag" style={{ cursor: "pointer" }}>
               마이페이지
               <div id="circle" />
             </div>
@@ -354,35 +421,28 @@ const My = () => {
 
       <M.DesktopOnly>
         <M.Nav>
-          <M.NComp>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/point_c.png`}
-              alt="point"
-            />
-            <div>내 포인트</div>
-          </M.NComp>
-          <M.NComp>
+          <M.NComp style={{ cursor: "pointer" }} onClick={goPre}>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
               alt="point"
             />
             <div>프리미엄</div>
           </M.NComp>
-          <M.NComp onClick={goEdit}>
+          <M.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
               alt="point"
             />
             <div>프로필 수정</div>
           </M.NComp>
-          <M.NComp>
+          <M.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
               alt="point"
             />
             <div>구매내역</div>
           </M.NComp>
-          <M.NComp>
+          <M.NComp onClick={goInquiry} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/inquiry_n.png`}
               alt="point"
@@ -413,7 +473,9 @@ const My = () => {
               </M.Identity>
             </M.MobileOnly>
           </M.Detail>
-          <M.Logout onClick={handleLogoutClick}>로그아웃</M.Logout>
+          <M.Logout onClick={handleLogoutClick} style={{ cursor: "pointer" }}>
+            로그아웃
+          </M.Logout>
           {isModalOpen && (
             <Logout onConfirm={handleConfirm} onCancel={handleCancel} />
           )}
@@ -430,8 +492,9 @@ const My = () => {
 
         <M.Point>
           <M.Left>
-            <img src={`${process.env.PUBLIC_URL}/images/left.png`} alt="left" />
-            <div>10</div>
+            <img src={`${process.env.PUBLIC_URL}/images/left.svg`} alt="left" />
+            <div id="detail">남은 분석 횟수</div>
+            <div id="point">{point}</div> {/* ✅ 포인트 표시 */}
           </M.Left>
           <M.Hr />
           <M.Rank onClick={goPre}>
@@ -443,21 +506,27 @@ const My = () => {
           </M.Rank>
         </M.Point>
 
-        <M.Chance>
+        {/* <M.Chance>
           <div id="base">분석할 수 있는 기회가</div>
-          <div id="num">10번</div>
+          <div id="num">{point}번</div> 
           <div id="base">남았어요</div>
         </M.Chance>
 
         <M.Bar>
-          <div id="bar" />
+          <div id="bar">
+            <div
+              id="fill"
+              style={{
+                width: `${(Math.min(point, 10) / 10) * maxBarWidth}px`, 
+                backgroundColor: "#213CE9",
+                height: "100%",
+                borderRadius: "inherit",
+                transition: "width 0.3s ease-in-out",
+              }}
+            />
+          </div>
           <img src={`${process.env.PUBLIC_URL}/images/rank.svg`} alt="rank" />
-        </M.Bar>
-
-        <M.Number>
-          <div>0번</div>
-          <div>10번</div>
-        </M.Number>
+        </M.Bar> */}
 
         <M.MobileOnly>
           <M.Archive>
@@ -508,6 +577,7 @@ const My = () => {
                     id="name"
                     className={selected === index ? "active" : ""}
                     onClick={() => handleTabClick(index)}
+                    style={{ cursor: "pointer" }}
                   >
                     {tab}
                   </div>
@@ -528,7 +598,10 @@ const My = () => {
               {selected === 3 ? (
                 <M.CommentList>
                   {commentList.map((item, i) => (
-                    <M.CommentItem key={i}>
+                    <M.CommentItem
+                      key={i}
+                      onClick={() => handleNavigateToAnalysis(item.analysisId)} // ✅ 클릭 시 이동
+                    >
                       <M.Content>{item.content}</M.Content>
                       <M.News>
                         <img src={item.newsImage} alt="image" />
@@ -548,7 +621,19 @@ const My = () => {
               ) : (
                 <M.Li>
                   {compList.map((item, i) => (
-                    <M.Comp key={i}>
+                    <M.Comp
+                      key={i}
+                      onClick={() => {
+                        console.log("🟡 item:", item); // ✅ 이거 찍어봐야 함
+                        console.log("🟢 item.id:", item.id); // ✅ 이거도 확인
+                        if (selected === 0) {
+                          // ✅ '최근 본 뉴스' 탭이면 상세조회 API 호출
+                          handleNavigateToNewsDetailFromHistory(item.id);
+                        } else {
+                          handleNavigateToAnalysis(item.analysisId);
+                        }
+                      }}
+                    >
                       <img src={item.image} alt="preview" />
                       <div>{item.title}</div>
                     </M.Comp>

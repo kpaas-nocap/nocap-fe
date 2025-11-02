@@ -328,9 +328,16 @@ export const Left = styled.div`
     width: 35px;
     height: 35px;
     aspect-ratio: 1/1;
+    // border-radius: 8px; /* 💡 윤곽 둥글게 */
+    // box-shadow: 0 2px 8px rgba(0, 102, 255, 0.25); /* 💡 파란빛 그림자 추가 */
+    // filter: saturate(1.2) brightness(1.05) contrast(1.1); /* 💡 색감 강조 */
   }
 
-  div {
+  #detail {
+    display: none;
+  }
+
+  #point {
     color: #000;
     text-align: right;
     font-family: Pretendard;
@@ -341,7 +348,24 @@ export const Left = styled.div`
   }
 
   @media screen and (min-width: 768px) {
-    width: 251px;
+    width: 291px;
+
+    #detail {
+      display: block;
+      margin-left: 30px;
+      color: #000;
+      text-align: right;
+      font-family: Pretendard;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    #point {
+      margin-left: 100px;
+      font-size: 20px;
+    }
   }
 `;
 
@@ -436,6 +460,8 @@ export const Bar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 354px;
 
   #bar {
     width: 300px;
@@ -443,6 +469,13 @@ export const Bar = styled.div`
     flex-shrink: 0;
     border-radius: 9.479px;
     background: #e5e9ef;
+    overflow: hidden; /* ✅ 내부 fill이 넘치지 않도록 */
+  }
+
+  #fill {
+    height: 100%;
+    border-radius: inherit;
+    background-color: #213ce9;
   }
 
   img {
@@ -456,6 +489,8 @@ export const Bar = styled.div`
   }
 
   @media screen and (min-width: 768px){
+
+  width: 630px;
 
   #bar{
     width: 569px;
@@ -495,13 +530,13 @@ export const Number = styled.div`
 export const Archive = styled.div`
   margin-top: 47.5px;
   width: 368px;
-  height: 418px;
+  height: 354px;
   flex-shrink: 0;
   background-color: #ebedff;
   display: flex;
   flex-direction: column;
   padding: 20px 7px;
-  border-radius: 15px 15px 0 0;
+  border-radius: 50px;
   align-items: center;
 `;
 

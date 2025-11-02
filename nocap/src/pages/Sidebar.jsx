@@ -41,9 +41,9 @@ const Sidebar = ({
         return;
       }
 
-      const res = await axios.get("http://13.209.98.128/api/nocap/user/me", {
+      const res = await axios.get("https://www.nocap.kr/api/nocap/user/me", {
         headers: {
-          Authorization: ` ${token}`, // ✅ 토큰 추가
+          Authorization: `${token}`, // ✅ 토큰 추가
         },
       });
 
@@ -142,13 +142,6 @@ const Sidebar = ({
             <M.Content>
               <M.Comp onClick={goNews}>
                 <div>뉴스</div>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                  alt="more"
-                />
-              </M.Comp>
-              <M.Comp onClick={goAnal}>
-                <div>기사분석</div>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
                   alt="more"

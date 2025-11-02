@@ -92,6 +92,12 @@ const Bookmark = () => {
     );
   }
 
+  const handleNavigateToAnalysis = (analysisId) => {
+    navigate("/analysis/article", {
+      state: { analysisId },
+    });
+  };
+
   return (
     <B.Container>
       <B.Header>
@@ -114,7 +120,11 @@ const Bookmark = () => {
       <B.Body>
         <B.List>
           {sortedBookmarks.map((item) => (
-            <B.Component key={item.analysisId}>
+            <B.Component
+              key={item.analysisId}
+              onClick={() => handleNavigateToAnalysis(item.analysisId)}
+              style={{ cursor: "pointer" }}
+            >
               <B.Img>
                 <img src={item.image} alt="news" />
               </B.Img>
