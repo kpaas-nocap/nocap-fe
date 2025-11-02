@@ -74,6 +74,12 @@ const AnalRec = () => {
     return sortOrder === "최신순" ? dateB - dateA : dateA - dateB;
   });
 
+  const handleNavigateToAnalysis = (analysisId) => {
+    navigate("/analysis/article", {
+      state: { analysisId },
+    });
+  };
+
   return (
     <A.Container>
       <A.Header>
@@ -99,7 +105,10 @@ const AnalRec = () => {
         <A.List>
           {sortedAnalyses.map((item, index) => (
             <A.Component key={index}>
-              <A.Thumb>
+              <A.Thumb
+                onClick={() => handleNavigateToAnalysis(item.analysisId)}
+                style={{ cursor: "pointer" }}
+              >
                 <img
                   src={item.image}
                   alt="thumbnail"

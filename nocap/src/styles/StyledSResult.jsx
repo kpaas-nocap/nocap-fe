@@ -101,6 +101,7 @@ export const Comp = styled.div`
     flex-shrink: 0;
     border-radius: 5px;
     background: lightgray 50% / cover no-repeat;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
   }
 `;
 

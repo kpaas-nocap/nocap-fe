@@ -318,25 +318,25 @@ export const Content = styled.div`
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 22px; /* 137.5% */
+  line-height: 26px; /* ✨ 여유 있는 줄 간격 */
   margin-top: 29px;
-  word-break: keep-all;
+  word-break: break-word; /* ✨ keep-all → break-word로 수정 */
   overflow-wrap: break-word;
+
+  p {
+    margin-bottom: 20px; /* ✨ 모바일에서도 문단 간격 확보 */
+    line-height: 1.7; /* ✨ 가독성 높임 */
+  }
 
   @media screen and (min-width: 768px) {
     width: 620px;
     margin-top: 40px;
-
-    color: #000;
-    font-family: Pretendard;
     font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 25px; /* 156.25% */
+    line-height: 28px; /* ✨ 데스크탑에서는 조금 더 여유 있게 */
 
     p {
-      margin-bottom: 24px;
-      line-height: 1.7;
+      margin-bottom: 28px; /* ✨ 문단 간 더 넉넉한 간격 */
+      line-height: 1.8; /* ✨ 데스크탑 기준 가독성 극대화 */
     }
   }
 `;
@@ -452,14 +452,18 @@ export const RTime = styled.div`
 `;
 
 export const RImg = styled.div`
-  width: 110px;
-  height: 110px;
+  width: 90px;
+  height: 90px;
   aspect-ratio: 1/1;
+  border-radius: 4.4px;
+  background-size: cover; // ✅ 비율 유지하며 채우기
+  overflow: hidden; /* ✅ border-radius 적용 위해 추가 */
 
   img {
-    width: 110px;
-    height: 110px;
+    width: 90px;
+    height: 90px;
     aspect-ratio: 1/1;
+    object-fit: cover; /* ✅ 이미지 비율 유지하며 자르기 */
   }
 `;
 

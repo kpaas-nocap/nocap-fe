@@ -92,6 +92,12 @@ const Comment = () => {
     fetchComments();
   }, []);
 
+  const handleNavigateToAnalysis = (analysisId) => {
+    navigate("/analysis/article", {
+      state: { analysisId },
+    });
+  };
+
   return (
     <C.Container>
       <C.Header>
@@ -105,7 +111,7 @@ const Comment = () => {
 
       <C.Sort>
         <C.SDetail>
-          {["최신순", "공감순", "답글순"].map((label) => (
+          {["최신순", "공감순"].map((label) => (
             <div
               key={label}
               onClick={() => setActiveSort(label)}
@@ -123,7 +129,10 @@ const Comment = () => {
 
       <C.List>
         {comments.map((item, index) => (
-          <C.Component key={index}>
+          <C.Component
+            key={index}
+            onClick={() => handleNavigateToAnalysis(item.analysisId)}
+          >
             {/* ✅ 댓글 내용 */}
             <C.Title>{item.content}</C.Title>
 
@@ -146,7 +155,6 @@ const Comment = () => {
               <div>{formatRelativeTime(item.date)}</div>{" "}
               {/* ✅ 상대 시간 표시 */}
               <div>좋아요 {item.recommendation}</div>
-              <div>답글 3</div> {/* 실제 답글 수 연동 시 수정 */}
             </C.Detail>
 
             <C.Hr />

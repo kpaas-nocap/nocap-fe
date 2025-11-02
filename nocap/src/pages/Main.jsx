@@ -13,6 +13,7 @@ const Main = () => {
   const goSearch = () => navigate(`/search`);
   const goNews = () => navigate(`/news`);
   const goMy = () => navigate(`/my`);
+  const goIntro = () => navigate(`/introduce`);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -80,7 +81,20 @@ const Main = () => {
     fetchPopNews();
   }, []);
 
-  // ✅ axios import 이미 있음
+  const getArrowImageSrc = (direction) => {
+    const isFirst = currentNewsIndex === 0;
+    const isLast = currentNewsIndex === popNewsList.length - 1;
+
+    if (direction === "left") {
+      return isFirst
+        ? `${process.env.PUBLIC_URL}/images/left_g.svg`
+        : `${process.env.PUBLIC_URL}/images/left_b.svg`;
+    } else if (direction === "right") {
+      return isLast
+        ? `${process.env.PUBLIC_URL}/images/right_g.svg`
+        : `${process.env.PUBLIC_URL}/images/right_b.svg`;
+    }
+  };
 
   // ✅ 자세히 보기 버튼 클릭 시 뉴스 상세 불러오기 + 조회기록 저장
   const handleMoreClick = async () => {
@@ -136,6 +150,81 @@ const Main = () => {
       prev < popNewsList.length - 1 ? prev + 1 : prev
     );
 
+  const [analysisList, setAnalysisList] = useState([]);
+
+  useEffect(() => {
+    const fetchAnalysis = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const res = await axios.get("https://www.nocap.kr/api/nocap/analysis", {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        if (res.data) {
+          const sorted = [...res.data].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setAnalysisList(sorted.slice(0, 3)); // 최신 3개만
+        }
+      } catch (err) {
+        console.error("❌ 분석 뉴스 목록 불러오기 실패:", err);
+      }
+    };
+
+    fetchAnalysis();
+  }, []);
+
+  const handleAnalysisClick = (analysisId) => {
+    navigate("/analysis/article", {
+      state: { analysisId },
+    });
+  };
+
+  const handleMoreClickFromIndex = async (index) => {
+    try {
+      const selectedNews = popNewsList[index];
+      if (!selectedNews) return;
+
+      const token = localStorage.getItem("accessToken");
+
+      const detailRes = await axios.get(
+        `https://www.nocap.kr/api/nocap/popnews/${selectedNews.popNewsId}`
+      );
+      const detailedNews = detailRes.data;
+
+      try {
+        await axios.post(
+          "https://www.nocap.kr/api/nocap/history/record",
+          {
+            url: detailedNews.url,
+            title: detailedNews.title,
+            content: detailedNews.content,
+            date: detailedNews.date,
+            image: detailedNews.image,
+          },
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+        console.log("🟢 조회기록 저장 완료");
+      } catch (historyErr) {
+        console.error("⚠️ 조회기록 저장 실패:", historyErr);
+      }
+
+      navigate("/news/detail", {
+        state: detailedNews,
+      });
+    } catch (err) {
+      console.error("❌ 뉴스 상세 불러오기 실패:", err);
+      alert("뉴스 상세 정보를 불러올 수 없습니다.");
+    }
+  };
+
   return (
     <M.Container>
       <M.Header>
@@ -156,17 +245,20 @@ const Main = () => {
 
         <M.DesktopOnly>
           <M.Menu>
-            <div id="tag">
+            <div id="tag" style={{ cursor: "pointer" }}>
               홈
               <div id="circle" />
             </div>
-            <div id="tag">NOCAP 소개</div>
-            <div id="tag" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
+              NOCAP 소개
+            </div>
+            <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
               뉴스
             </div>
             <div
               id="tag"
               onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
+              style={{ cursor: "pointer" }}
             >
               {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
             </div>
@@ -183,30 +275,37 @@ const Main = () => {
             alt="search"
           />
         </M.SearchBar>
+
         <M.MobileOnly>
           <M.Ranking>
             <M.RTitle>오늘의 인기뉴스</M.RTitle>
 
             <M.SliderWrapper {...handlers}>
               <M.SliderContainer currentIndex={currentIndex}>
-                {rankData.map((item, idx) => (
-                  <M.RBox key={idx}>
+                {popNewsList.slice(0, 4).map((item, idx) => (
+                  <M.RBox
+                    key={idx}
+                    onClick={() => handleMoreClickFromIndex(idx)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <M.Han>
-                      <img
-                        id="cc"
-                        src={`${process.env.PUBLIC_URL}/images/sbs.png`}
-                        alt="sbs"
-                      />
                       <div id="title">{item.title}</div>
+                      <div id="from">{item.date}</div>
                     </M.Han>
-                    <div id="from">{item.from}</div>
+                    <img
+                      src={
+                        item.image ||
+                        `${process.env.PUBLIC_URL}/images/news.jpg`
+                      }
+                      alt="news"
+                    />
                   </M.RBox>
                 ))}
               </M.SliderContainer>
             </M.SliderWrapper>
 
             <M.Pagenation>
-              {rankData.map((_, i) => (
+              {popNewsList.slice(0, 4).map((_, i) => (
                 <M.Dot key={i} active={i === currentIndex} />
               ))}
             </M.Pagenation>
@@ -223,32 +322,31 @@ const Main = () => {
                   {popNewsList[currentNewsIndex]?.date || "날짜 로딩 중..."}
                 </div>
               </M.TTitle>
-              {/* <div id="category">사회일반</div> */}
-              <M.Tit>
+              <M.Tit onClick={handleMoreClick} style={{ cursor: "pointer" }}>
                 {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
               </M.Tit>
 
-              <M.More onClick={handleMoreClick} style={{ cursor: "pointer" }}>
+              <M.More c style={{ cursor: "pointer" }} onClick={handleMoreClick}>
                 <div id="det">자세히 보기</div>
                 <div id="hr" />
               </M.More>
 
               <M.Page>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/left_g.svg`}
+                  src={getArrowImageSrc("left")}
                   alt="left"
                   onClick={handlePrevNews}
                   style={{ cursor: "pointer" }}
                 />
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/right_b.svg`}
+                  src={getArrowImageSrc("right")}
                   alt="right"
                   onClick={handleNextNews}
                   style={{ cursor: "pointer" }}
                 />
               </M.Page>
             </M.Text>
-            <M.Img>
+            <M.Img onClick={handleMoreClick} style={{ cursor: "pointer" }}>
               <img
                 src={
                   popNewsList[currentNewsIndex]?.image ||
@@ -262,11 +360,18 @@ const Main = () => {
         </M.DesktopOnly>
 
         <M.Recent>
-          <M.Title>최근 팩트체크</M.Title>
+          <M.Title>최근 분석된 기사</M.Title>
           <M.List>
-            <M.Component>
-              <div>진짜 장마 온다… 내일 오후부터 토요일까지 전국에 많은 비</div>
-            </M.Component>
+            {analysisList.map((item) => (
+              <M.Component
+                key={item.analysisId}
+                $bgImage={item.image} // ✅ 여기서 이미지 props 전달
+                onClick={() => handleAnalysisClick(item.analysisId)}
+                style={{ cursor: "pointer" }}
+              >
+                <div>{item.mainNewsTitle}</div>
+              </M.Component>
+            ))}
           </M.List>
         </M.Recent>
       </M.Body>

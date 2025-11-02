@@ -161,13 +161,6 @@ const SSidebar = ({
                   alt="more"
                 />
               </M.Comp>
-              <M.Comp onClick={goAnal}>
-                <div>기사분석</div>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/more_b.svg`}
-                  alt="more"
-                />
-              </M.Comp>
               <M.Comp onClick={goMy}>
                 <div>마이페이지</div>
                 <img

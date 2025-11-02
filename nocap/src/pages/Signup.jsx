@@ -32,9 +32,8 @@ const Signup = () => {
     navigate(-1);
   };
 
-  const goSuccess = () => {
-    navigate(`/signup/success`);
-  };
+  const goIntro = () => navigate(`/introduce`);
+  const goNews = () => navigate(`/news`);
   const goMain = () => navigate(`/`);
   const goLogin = () => navigate(`/login/local`);
   const handleSignup = async () => {
@@ -92,16 +91,16 @@ const Signup = () => {
             id="logo"
           />
           <S.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" onClick={goIntro} style={{ cursor: "pointer" }}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기">
+            <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
               뉴스
             </div>
-            <div id="tag" onClick={goLogin}>
+            <div id="tag" onClick={goLogin} style={{ cursor: "pointer" }}>
               로그인/회원가입
               <div id="circle" />
             </div>

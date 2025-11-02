@@ -25,6 +25,7 @@ const LocalLogin = () => {
   const goFind = () => navigate(`/find`);
   const goMain = () => navigate(`/`);
   const goLogin = () => navigate(`/login/local`);
+  const goIntro = () => navigate(`/introduce`);
 
   // ✅ 1️⃣ 컴포넌트가 마운트될 때 localStorage 에 저장된 이메일 불러오기
   useEffect(() => {
@@ -169,16 +170,16 @@ const LocalLogin = () => {
             id="logo"
           />
           <L.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기">
+            <div id="tag" style={{ cursor: "pointer" }}>
               뉴스
             </div>
-            <div id="tag" onClick={goLogin}>
+            <div id="tag" onClick={goLogin} style={{ cursor: "pointer" }}>
               로그인/회원가입
               <div id="circle" />
             </div>
@@ -228,19 +229,23 @@ const LocalLogin = () => {
               </L.SCheckBox>
               <L.Save>아이디 저장</L.Save>
 
-              <L.KCheckBox
+              {/* <L.KCheckBox
                 checked={isKChecked}
                 onClick={() => setIsKChecked(!isKChecked)}
               >
                 {isKChecked && <L.CheckIcon>✔</L.CheckIcon>}
               </L.KCheckBox>
-              <L.Keep>로그인 유지하기</L.Keep>
+              <L.Keep>로그인 유지하기</L.Keep> */}
             </L.Check>
           </L.Input>
-          <L.Find onClick={goFind}>비밀번호 찾기</L.Find>
+          <L.Find onClick={goFind} style={{ cursor: "pointer" }}>
+            비밀번호 찾기
+          </L.Find>
 
           <L.Go>
-            <L.Signup onClick={goSignup}>회원가입</L.Signup>
+            <L.Signup onClick={goSignup} style={{ cursor: "pointer" }}>
+              회원가입
+            </L.Signup>
 
             <L.Login
               onClick={handleLogin}
@@ -255,7 +260,7 @@ const LocalLogin = () => {
           </L.Go>
 
           <L.DesktopOnly>
-            <L.Kakao onClick={handleKakaoLogin}>
+            <L.Kakao onClick={handleKakaoLogin} style={{ cursor: "pointer" }}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/kakao.svg`}
                 alt="kakao"

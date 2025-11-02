@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as E from "../styles/StyledEdit";
+import axios from "axios";
+import Delete from "./Delete";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -9,18 +11,29 @@ const Edit = () => {
   const goNews = () => navigate(`/news`);
   const goInquiry = () => navigate(`/my/inquiry`);
   const goMy = () => navigate(`/my`);
+  const goIntro = () => navigate(`/introduce`);
+  const goPre = () => navigate(`/premium`);
+  const goPay = () => navigate(`/my/payment`);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showRPassword, setShowRPassword] = useState(false);
+  const [showNPw, setShowNPw] = useState(false);
+
+  const [currentPassword, setCurrentPassword] = useState(""); // 🔐 현재 비밀번호
+  const [newPassword, setNewPassword] = useState(""); // 🆕 새 비밀번호
+  const [confirmPassword, setConfirmPassword] = useState(""); // 🧾 비밀번호 확인
 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passwordError, setPasswordError] = useState("");
   const [confirmError, setConfirmError] = useState("");
 
   const [username, setUsername] = useState(""); // 사용자 이름
   const [newUsername, setNewUsername] = useState(""); // 수정용 이름 입력값
+
+  const [userId, setUserId] = useState("");
 
   // ✅ 비밀번호 조건 검사 함수
   const validatePassword = (value) => {
@@ -75,6 +88,7 @@ const Edit = () => {
 
         setUsername(data.username);
         setNewUsername(data.username); // input에 초기값 설정
+        setUserId(data.userId); // ✅ 여기 추가
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
       }
@@ -82,6 +96,83 @@ const Edit = () => {
 
     fetchUser();
   }, []);
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      // 비밀번호 확인 에러 있을 경우 요청 방지
+      if (confirmError || passwordError) {
+        alert("입력값을 확인해주세요.");
+        return;
+      }
+
+      // 필드 구성 (입력된 값만 전송)
+      const payload = {
+        userId,
+        ...(newUsername && { username: newUsername }),
+        ...(currentPassword && { currentPassword }),
+        ...(password && { newPassword: password }),
+      };
+
+      const res = await axios.patch(
+        "https://www.nocap.kr/api/nocap/user/update",
+        payload,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      alert("정보가 성공적으로 수정되었습니다.");
+      navigate("/my"); // 예: 마이페이지로 이동
+    } catch (error) {
+      console.error("정보 수정 실패:", error);
+      alert("정보 수정에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    console.log("취소 버튼 눌림!");
+    setIsModalOpen(false);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("탈퇴 시도: 토큰 없음");
+        navigate("/login");
+        return;
+      }
+
+      // ✅ 백엔드 탈퇴 API 호출
+      await axios.delete("https://www.nocap.kr/api/nocap/user/delete", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      console.log("탈퇴");
+    } catch (err) {
+      console.error("탈퇴 API 호출 실패:", err);
+      // 실패해도 토큰은 지워주고 로그인 페이지로 이동
+    } finally {
+      localStorage.removeItem("accessToken");
+      navigate("/");
+      setIsModalOpen(false);
+    }
+  };
 
   return (
     <E.Container>
@@ -104,16 +195,16 @@ const Edit = () => {
             id="logo"
           />
           <E.Menu>
-            <div id="tag" onClick={goMain} title="메인 페이지로 이동">
+            <div id="tag" onClick={goMain} style={{ cursor: "pointer" }}>
               홈
             </div>
-            <div id="tag" title="NOCAP 서비스 소개">
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
               NOCAP 소개
             </div>
-            <div id="tag" title="최신 뉴스 보기" onClick={goNews}>
+            <div id="tag" style={{ cursor: "pointer" }} onClick={goNews}>
               뉴스
             </div>
-            <div id="tag" onClick={goMy}>
+            <div id="tag" onClick={goMy} style={{ cursor: "pointer" }}>
               마이페이지
               <div id="circle" />
             </div>
@@ -123,35 +214,28 @@ const Edit = () => {
 
       <E.DesktopOnly>
         <E.Nav>
-          <E.NComp onClick={goMy}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/point_n.png`}
-              alt="point"
-            />
-            <div>내 포인트</div>
-          </E.NComp>
-          <E.NComp>
+          <E.NComp style={{ cursor: "pointer" }} onClick={goPre}>
             <img
               src={`${process.env.PUBLIC_URL}/images/premium_n.png`}
               alt="point"
             />
             <div>프리미엄</div>
           </E.NComp>
-          <E.NComp>
+          <E.NComp style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/edit_c.png`}
               alt="point"
             />
             <div>프로필 수정</div>
           </E.NComp>
-          <E.NComp>
+          <E.NComp onClick={goPay} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
               alt="point"
             />
             <div>구매내역</div>
           </E.NComp>
-          <E.NComp onClick={goInquiry}>
+          <E.NComp onClick={goInquiry} style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/inquiry_n.png`}
               alt="point"
@@ -184,6 +268,25 @@ const Edit = () => {
             </E.Input>
           </E.Comp>
           <E.Comp>
+            <E.Title>현재 비밀번호 </E.Title>
+            <E.Input>
+              <input
+                type={showNPw ? "password" : "text"}
+                placeholder="현재 비밀번호를 입력하세요."
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/${
+                  showNPw ? "eye_c.svg" : "eye_o.svg"
+                }`}
+                alt={showNPw ? "close" : "open"}
+                onClick={() => setShowNPw(!showNPw)}
+                style={{ cursor: "pointer" }}
+              />
+            </E.Input>
+          </E.Comp>
+          <E.Comp style={{ marginTop: "55px" }}>
             <E.Title>새 비밀번호</E.Title>
             <E.Input>
               <input
@@ -248,13 +351,24 @@ const Edit = () => {
         </E.Body>
 
         <E.MobileOnly>
-          <E.Button>완료</E.Button>
+          <E.Button onClick={handleSave}>완료</E.Button>
         </E.MobileOnly>
 
         <E.DesktopOnly>
           <E.But>
-            <div id="out">회원 탈퇴하기</div>
-            <div id="save">저장하기</div>
+            <div
+              id="out"
+              onClick={handleDeleteClick}
+              style={{ cursor: "pointer" }}
+            >
+              회원 탈퇴하기
+            </div>
+            {isModalOpen && (
+              <Delete onConfirm={handleConfirm} onCancel={handleCancel} />
+            )}
+            <div id="save" onClick={handleSave} style={{ cursor: "pointer" }}>
+              저장하기
+            </div>
           </E.But>
         </E.DesktopOnly>
       </E.Box>
