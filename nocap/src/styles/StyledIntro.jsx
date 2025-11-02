@@ -22,6 +22,7 @@ export const Container = styled.div`
     flex-direction: column;
     gap: 20px;
     background: #fafbff;
+    padding: 0;
   }
 `;
 
@@ -420,6 +421,8 @@ export const Typing = styled.div`
 export const Slo = styled.div`
   margin-top: 250px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   color: #353535;
   font-family: Pretendard;
@@ -427,6 +430,13 @@ export const Slo = styled.div`
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.245px;
+  gap: 50px;
+
+  .highlight {
+    background-color: #66cde54d;
+    padding: 4px 6px;
+    border-radius: 50px;
+  }
 `;
 
 export const Go = styled.div`
@@ -471,4 +481,81 @@ export const Go = styled.div`
     line-height: normal;
     letter-spacing: -0.6px;
   }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 260px;
+  background-color: #436ea9;
+  padding: 60px 80px;
+  justify-content: space-between;
+  align-items: start;
+`;
+
+export const Left = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: end;
+
+  img {
+    width: 168px;
+    height: 42px;
+  }
+
+  div {
+    display: flex;
+    color: #e7e7e7;
+    font-family: Pretendard;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.6px;
+  }
+`;
+
+export const Team = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 680px;
+  margin-top: 40px;
+
+  #detail {
+    display: flex;
+    color: #e7e7e7;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.6px;
+  }
+
+  #hr {
+    width: 2px;
+    height: 30px;
+    background-color: #ffffff;
+  }
+
+  img {
+    width: 100px;
+    height: 37px;
+  }
+`;
+
+export const Right = styled.div`
+  display: lex;
+  flex-direction: row;
+  width: 177px;
+  height: 58px;
 `;

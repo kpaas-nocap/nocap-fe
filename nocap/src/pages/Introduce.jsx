@@ -149,10 +149,7 @@ const Introduce = () => {
         </I.List>
 
         <I.Draw>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/drawing.svg`}
-            alt="화살표"
-          />
+          <img src={`${process.env.PUBLIC_URL}/images/draw.svg`} alt="화살표" />
         </I.Draw>
 
         <I.Need>
@@ -199,11 +196,16 @@ const Introduce = () => {
         </I.Image>
 
         <I.Slo>
-          AI가 기사의 진위를 직접 알려주지 않습니다 <br />
-          사실/거짓을 단정하지 않습니다
-          <br />
-          근거를 모아주고, 판단은 사용자가 직접 합니다
-          <br />더 빠르고 공정하게 뉴스를 이해할 수 있습니다
+          <div>
+            AI가 기사의 진위를 <span className="highlight">직접</span> 알려주지
+            않습니다
+          </div>
+          <div>사실/거짓을 단정하지 않습니다</div>
+          <div>
+            근거를 모아주고,{" "}
+            <span className="highlight">판단은 사용자가 직접</span> 합니다
+          </div>
+          <div>더 빠르고 공정하게 뉴스를 이해할 수 있습니다</div>
         </I.Slo>
 
         <I.Go onClick={goMain} style={{ cursor: "pointer" }}>
@@ -213,6 +215,41 @@ const Introduce = () => {
           </div>
         </I.Go>
       </I.Body>
+      <I.Footer>
+        <I.Left>
+          <I.LTitle>
+            <img
+              src={`${process.env.PUBLIC_URL}images/logo_white.png`}
+              alt="로고"
+            />
+            <div id="detail">AI 기반 뉴스 교차 검증 서비스</div>
+          </I.LTitle>
+          <I.Team>
+            <div id="detail">
+              2025 개방형 클라우드 플랫폼(K-PaaS) 활용 공모전 TEAM 동명신기
+            </div>
+            <div id="hr" />
+            <a href="https://contest.k-paas.org/" target="_blank">
+              <img
+                src={`${process.env.PUBLIC_URL}/images/kpaas.svg`}
+                alt="k-paas"
+              />
+            </a>
+          </I.Team>
+        </I.Left>
+        <I.Right>
+          <a
+            href="https://github.com/orgs/kpaas-nocap/repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={`${process.env.PUBLIC_URL}/images/github.svg`}
+              alt="깃허브"
+            />
+          </a>
+        </I.Right>
+      </I.Footer>
     </I.Container>
   );
 };
