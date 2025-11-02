@@ -352,7 +352,7 @@ export const Left = styled.div`
 
     #detail {
       display: block;
-      margin-left: 30px;
+      margin-left: 20px;
       color: #000;
       text-align: right;
       font-family: Pretendard;
@@ -360,10 +360,11 @@ export const Left = styled.div`
       font-style: normal;
       font-weight: 500;
       line-height: normal;
+      width: 110px;
     }
 
     #point {
-      margin-left: 100px;
+      margin-left: 90px;
       font-size: 20px;
     }
   }

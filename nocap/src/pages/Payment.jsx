@@ -177,7 +177,11 @@ const Payment = () => {
                 src={`${process.env.PUBLIC_URL}/images/profile.png`}
                 alt="profile"
               />
-              <div id="logout" onClick={handleLogoutClick}>
+              <div
+                id="logout"
+                onClick={handleLogoutClick}
+                style={{ cursor: "pointer" }}
+              >
                 로그아웃
               </div>
               {isModalOpen && (
