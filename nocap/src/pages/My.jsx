@@ -25,6 +25,7 @@ const My = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState(""); // ✅ 사용자 이름 저장
+  const [userType, setUserType] = useState(""); // ✅ userType 상태 추가
   const [point, setPoint] = useState(0); // 🆕 포인트 상태 추가
 
   const [infoMessageVisible, setInfoMessageVisible] = useState(false); // ✅ 상태 추가
@@ -60,10 +61,17 @@ const My = () => {
           },
         });
 
-        setUsername(res.data.username); // ✅ username 저장
-        setPoint(res.data.point); // ✅ point 상태 저장
+        // ✅ 콘솔에 전체 응답 찍기
+        console.log("✅ [유저 정보 API 응답]", res.data);
+
+        setUsername(res.data.username);
+        setPoint(res.data.point);
+        setUserType(res.data.userType);
+
+        // ✅ userType 값만 따로 확인
+        console.log("🟢 [userType]", res.data.userType);
       } catch (err) {
-        console.error("유저 정보 불러오기 실패:", err);
+        console.error("❌ 유저 정보 불러오기 실패:", err);
       }
     };
 
@@ -428,13 +436,15 @@ const My = () => {
             />
             <div>프리미엄</div>
           </M.NComp>
-          <M.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
-              alt="point"
-            />
-            <div>프로필 수정</div>
-          </M.NComp>
+          {userType !== "KAKAO" && (
+            <M.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+                alt="point"
+              />
+              <div>프로필 수정</div>
+            </M.NComp>
+          )}
           <M.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}

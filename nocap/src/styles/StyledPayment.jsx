@@ -113,7 +113,7 @@ export const Menu = styled.div`
 
 export const Nav = styled.div`
   width: 95px;
-  height: 795px;
+  height: 531px;
   border-radius: 20px;
   background: #fff;
   display: flex;
@@ -125,6 +125,7 @@ export const Nav = styled.div`
   position: fixed; /* 고정 위치 설정 */
   z-index: 1000; /* 다른 요소보다 위에 보이도록 */
   margin-left: 100px;
+  margin-top: 100px;
 `;
 
 export const NComp = styled.div`
@@ -307,7 +308,7 @@ export const Left = styled.div`
 
   #detail {
     display: block;
-    margin-left: 30px;
+    margin-left: 20px;
     color: #000;
     text-align: right;
     font-family: Pretendard;
@@ -315,10 +316,11 @@ export const Left = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    width: 110px;
   }
 
   #point {
-    margin-left: 100px;
+    margin-left: 90px;
     font-size: 20px;
   }
 `;

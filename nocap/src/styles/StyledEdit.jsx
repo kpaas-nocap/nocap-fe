@@ -119,7 +119,7 @@ export const Box = styled.div`
 
 export const Nav = styled.div`
   width: 95px;
-  height: 795px;
+  height: 531px;
   border-radius: 20px;
   background: #fff;
   display: flex;
@@ -131,6 +131,7 @@ export const Nav = styled.div`
   position: fixed; /* 고정 위치 설정 */
   z-index: 1000; /* 다른 요소보다 위에 보이도록 */
   margin-left: 100px;
+  margin-top: 100px;
 `;
 
 export const NComp = styled.div`

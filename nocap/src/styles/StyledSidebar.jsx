@@ -9,7 +9,6 @@ export const SidebarWrapper = styled.div`
   width: 402px;
   height: 100vh;
   z-index: 1000;
-  overflow: hidden;
 `;
 
 export const Overlay = styled.div`

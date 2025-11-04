@@ -19,6 +19,7 @@ const Payment = () => {
   const [username, setUsername] = useState("");
   const [point, setPoint] = useState(0);
   const [role, setRole] = useState("");
+  const [userType, setUserType] = useState(""); // ✅ userType 상태 추가
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,6 +43,7 @@ const Payment = () => {
         setUsername(data.username);
         setPoint(data.point);
         setRole(data.role); // ROLE_USER or ROLE_PREMIUM
+        setUserType(res.data.userType); // ✅ 추가
       } catch (err) {
         console.error("❌ 사용자 정보 불러오기 실패:", err);
       }
@@ -134,13 +136,15 @@ const Payment = () => {
             />
             <div>프리미엄</div>
           </P.NComp>
-          <P.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
-              alt="point"
-            />
-            <div>프로필 수정</div>
-          </P.NComp>
+          {userType !== "KAKAO" && (
+            <P.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+                alt="point"
+              />
+              <div>프로필 수정</div>
+            </P.NComp>
+          )}
           <P.NComp style={{ cursor: "pointer" }}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_c.png`}
@@ -177,7 +181,11 @@ const Payment = () => {
                 src={`${process.env.PUBLIC_URL}/images/profile.png`}
                 alt="profile"
               />
-              <div id="logout" onClick={handleLogoutClick}>
+              <div
+                id="logout"
+                onClick={handleLogoutClick}
+                style={{ cursor: "pointer" }}
+              >
                 로그아웃
               </div>
               {isModalOpen && (

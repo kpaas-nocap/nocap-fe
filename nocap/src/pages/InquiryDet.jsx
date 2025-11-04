@@ -20,6 +20,7 @@ const InquiryDet = () => {
 
   // ✅ 사용자 정보
   const [userInfo, setUserInfo] = useState({ username: "", userId: "" });
+  const [userType, setUserType] = useState(""); // ✅ userType 상태 추가
 
   // ✅ 문의내용 상태
   const [content, setContent] = useState("");
@@ -63,6 +64,7 @@ const InquiryDet = () => {
         console.log("✅ 사용자 정보:", res.data);
         setUserInfo(res.data);
         setEmail(res.data.userId || ""); // 이메일 입력창에 자동입력
+        setUserType(res.data.userType); // ✅ 추가
       } catch (err) {
         console.error("❌ 사용자 정보 불러오기 실패:", err);
         alert("사용자 정보를 불러오지 못했습니다.");
@@ -158,13 +160,15 @@ const InquiryDet = () => {
             />
             <div>프리미엄</div>
           </I.NComp>
-          <I.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
-              alt="point"
-            />
-            <div>프로필 수정</div>
-          </I.NComp>
+          {userType !== "KAKAO" && (
+            <I.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+                alt="point"
+              />
+              <div>프로필 수정</div>
+            </I.NComp>
+          )}
           <I.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}

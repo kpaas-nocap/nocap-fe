@@ -105,6 +105,7 @@ const Sidebar = ({
               boxShadow: "-2px 0 8px rgba(0, 0, 0, 0.15)",
               display: "flex",
               flexDirection: "column",
+              overflowY: "auto", // ✅ 이 줄 추가
             }}
           >
             <M.Body>
