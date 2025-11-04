@@ -31,15 +31,15 @@ const Search = () => {
       setRecentSearches(newSearches);
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
+      // ✅ 조건: 모바일이면 /search/result, 데스크탑이면 /news
+      const encodedQuery = encodeURIComponent(query);
       if (isMobile) {
-        // 📱 모바일: 기존대로 검색 결과 페이지로 이동
-        navigate(`/search/result?keyword=${encodeURIComponent(query)}`);
+        navigate(`/search/result?keyword=${encodedQuery}`);
       } else {
-        // 💻 데스크탑: 검색어 포함하여 뉴스 페이지로 이동
-        navigate(`/news?keyword=${encodeURIComponent(query)}`);
+        navigate(`/news?keyword=${encodedQuery}`);
       }
 
-      setQuery(""); // 입력창 비우기
+      setQuery(""); // 입력창 초기화
     }
   };
 

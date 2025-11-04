@@ -32,6 +32,27 @@ const News = () => {
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    const keywordFromUrl = searchParams.get("keyword");
+    if (keywordFromUrl) {
+      setIsSearching(true);
+      setQuery(keywordFromUrl);
+      fetchSearchResults(keywordFromUrl);
+    } else {
+      fetchCategoryNews(selectedCategory).then(() => {
+        setInitialized(true);
+      });
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (initialized && !isSearching && selectedCategory) {
+      fetchCategoryNews(selectedCategory);
+    }
+  }, [selectedCategory]);
+
   const [recentAnalysis, setRecentAnalysis] = useState([]);
 
   const fetchAnalysisData = async () => {
@@ -49,27 +70,28 @@ const News = () => {
       const res = await axios.get(`https://www.nocap.kr/api/nocap/search`, {
         params: { search: keyword },
         headers: {
-          Authorization: undefined, // 인증 제거 (401 방지)
+          Authorization: undefined,
         },
       });
       setNewsList(res.data);
     } catch (err) {
-      console.error("🔍 검색 API 실패:", err);
+      console.error("검색 실패", err);
       setNewsList([]);
     } finally {
       setLoading(false);
+      setIsSearching(false);
+      setInitialized(true); // ✅ 이 위치로 옮겨야 함!
     }
   };
 
+  const [isSearching, setIsSearching] = useState(false); // 🔹 검색 여부 플래그
+
+  // ✅ selectedCategory 변경 시에도 검색 중이면 무시
   useEffect(() => {
-    const keywordFromUrl = searchParams.get("keyword");
-    if (keywordFromUrl) {
-      setQuery(keywordFromUrl); // 검색창에도 반영
-      fetchSearchResults(keywordFromUrl); // ✅ 검색 실행
-    } else {
-      fetchCategoryNews(selectedCategory); // ✅ 기본 카테고리 뉴스 로드
+    if (!isSearching && selectedCategory) {
+      fetchCategoryNews(selectedCategory);
     }
-  }, [searchParams]);
+  }, [selectedCategory]);
 
   useEffect(() => {
     fetchAnalysisData();
@@ -146,12 +168,6 @@ const News = () => {
     const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
   }, []);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      fetchCategoryNews(selectedCategory);
-    }
-  }, [selectedCategory]);
 
   // ✅ 뉴스 클릭 시 상세 페이지 이동 + 조회기록 저장
   const handleNewsClick = async (item) => {
@@ -264,7 +280,6 @@ const News = () => {
               key={item}
               onClick={() => {
                 setSelectedCategory(item);
-                fetchCategoryNews(item); // 클릭 시 뉴스 요청
               }}
               className={selectedCategory === item ? "active" : ""}
               style={{ cursor: "pointer" }}
