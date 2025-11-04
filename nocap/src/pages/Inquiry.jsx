@@ -19,6 +19,7 @@ const Inquiry = () => {
 
   const [username, setUsername] = useState(""); // 사용자 이름
   const [newUsername, setNewUsername] = useState(""); // 수정용 이름 입력값
+  const [userType, setUserType] = useState(""); // ✅ userType 상태 추가
 
   // ✅ category 영어 → 한글 변환 맵
   const categoryMap = {
@@ -90,6 +91,7 @@ const Inquiry = () => {
 
         setUsername(data.username);
         setNewUsername(data.username); // input에 초기값 설정
+        setUserType(res.data.userType); // ✅ 추가
       } catch (err) {
         console.error("유저 정보 불러오기 실패:", err);
       }
@@ -145,13 +147,15 @@ const Inquiry = () => {
             />
             <div>프리미엄</div>
           </I.NComp>
-          <I.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
-              alt="point"
-            />
-            <div>프로필 수정</div>
-          </I.NComp>
+          {userType !== "KAKAO" && (
+            <I.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+                alt="point"
+              />
+              <div>프로필 수정</div>
+            </I.NComp>
+          )}
           <I.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}

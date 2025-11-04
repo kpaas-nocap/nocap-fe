@@ -129,6 +129,7 @@ export const Nav = styled.div`
   position: fixed; /* 고정 위치 설정 */
   z-index: 1000; /* 다른 요소보다 위에 보이도록 */
   margin-left: 100px;
+  margin-top: 100px;
 `;
 
 export const NComp = styled.div`

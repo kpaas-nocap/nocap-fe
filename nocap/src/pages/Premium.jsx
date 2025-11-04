@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as P from "../styles/StyledPremium";
+import axios from "axios";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -12,6 +13,32 @@ const Premium = () => {
   const goInquiry = () => navigate(`/my/inquiry`);
   const goPay = () => navigate(`/my/payment`);
   const goMy = () => navigate(`/my`);
+
+  const [userType, setUserType] = useState(""); // ✅ userType 상태 추가
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.warn("로그인 토큰 없음");
+          return;
+        }
+
+        const res = await axios.get("https://www.nocap.kr/api/nocap/user/me", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        setUserType(res.data.userType);
+        console.log("✅ 유저 정보 불러오기 성공:", res.data);
+      } catch (err) {
+        console.error("❌ 유저 정보 불러오기 실패:", err);
+      }
+    };
+
+    fetchUser();
+  }, []); // 페이지 처음 렌더링 시 실행
 
   return (
     <P.Container>
@@ -60,13 +87,15 @@ const Premium = () => {
             />
             <div>프리미엄</div>
           </P.NComp>
-          <P.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
-              alt="point"
-            />
-            <div>프로필 수정</div>
-          </P.NComp>
+          {userType !== "KAKAO" && (
+            <P.NComp onClick={goEdit} style={{ cursor: "pointer" }}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/edit_n.png`}
+                alt="point"
+              />
+              <div>프로필 수정</div>
+            </P.NComp>
+          )}
           <P.NComp style={{ cursor: "pointer" }} onClick={goPay}>
             <img
               src={`${process.env.PUBLIC_URL}/images/buy_n.png`}
