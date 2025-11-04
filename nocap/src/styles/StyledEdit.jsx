@@ -119,7 +119,7 @@ export const Box = styled.div`
 
 export const Nav = styled.div`
   width: 95px;
-  height: 795px;
+  height: 531px;
   border-radius: 20px;
   background: #fff;
   display: flex;

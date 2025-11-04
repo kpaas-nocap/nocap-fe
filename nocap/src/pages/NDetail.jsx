@@ -436,6 +436,7 @@ const NDetail = () => {
             <N.RList>
               {recentAnalyses.map((item) => (
                 <N.RComp
+                  style={{ cursor: "pointer" }}
                   key={item.analysisId}
                   onClick={() =>
                     navigate("/analysis/article", {

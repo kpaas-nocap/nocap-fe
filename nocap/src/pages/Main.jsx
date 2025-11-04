@@ -226,163 +226,168 @@ const Main = () => {
   };
 
   return (
-    <M.Container>
-      <M.Header>
-        <img
-          id="logo"
-          src={`${process.env.PUBLIC_URL}/images/logo.png`}
-          alt="logo"
-        />
-
-        <M.MobileOnly>
+    <>
+      <M.Container>
+        <M.Header>
           <img
-            id="menu"
-            src={`${process.env.PUBLIC_URL}/images/menu.svg`}
-            alt="menu"
-            onClick={toggleSidebar}
+            id="logo"
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
+            alt="logo"
           />
-        </M.MobileOnly>
 
-        <M.DesktopOnly>
-          <M.Menu>
-            <div id="tag" style={{ cursor: "pointer" }}>
-              홈
-              <div id="circle" />
-            </div>
-            <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
-              NOCAP 소개
-            </div>
-            <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
-              뉴스
-            </div>
-            <div
-              id="tag"
-              onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
-              style={{ cursor: "pointer" }}
-            >
-              {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
-            </div>
-          </M.Menu>
-        </M.DesktopOnly>
-      </M.Header>
-      <M.Body>
-        <M.SearchBar>
-          <div id="url" onClick={goSearch}>
-            뉴스 키워드 또는 기사 URL을 입력하세요
-          </div>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
-            alt="search"
-          />
-        </M.SearchBar>
+          <M.MobileOnly>
+            <img
+              id="menu"
+              src={`${process.env.PUBLIC_URL}/images/menu.svg`}
+              alt="menu"
+              onClick={toggleSidebar}
+            />
+          </M.MobileOnly>
 
-        <M.MobileOnly>
-          <M.Ranking>
-            <M.RTitle>오늘의 인기뉴스</M.RTitle>
-
-            <M.SliderWrapper {...handlers}>
-              <M.SliderContainer currentIndex={currentIndex}>
-                {popNewsList.slice(0, 4).map((item, idx) => (
-                  <M.RBox
-                    key={idx}
-                    onClick={() => handleMoreClickFromIndex(idx)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <M.Han>
-                      <div id="title">{item.title}</div>
-                      <div id="from">{item.date}</div>
-                    </M.Han>
-                    <img
-                      src={
-                        item.image ||
-                        `${process.env.PUBLIC_URL}/images/news.jpg`
-                      }
-                      alt="news"
-                    />
-                  </M.RBox>
-                ))}
-              </M.SliderContainer>
-            </M.SliderWrapper>
-
-            <M.Pagenation>
-              {popNewsList.slice(0, 4).map((_, i) => (
-                <M.Dot key={i} active={i === currentIndex} />
-              ))}
-            </M.Pagenation>
-          </M.Ranking>
-        </M.MobileOnly>
-
-        <M.DesktopOnly>
-          <M.Famous>
-            <M.Text>
-              <M.TTitle>
-                <div id="title">오늘의 인기뉴스</div>
-                <div id="hr" />
-                <div id="date">
-                  {popNewsList[currentNewsIndex]?.date || "날짜 로딩 중..."}
-                </div>
-              </M.TTitle>
-              <M.Tit onClick={handleMoreClick} style={{ cursor: "pointer" }}>
-                {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
-              </M.Tit>
-
-              <M.More c style={{ cursor: "pointer" }} onClick={handleMoreClick}>
-                <div id="det">자세히 보기</div>
-                <div id="hr" />
-              </M.More>
-
-              <M.Page>
-                <img
-                  src={getArrowImageSrc("left")}
-                  alt="left"
-                  onClick={handlePrevNews}
-                  style={{ cursor: "pointer" }}
-                />
-                <img
-                  src={getArrowImageSrc("right")}
-                  alt="right"
-                  onClick={handleNextNews}
-                  style={{ cursor: "pointer" }}
-                />
-              </M.Page>
-            </M.Text>
-            <M.Img onClick={handleMoreClick} style={{ cursor: "pointer" }}>
-              <img
-                src={
-                  popNewsList[currentNewsIndex]?.image ||
-                  `${process.env.PUBLIC_URL}/images/news.jpg`
-                }
-                alt="news"
-              />
-              <div id="back" />
-            </M.Img>
-          </M.Famous>
-        </M.DesktopOnly>
-
-        <M.Recent>
-          <M.Title>최근 분석된 기사</M.Title>
-          <M.List>
-            {analysisList.map((item) => (
-              <M.Component
-                key={item.analysisId}
-                $bgImage={item.image} // ✅ 여기서 이미지 props 전달
-                onClick={() => handleAnalysisClick(item.analysisId)}
+          <M.DesktopOnly>
+            <M.Menu>
+              <div id="tag" style={{ cursor: "pointer" }}>
+                홈
+                <div id="circle" />
+              </div>
+              <div id="tag" style={{ cursor: "pointer" }} onClick={goIntro}>
+                NOCAP 소개
+              </div>
+              <div id="tag" onClick={goNews} style={{ cursor: "pointer" }}>
+                뉴스
+              </div>
+              <div
+                id="tag"
+                onClick={isLoggedIn ? goMy : () => navigate("/login/local")}
                 style={{ cursor: "pointer" }}
               >
-                <div>{item.mainNewsTitle}</div>
-              </M.Component>
-            ))}
-          </M.List>
-        </M.Recent>
-      </M.Body>
+                {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
+              </div>
+            </M.Menu>
+          </M.DesktopOnly>
+        </M.Header>
+        <M.Body>
+          <M.SearchBar>
+            <div id="url" onClick={goSearch}>
+              뉴스 키워드 또는 기사 URL을 입력하세요
+            </div>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/search_blue.svg`}
+              alt="search"
+            />
+          </M.SearchBar>
 
+          <M.MobileOnly>
+            <M.Ranking>
+              <M.RTitle>오늘의 인기뉴스</M.RTitle>
+
+              <M.SliderWrapper {...handlers}>
+                <M.SliderContainer currentIndex={currentIndex}>
+                  {popNewsList.slice(0, 4).map((item, idx) => (
+                    <M.RBox
+                      key={idx}
+                      onClick={() => handleMoreClickFromIndex(idx)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <M.Han>
+                        <div id="title">{item.title}</div>
+                        <div id="from">{item.date}</div>
+                      </M.Han>
+                      <img
+                        src={
+                          item.image ||
+                          `${process.env.PUBLIC_URL}/images/news.jpg`
+                        }
+                        alt="news"
+                      />
+                    </M.RBox>
+                  ))}
+                </M.SliderContainer>
+              </M.SliderWrapper>
+
+              <M.Pagenation>
+                {popNewsList.slice(0, 4).map((_, i) => (
+                  <M.Dot key={i} active={i === currentIndex} />
+                ))}
+              </M.Pagenation>
+            </M.Ranking>
+          </M.MobileOnly>
+
+          <M.DesktopOnly>
+            <M.Famous>
+              <M.Text>
+                <M.TTitle>
+                  <div id="title">오늘의 인기뉴스</div>
+                  <div id="hr" />
+                  <div id="date">
+                    {popNewsList[currentNewsIndex]?.date || "날짜 로딩 중..."}
+                  </div>
+                </M.TTitle>
+                <M.Tit onClick={handleMoreClick} style={{ cursor: "pointer" }}>
+                  {popNewsList[currentNewsIndex]?.title || "제목 로딩 중..."}
+                </M.Tit>
+
+                <M.More
+                  c
+                  style={{ cursor: "pointer" }}
+                  onClick={handleMoreClick}
+                >
+                  <div id="det">자세히 보기</div>
+                  <div id="hr" />
+                </M.More>
+
+                <M.Page>
+                  <img
+                    src={getArrowImageSrc("left")}
+                    alt="left"
+                    onClick={handlePrevNews}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <img
+                    src={getArrowImageSrc("right")}
+                    alt="right"
+                    onClick={handleNextNews}
+                    style={{ cursor: "pointer" }}
+                  />
+                </M.Page>
+              </M.Text>
+              <M.Img onClick={handleMoreClick} style={{ cursor: "pointer" }}>
+                <img
+                  src={
+                    popNewsList[currentNewsIndex]?.image ||
+                    `${process.env.PUBLIC_URL}/images/news.jpg`
+                  }
+                  alt="news"
+                />
+                <div id="back" />
+              </M.Img>
+            </M.Famous>
+          </M.DesktopOnly>
+
+          <M.Recent>
+            <M.Title>최근 분석된 기사</M.Title>
+            <M.List>
+              {analysisList.map((item) => (
+                <M.Component
+                  key={item.analysisId}
+                  $bgImage={item.image} // ✅ 여기서 이미지 props 전달
+                  onClick={() => handleAnalysisClick(item.analysisId)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div>{item.mainNewsTitle}</div>
+                </M.Component>
+              ))}
+            </M.List>
+          </M.Recent>
+        </M.Body>
+      </M.Container>
       <Sidebar
         isOpen={isOpen}
         toggleSidebar={toggleSidebar}
         activeContent={activeContent}
         setActiveContent={setActiveContent}
       />
-    </M.Container>
+    </>
   );
 };
 
