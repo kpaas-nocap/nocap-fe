@@ -611,6 +611,7 @@ const My = () => {
                     <M.CommentItem
                       key={i}
                       onClick={() => handleNavigateToAnalysis(item.analysisId)} // ✅ 클릭 시 이동
+                      style={{ cursor: "pointer" }}
                     >
                       <M.Content>{item.content}</M.Content>
                       <M.News>
@@ -633,6 +634,7 @@ const My = () => {
                   {compList.map((item, i) => (
                     <M.Comp
                       key={i}
+                      style={{ cursor: "pointer" }}
                       onClick={() => {
                         console.log("🟡 item:", item); // ✅ 이거 찍어봐야 함
                         console.log("🟢 item.id:", item.id); // ✅ 이거도 확인
